@@ -1,0 +1,26 @@
+# Python
+__pycache__/
+*.py[cod]
+*.pyd
+.pytest_cache/
+.ruff_cache/
+.mypy_cache/
+
+# Virtual environments
+.venv/
+venv/
+
+# Build artifacts
+build/
+dist/
+*.egg-info/
+obs-local/frontend/.tmp-tests/
+
+# Local data
+data/
+
+# IDE and OS
+.idea/
+.vscode/
+Thumbs.db
+Desktop.ini

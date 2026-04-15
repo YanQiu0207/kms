@@ -1,0 +1,10 @@
+{"id":"ai10-001","question":"上下文处理包括什么？","queries":["上下文处理 包括 什么","知识库 RAG 结果"],"expected_file_paths":["E:/work/blog/ai/tx-prompt-engineering.md","E:/work/blog/ai/prompt-engineering.md"],"should_abstain":false}
+{"id":"ai10-002","question":"提示词结构包括哪些部分？","queries":["提示词结构 包括 哪些 部分","角色 任务 核心原则 上下文处理"],"expected_file_paths":["E:/work/blog/ai/tx-prompt-engineering.md","E:/work/blog/ai/prompt-engineering.md"],"should_abstain":false}
+{"id":"ai10-003","question":"Few-Shot 的作用是什么？","queries":["Few Shot 作用","Few-Shot 是 什么"],"expected_file_paths":["E:/work/blog/ai/tx-prompt-engineering.md","E:/work/blog/ai/prompt-engineering.md"],"should_abstain":false}
+{"id":"ai10-004","question":"AI Agent 的核心概念是什么？","queries":["AI Agent 核心 概念","agent 是什么"],"expected_file_paths":["E:/work/blog/ai/ai-agent.md"],"should_abstain":false}
+{"id":"ai10-005","question":"Claude Code 的安装怎么做？","queries":["Claude Code 安装","claude code install"],"expected_file_paths":["E:/work/blog/ai/claude-code/0-install.md"],"should_abstain":false}
+{"id":"ai10-006","question":"Claude Code 的 settings 怎么配置？","queries":["Claude Code 设置 配置","claude code setting"],"expected_file_paths":["E:/work/blog/ai/claude-code/0.3-setting.md"],"should_abstain":false}
+{"id":"ai10-007","question":"Claude Code 的 memory 机制有什么用？","queries":["Claude Code memory 机制","memory 作用"],"expected_file_paths":["E:/work/blog/ai/claude-code/1-memory.md"],"should_abstain":false}
+{"id":"ai10-008","question":"Claude Code 里 subagent 的基础概念是什么？","queries":["subagent 基础 概念","Claude Code subagent"],"expected_file_paths":["E:/work/blog/ai/claude-code/2-subagent-base.md","E:/work/blog/ai/claude-code/2.2-subagent-practices.md"],"should_abstain":false}
+{"id":"ai10-009","question":"文档里有没有介绍扩散模型训练细节？","queries":["扩散模型 训练 细节","diffusion training"],"expected_file_paths":[],"should_abstain":true}
+{"id":"ai10-010","question":"文档里有没有 OpenCL GPU 内核优化手册？","queries":["OpenCL GPU 内核 优化","GPU kernel optimization"],"expected_file_paths":[],"should_abstain":true}

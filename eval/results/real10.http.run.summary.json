@@ -1,0 +1,48 @@
+{
+  "health": {
+    "status": "ok",
+    "service": "kms-api",
+    "version": "0.1.0",
+    "timestamp": "2026-04-15 20:39:40.346"
+  },
+  "stats": {
+    "document_count": 107,
+    "chunk_count": 2702,
+    "source_count": 1,
+    "embedding_model": "BAAI/bge-m3",
+    "reranker_model": "BAAI/bge-reranker-v2-m3",
+    "chunker_version": "v1",
+    "sqlite_path": "./data/meta.db",
+    "chroma_path": "./data/chroma",
+    "hf_cache": "./data/hf-cache",
+    "device": "cuda",
+    "dtype": "float16",
+    "last_indexed_at": "2026-04-15 03:34:15.327"
+  },
+  "benchmarks": {
+    "ai": {
+      "total_cases": 10,
+      "answered_cases": 8,
+      "abstain_cases": 2,
+      "recall_at_k": 1.0,
+      "mrr": 1.0,
+      "abstain_accuracy": 1.0
+    },
+    "distributed": {
+      "total_cases": 10,
+      "answered_cases": 8,
+      "abstain_cases": 2,
+      "recall_at_k": 1.0,
+      "mrr": 0.9167,
+      "abstain_accuracy": 1.0
+    },
+    "game": {
+      "total_cases": 10,
+      "answered_cases": 9,
+      "abstain_cases": 1,
+      "recall_at_k": 1.0,
+      "mrr": 0.9444,
+      "abstain_accuracy": 1.0
+    }
+  }
+}

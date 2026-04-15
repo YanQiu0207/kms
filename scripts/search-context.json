@@ -1,0 +1,8 @@
+{
+  "queries": [
+    "上下文处理 包括 什么",
+    "知识库 RAG 结果"
+  ],
+  "recall_top_k": 20,
+  "rerank_top_k": 6
+}

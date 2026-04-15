@@ -1,0 +1,4 @@
+{"id":"dist-001","question":"为什么需要向量时钟？","queries":["为什么需要向量时钟","向量时钟 因果关系"],"expected_file_paths":["E:/work/blog/分布式基础/事件排序/vector-clock.md"],"should_abstain":false}
+{"id":"dist-002","question":"HLC 时间戳由哪两部分组成？","queries":["HLC 时间戳 组成","wall time logic time"],"expected_file_paths":["E:/work/blog/分布式基础/事件排序/hlc.md"],"should_abstain":false}
+{"id":"dist-003","question":"CAP 里的 Consistency 指什么？","queries":["CAP Consistency 指 什么","CAP 线性一致性"],"expected_file_paths":["E:/work/blog/分布式基础/cap.md"],"should_abstain":false}
+{"id":"dist-004","question":"文档里有没有介绍 ZooKeeper watch 机制？","queries":["ZooKeeper watch 机制","watch 机制"],"expected_file_paths":[],"should_abstain":true}

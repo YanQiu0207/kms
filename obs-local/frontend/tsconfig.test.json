@@ -1,0 +1,11 @@
+{
+  "extends": "./tsconfig.json",
+  "compilerOptions": {
+    "outDir": ".tmp-tests",
+    "rootDir": "src"
+  },
+  "include": [
+    "src/stores/stream-envelope.ts",
+    "src/types/observability.ts"
+  ]
+}

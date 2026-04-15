@@ -1,0 +1,6 @@
+{
+  "answer": "上下文处理可以包括多轮对话记忆、知识库 RAG 结果、提示词和工作流上游输出 [54fd84d561bd824b18153cc1a2a65ff36e83add1]。",
+  "used_chunk_ids": [
+    "54fd84d561bd824b18153cc1a2a65ff36e83add1"
+  ]
+}

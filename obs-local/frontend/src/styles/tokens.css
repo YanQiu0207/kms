@@ -1,0 +1,34 @@
+:root {
+  color-scheme: dark;
+  --font-display: "Aptos Display", "Segoe UI Variable Display", "Bahnschrift", "Segoe UI", sans-serif;
+  --font-sans: "Aptos", "Segoe UI Variable Text", "Segoe UI", sans-serif;
+  --font-mono: "IBM Plex Mono", "Cascadia Code", "Consolas", monospace;
+
+  --color-brand: #4cc9d7;
+  --color-brand-strong: #7ae6f2;
+  --color-brand-soft: rgba(76, 201, 215, 0.16);
+  --color-background-canvas: #08101f;
+  --color-background-muted: #0d1629;
+  --color-surface-panel: rgba(10, 16, 32, 0.82);
+  --color-surface-raised: rgba(18, 28, 49, 0.96);
+  --color-surface-pill: rgba(117, 139, 182, 0.14);
+  --color-border-subtle: rgba(144, 163, 191, 0.12);
+  --color-border-strong: rgba(144, 163, 191, 0.26);
+  --color-text-primary: #edf4ff;
+  --color-text-secondary: #a4b1cb;
+  --color-text-tertiary: #6f7d98;
+
+  --color-semantic-success-soft: rgba(54, 198, 144, 0.14);
+  --color-semantic-success-strong: #6fe1af;
+  --color-semantic-warning-soft: rgba(240, 180, 93, 0.14);
+  --color-semantic-warning-strong: #f2c56f;
+  --color-semantic-danger-soft: rgba(243, 122, 116, 0.14);
+  --color-semantic-danger-strong: #ff9b92;
+
+  --radius-card: 1rem;
+  --radius-panel: 1.45rem;
+  --radius-hero: 1.8rem;
+
+  --shadow-soft: 0 18px 34px rgba(2, 8, 23, 0.28);
+  --shadow-panel: 0 30px 70px rgba(2, 8, 23, 0.38);
+}

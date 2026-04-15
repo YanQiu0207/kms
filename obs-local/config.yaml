@@ -1,0 +1,40 @@
+server:
+  host: 127.0.0.1
+  port: 49154
+storage:
+  state_db_path: ./data/state.db
+logging:
+  level: INFO
+  log_dir: ./data/logs
+runtime:
+  tail_poll_interval_seconds: 1.0
+  max_cached_records: 50000
+tailer:
+  chunk_size: 65536
+  encoding: utf-8
+  errors: replace
+stream:
+  path: /api/stream
+  heartbeat_ms: 15000
+  batch_window_ms: 250
+  batch_max_items: 16
+  max_queue_size: 256
+aggregation:
+  top_n: 20
+  request_stage_limit: 5
+ui:
+  default_locale: bilingual
+projects:
+  - name: mykms
+    enabled: true
+    summary_mapping:
+      api.ask.start: question
+    sources:
+      - source_id: main
+        log_path: E:/github/mykms/.run-logs/kms-api.log
+        format: jsonl
+        timezone: Asia/Shanghai
+        service_hint: kms-api
+        redact_fields:
+          - question
+        enabled: true

@@ -1,0 +1,9 @@
+{
+  "question": "Paxos的实现原理？",
+  "queries": [
+    "Paxos 的实现原理",
+    "Paxos Prepare Accept 提议者 接受者 学习者",
+    "Paxos 共识算法 实现流程 多数派"
+  ],
+  "rerank_top_k": 6
+}

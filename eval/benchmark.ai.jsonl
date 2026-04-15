@@ -1,0 +1,4 @@
+{"id":"ai-001","question":"上下文处理包括什么？","queries":["上下文处理 包括 什么","知识库 RAG 结果"],"expected_file_paths":["E:/work/blog/ai/tx-prompt-engineering.md","E:/work/blog/ai/prompt-engineering.md"],"should_abstain":false}
+{"id":"ai-002","question":"提示词结构包括哪些部分？","queries":["提示词结构 包括 哪些 部分","角色 任务 核心原则 上下文处理"],"expected_file_paths":["E:/work/blog/ai/tx-prompt-engineering.md","E:/work/blog/ai/prompt-engineering.md"],"should_abstain":false}
+{"id":"ai-003","question":"Few-Shot 的作用是什么？","queries":["Few Shot 作用","Few-Shot 是 什么"],"expected_file_paths":["E:/work/blog/ai/tx-prompt-engineering.md","E:/work/blog/ai/prompt-engineering.md"],"should_abstain":false}
+{"id":"ai-004","question":"文档里有没有介绍量子纠错码？","queries":["量子纠错码","量子 纠错"],"expected_file_paths":[],"should_abstain":true}

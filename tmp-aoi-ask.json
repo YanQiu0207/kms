@@ -1,0 +1,9 @@
+{
+  "question": "KMS Knowledge Assistant 常用的 AOI 算法有几种？分别描述下原理、优缺点和适用场景？",
+  "queries": [
+    "AOI 算法 有几种 优缺点 适用场景",
+    "游戏 AOI 九宫格 十字链表 灯塔 算法",
+    "AOI 算法 原理 对比"
+  ],
+  "rerank_top_k": 8
+}

@@ -1,0 +1,10 @@
+{"id":"game10-001","question":"为什么需要 AOI？","queries":["为什么需要 AOI","AOI 作用"],"expected_file_paths":["E:/work/blog/游戏开发/aoi-algo.md"],"should_abstain":false}
+{"id":"game10-002","question":"网格化 AOI 的优缺点是什么？","queries":["网格化 AOI 优缺点","AOI 网格化"],"expected_file_paths":["E:/work/blog/游戏开发/aoi-algo.md"],"should_abstain":false}
+{"id":"game10-003","question":"十字链表 AOI 适合什么场景？","queries":["十字链表 AOI 适用 场景","AOI 十字链表"],"expected_file_paths":["E:/work/blog/游戏开发/aoi-algo.md"],"should_abstain":false}
+{"id":"game10-004","question":"灯塔 AOI 相比九宫格有什么特点？","queries":["灯塔 AOI 九宫格 对比","灯塔 AOI 优缺点"],"expected_file_paths":["E:/work/blog/游戏开发/aoi-algo.md"],"should_abstain":false}
+{"id":"game10-005","question":"帧同步有哪些优点？","queries":["帧同步 优点","网络同步 帧同步"],"expected_file_paths":["E:/work/blog/游戏开发/network-sync.md"],"should_abstain":false}
+{"id":"game10-006","question":"快照同步的主要缺点是什么？","queries":["快照同步 缺点","snapshot sync 缺点"],"expected_file_paths":["E:/work/blog/游戏开发/network-sync.md"],"should_abstain":false}
+{"id":"game10-007","question":"分区分服有什么优点？","queries":["分区分服 优点","区服模型 分区分服"],"expected_file_paths":["E:/work/blog/游戏开发/服务器架构设计.md"],"should_abstain":false}
+{"id":"game10-008","question":"高并发三大利器是什么？","queries":["高并发 三大利器","缓存 限流 熔断"],"expected_file_paths":["E:/work/blog/游戏开发/服务端优化.md"],"should_abstain":false}
+{"id":"game10-009","question":"临时高并发怎么处理？","queries":["临时 高并发 怎么处理","排队系统 动态扩容 游戏"],"expected_file_paths":["E:/work/blog/游戏开发/游戏服务端的高并发和高可用.md"],"should_abstain":false}
+{"id":"game10-010","question":"文档里有没有介绍 Unreal GAS 框架？","queries":["Unreal GAS 框架","Gameplay Ability System"],"expected_file_paths":[],"should_abstain":true}

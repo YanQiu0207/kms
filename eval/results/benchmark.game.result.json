@@ -1,0 +1,72 @@
+{
+  "total_cases": 5,
+  "answered_cases": 4,
+  "abstain_cases": 1,
+  "recall_at_k": 1.0,
+  "mrr": 1.0,
+  "abstain_accuracy": 1.0,
+  "avg_search_latency_ms": 3385.32,
+  "avg_ask_latency_ms": 894.69,
+  "case_results": [
+    {
+      "id": "game-001",
+      "search_latency_ms": 13564.98,
+      "ask_latency_ms": 1152.58,
+      "search_hit": true,
+      "mrr": 1.0,
+      "abstain_correct": true,
+      "result_count": 5,
+      "top_chunk_id": "177c347bdd26926527cdcdf04ce891d230167366",
+      "top_file_path": "E:/work/blog/游戏开发/aoi-algo.md",
+      "abstained": false
+    },
+    {
+      "id": "game-002",
+      "search_latency_ms": 931.26,
+      "ask_latency_ms": 901.38,
+      "search_hit": true,
+      "mrr": 1.0,
+      "abstain_correct": true,
+      "result_count": 6,
+      "top_chunk_id": "29322a7f3659aee0661520925afec3ef934cd06b",
+      "top_file_path": "E:/work/blog/游戏开发/aoi-algo.md",
+      "abstained": false
+    },
+    {
+      "id": "game-003",
+      "search_latency_ms": 657.75,
+      "ask_latency_ms": 650.43,
+      "search_hit": true,
+      "mrr": 1.0,
+      "abstain_correct": true,
+      "result_count": 6,
+      "top_chunk_id": "f820b97cf2a71db282c97b1b40b1ab5825e08a40",
+      "top_file_path": "E:/work/blog/游戏开发/network-sync.md",
+      "abstained": false
+    },
+    {
+      "id": "game-004",
+      "search_latency_ms": 1056.39,
+      "ask_latency_ms": 1056.6,
+      "search_hit": true,
+      "mrr": 1.0,
+      "abstain_correct": true,
+      "result_count": 6,
+      "top_chunk_id": "145e86eb148ac76c8ea80ef792635db787fd33a5",
+      "top_file_path": "E:/work/blog/游戏开发/服务器架构设计.md",
+      "abstained": false
+    },
+    {
+      "id": "game-005",
+      "search_latency_ms": 716.2,
+      "ask_latency_ms": 712.48,
+      "search_hit": false,
+      "mrr": 0.0,
+      "abstain_correct": true,
+      "result_count": 1,
+      "top_chunk_id": "6aca01850e928f74e139c4ccf1ec443af775c403",
+      "top_file_path": "E:/work/blog/摄影/goutu.md",
+      "abstained": true
+    }
+  ]
+}

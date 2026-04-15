@@ -1,0 +1,10 @@
+{"id":"dist10-001","question":"为什么需要向量时钟？","queries":["为什么需要向量时钟","向量时钟 因果关系"],"expected_file_paths":["E:/work/blog/分布式基础/事件排序/vector-clock.md"],"should_abstain":false}
+{"id":"dist10-002","question":"HLC 时间戳由哪两部分组成？","queries":["HLC 时间戳 组成","wall time logic time"],"expected_file_paths":["E:/work/blog/分布式基础/事件排序/hlc.md"],"should_abstain":false}
+{"id":"dist10-003","question":"CAP 里的 Consistency 指什么？","queries":["CAP Consistency 指 什么","CAP 线性一致性"],"expected_file_paths":["E:/work/blog/分布式基础/cap.md"],"should_abstain":false}
+{"id":"dist10-004","question":"逻辑时钟解决了什么问题？","queries":["逻辑时钟 解决 什么 问题","Lamport clock"],"expected_file_paths":["E:/work/blog/分布式基础/事件排序/logic-clock.md"],"should_abstain":false}
+{"id":"dist10-005","question":"TrueTime 的关键价值是什么？","queries":["TrueTime 价值","Google TrueTime"],"expected_file_paths":["E:/work/blog/分布式基础/事件排序/true-time.md"],"should_abstain":false}
+{"id":"dist10-006","question":"2PC 的主要问题有哪些？","queries":["2PC 问题","两阶段提交 缺点"],"expected_file_paths":["E:/work/blog/分布式基础/共识/2pc.md"],"should_abstain":false}
+{"id":"dist10-007","question":"3PC 相比 2PC 的改进点是什么？","queries":["3PC 相比 2PC 改进","三阶段提交"],"expected_file_paths":["E:/work/blog/分布式基础/共识/3pc.md"],"should_abstain":false}
+{"id":"dist10-008","question":"分布式锁有哪些常见实现思路？","queries":["分布式锁 实现 思路","distributed lock"],"expected_file_paths":["E:/work/blog/分布式基础/distlock.md","E:/work/blog/分布式基础/分布式锁.md"],"should_abstain":false}
+{"id":"dist10-009","question":"文档里有没有介绍 CRDT 详细算法？","queries":["CRDT 详细 算法","conflict free replicated data type"],"expected_file_paths":[],"should_abstain":true}
+{"id":"dist10-010","question":"文档里有没有介绍 ZooKeeper watch 机制？","queries":["ZooKeeper watch 机制","watch 机制"],"expected_file_paths":[],"should_abstain":true}

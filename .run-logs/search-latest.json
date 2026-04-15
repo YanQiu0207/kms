@@ -1,0 +1,75 @@
+{
+  "results": [
+    {
+      "chunk_id": "b7e84e69697a7424dcea151b11639bb734ee6b06",
+      "file_path": "E:/work/blog/分布式基础/共识/raft_learning_plan.md",
+      "title_path": [
+        "3个月 Raft 学习计划",
+        "第1周：分布式一致性入门与 Raft 概览"
+      ],
+      "text": "要一个协调机制确保只采用一个值”）。",
+      "score": -2.966796875,
+      "doc_id": "d3a6b6c9f8b1:分布式基础/共识/raft_learning_plan.md"
+    },
+    {
+      "chunk_id": "66142cf65c264467a9a803837a201848d4602670",
+      "file_path": "E:/work/blog/分布式基础/共识/raft_learning_plan.md",
+      "title_path": [
+        "3个月 Raft 学习计划",
+        "第1周：分布式一致性入门与 Raft 概览"
+      ],
+      "text": "需要一个协调机制确保只采用一个值”）。",
+      "score": -3.21875,
+      "doc_id": "d3a6b6c9f8b1:分布式基础/共识/raft_learning_plan.md"
+    },
+    {
+      "chunk_id": "6bbb61e4762ffdfa4416ad8dda6bbd10350e0bac",
+      "file_path": "E:/work/blog/分布式基础/共识/raft_learning_plan.md",
+      "title_path": [
+        "3个月 Raft 学习计划",
+        "第1周：分布式一致性入门与 Raft 概览"
+      ],
+      "text": "出“需要一个协调机制确保只采用一个值”）。",
+      "score": -4.26953125,
+      "doc_id": "d3a6b6c9f8b1:分布式基础/共识/raft_learning_plan.md"
+    },
+    {
+      "chunk_id": "af517b58332e8ebdd15f68d87a96da068157d68e",
+      "file_path": "E:/work/blog/分布式基础/共识/raft_learning_plan.md",
+      "title_path": [
+        "3个月 Raft 学习计划",
+        "第1周：分布式一致性入门与 Raft 概览"
+      ],
+      "text": "“需要一个协调机制确保只采用一个值”）。",
+      "score": -4.421875,
+      "doc_id": "d3a6b6c9f8b1:分布式基础/共识/raft_learning_plan.md"
+    },
+    {
+      "chunk_id": "cffb5b90968ab29d56050df943014fb1c445d65d",
+      "file_path": "E:/work/blog/分布式基础/共识/raft_learning_plan.md",
+      "title_path": [
+        "3个月 Raft 学习计划",
+        "第1周：分布式一致性入门与 Raft 概览"
+      ],
+      "text": "？（提示：引出“需要一个协调机制确保只采用一个值”）。",
+      "score": -4.6171875,
+      "doc_id": "d3a6b6c9f8b1:分布式基础/共识/raft_learning_plan.md"
+    },
+    {
+      "chunk_id": "1b4ea5aeb4d1025e90e892131ada6093e5a2abab",
+      "file_path": "E:/work/blog/分布式基础/共识/raft_learning_plan.md",
+      "title_path": [
+        "3个月 Raft 学习计划",
+        "第1周：分布式一致性入门与 Raft 概览"
+      ],
+      "text": "只采用一个值”）。",
+      "score": -4.6328125,
+      "doc_id": "d3a6b6c9f8b1:分布式基础/共识/raft_learning_plan.md"
+    }
+  ],
+  "debug": {
+    "queries_count": 2,
+    "recall_count": 76,
+    "rerank_count": 6
+  }
+}

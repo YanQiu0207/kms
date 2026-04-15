@@ -1,0 +1,60 @@
+{
+  "total_cases": 4,
+  "answered_cases": 3,
+  "abstain_cases": 1,
+  "recall_at_k": 1.0,
+  "mrr": 1.0,
+  "abstain_accuracy": 1.0,
+  "avg_search_latency_ms": 3998.21,
+  "avg_ask_latency_ms": 924.64,
+  "case_results": [
+    {
+      "id": "dist-001",
+      "search_latency_ms": 12999.13,
+      "ask_latency_ms": 702.85,
+      "search_hit": true,
+      "mrr": 1.0,
+      "abstain_correct": true,
+      "result_count": 6,
+      "top_chunk_id": "91cea51eaa2af7c5e61865340f37157644a0e88a",
+      "top_file_path": "E:/work/blog/分布式基础/事件排序/vector-clock.md",
+      "abstained": false
+    },
+    {
+      "id": "dist-002",
+      "search_latency_ms": 893.56,
+      "ask_latency_ms": 921.99,
+      "search_hit": true,
+      "mrr": 1.0,
+      "abstain_correct": true,
+      "result_count": 3,
+      "top_chunk_id": "027978b868e146f869bc2c4313b72e535e71d13b",
+      "top_file_path": "E:/work/blog/分布式基础/事件排序/hlc.md",
+      "abstained": false
+    },
+    {
+      "id": "dist-003",
+      "search_latency_ms": 1127.58,
+      "ask_latency_ms": 1109.83,
+      "search_hit": true,
+      "mrr": 1.0,
+      "abstain_correct": true,
+      "result_count": 6,
+      "top_chunk_id": "6732f5edb3a5c13d4214aa44944d873e9e98d116",
+      "top_file_path": "E:/work/blog/分布式基础/cap.md",
+      "abstained": false
+    },
+    {
+      "id": "dist-004",
+      "search_latency_ms": 972.56,
+      "ask_latency_ms": 963.89,
+      "search_hit": false,
+      "mrr": 0.0,
+      "abstain_correct": true,
+      "result_count": 3,
+      "top_chunk_id": "8d62f078387363e42a39fac9b28872946e552f76",
+      "top_file_path": "E:/work/blog/分布式基础/共识/raft_learning_plan.md",
+      "abstained": true
+    }
+  ]
+}

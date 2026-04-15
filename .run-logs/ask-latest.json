@@ -1,0 +1,7 @@
+{
+  "abstained": true,
+  "confidence": 0.0,
+  "prompt": "",
+  "sources": [],
+  "abstain_reason": "top1_score_below_threshold"
+}

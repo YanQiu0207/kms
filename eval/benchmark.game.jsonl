@@ -1,0 +1,5 @@
+{"id":"game-001","question":"为什么需要 AOI？","queries":["为什么需要 AOI","AOI 作用"],"expected_file_paths":["E:/work/blog/游戏开发/aoi-algo.md"],"should_abstain":false}
+{"id":"game-002","question":"网格化 AOI 的优缺点是什么？","queries":["网格化 AOI 优缺点","AOI 网格化"],"expected_file_paths":["E:/work/blog/游戏开发/aoi-algo.md"],"should_abstain":false}
+{"id":"game-003","question":"帧同步有哪些优点？","queries":["帧同步 优点","网络同步 帧同步"],"expected_file_paths":["E:/work/blog/游戏开发/network-sync.md"],"should_abstain":false}
+{"id":"game-004","question":"分区分服有什么优点？","queries":["分区分服 优点","区服模型 分区分服"],"expected_file_paths":["E:/work/blog/游戏开发/服务器架构设计.md"],"should_abstain":false}
+{"id":"game-005","question":"文档里有没有介绍 ECS 渲染管线？","queries":["ECS 渲染 管线","渲染 管线"],"expected_file_paths":[],"should_abstain":true}

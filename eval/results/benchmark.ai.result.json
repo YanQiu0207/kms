@@ -1,0 +1,60 @@
+{
+  "total_cases": 4,
+  "answered_cases": 3,
+  "abstain_cases": 1,
+  "recall_at_k": 1.0,
+  "mrr": 1.0,
+  "abstain_accuracy": 1.0,
+  "avg_search_latency_ms": 4078.4,
+  "avg_ask_latency_ms": 1029.91,
+  "case_results": [
+    {
+      "id": "ai-001",
+      "search_latency_ms": 13454.49,
+      "ask_latency_ms": 1281.71,
+      "search_hit": true,
+      "mrr": 1.0,
+      "abstain_correct": true,
+      "result_count": 5,
+      "top_chunk_id": "54fd84d561bd824b18153cc1a2a65ff36e83add1",
+      "top_file_path": "E:/work/blog/ai/tx-prompt-engineering.md",
+      "abstained": false
+    },
+    {
+      "id": "ai-002",
+      "search_latency_ms": 926.97,
+      "ask_latency_ms": 922.57,
+      "search_hit": true,
+      "mrr": 1.0,
+      "abstain_correct": true,
+      "result_count": 6,
+      "top_chunk_id": "54fd84d561bd824b18153cc1a2a65ff36e83add1",
+      "top_file_path": "E:/work/blog/ai/tx-prompt-engineering.md",
+      "abstained": false
+    },
+    {
+      "id": "ai-003",
+      "search_latency_ms": 1344.55,
+      "ask_latency_ms": 1338.59,
+      "search_hit": true,
+      "mrr": 1.0,
+      "abstain_correct": true,
+      "result_count": 2,
+      "top_chunk_id": "54fd84d561bd824b18153cc1a2a65ff36e83add1",
+      "top_file_path": "E:/work/blog/ai/tx-prompt-engineering.md",
+      "abstained": false
+    },
+    {
+      "id": "ai-004",
+      "search_latency_ms": 587.58,
+      "ask_latency_ms": 576.76,
+      "search_hit": false,
+      "mrr": 0.0,
+      "abstain_correct": true,
+      "result_count": 0,
+      "top_chunk_id": null,
+      "top_file_path": null,
+      "abstained": true
+    }
+  ]
+}
