@@ -1,0 +1,211 @@
+{
+  "benchmark": {
+    "overall": {
+      "recall_at_k": {
+        "baseline": 1.0,
+        "candidate": 1.0,
+        "delta": 0.0
+      },
+      "mrr": {
+        "baseline": 0.9167,
+        "candidate": 1.0,
+        "delta": 0.0833
+      },
+      "abstain_accuracy": {
+        "baseline": 0.8,
+        "candidate": 1.0,
+        "delta": 0.2
+      },
+      "abstain_precision": {
+        "baseline": 0.5,
+        "candidate": 1.0,
+        "delta": 0.5
+      },
+      "abstain_recall": {
+        "baseline": 0.5,
+        "candidate": 1.0,
+        "delta": 0.5
+      },
+      "false_abstain_rate": {
+        "baseline": 0.125,
+        "candidate": 0.0,
+        "delta": -0.125
+      },
+      "false_answer_rate": {
+        "baseline": 0.5,
+        "candidate": 0.0,
+        "delta": -0.5
+      },
+      "evidence_hit_rate": {
+        "baseline": 0.875,
+        "candidate": 1.0,
+        "delta": 0.125
+      },
+      "evidence_source_recall": {
+        "baseline": 0.875,
+        "candidate": 1.0,
+        "delta": 0.125
+      },
+      "source_count_satisfaction_rate": {
+        "baseline": null,
+        "candidate": null,
+        "delta": null
+      },
+      "expected_term_coverage": {
+        "baseline": null,
+        "candidate": null,
+        "delta": null
+      },
+      "avg_search_latency_ms": {
+        "baseline": 1688.17,
+        "candidate": 1825.99,
+        "delta": 137.82
+      },
+      "avg_ask_latency_ms": {
+        "baseline": 3.85,
+        "candidate": 3.85,
+        "delta": 0.0
+      }
+    },
+    "by_type": {
+      "lookup": {
+        "recall_at_k": {
+          "baseline": 1.0,
+          "candidate": 1.0,
+          "delta": 0.0
+        },
+        "mrr": {
+          "baseline": 0.9167,
+          "candidate": 1.0,
+          "delta": 0.0833
+        },
+        "abstain_accuracy": {
+          "baseline": 0.8,
+          "candidate": 1.0,
+          "delta": 0.2
+        },
+        "abstain_precision": {
+          "baseline": 0.5,
+          "candidate": 1.0,
+          "delta": 0.5
+        },
+        "abstain_recall": {
+          "baseline": 0.5,
+          "candidate": 1.0,
+          "delta": 0.5
+        },
+        "false_abstain_rate": {
+          "baseline": 0.125,
+          "candidate": 0.0,
+          "delta": -0.125
+        },
+        "false_answer_rate": {
+          "baseline": 0.5,
+          "candidate": 0.0,
+          "delta": -0.5
+        },
+        "evidence_hit_rate": {
+          "baseline": 0.875,
+          "candidate": 1.0,
+          "delta": 0.125
+        },
+        "evidence_source_recall": {
+          "baseline": 0.875,
+          "candidate": 1.0,
+          "delta": 0.125
+        },
+        "source_count_satisfaction_rate": {
+          "baseline": null,
+          "candidate": null,
+          "delta": null
+        },
+        "expected_term_coverage": {
+          "baseline": null,
+          "candidate": null,
+          "delta": null
+        },
+        "avg_search_latency_ms": {
+          "baseline": 1688.17,
+          "candidate": 1825.99,
+          "delta": 137.82
+        },
+        "avg_ask_latency_ms": {
+          "baseline": 3.85,
+          "candidate": 3.85,
+          "delta": 0.0
+        }
+      }
+    },
+    "by_tag": {},
+    "case_changes": [
+      {
+        "id": "dist10-005",
+        "question": "TrueTime 的关键价值是什么？",
+        "case_type": "lookup",
+        "tags": [],
+        "changes": {
+          "abstained": {
+            "baseline": true,
+            "candidate": false
+          },
+          "abstain_correct": {
+            "baseline": false,
+            "candidate": true
+          },
+          "source_count": {
+            "baseline": 0,
+            "candidate": 5
+          },
+          "matched_source_count": {
+            "baseline": 0,
+            "candidate": 1
+          },
+          "evidence_hit": {
+            "baseline": false,
+            "candidate": true
+          }
+        }
+      },
+      {
+        "id": "dist10-006",
+        "question": "2PC 的主要问题有哪些？",
+        "case_type": "lookup",
+        "tags": [],
+        "changes": {
+          "rank": {
+            "baseline": 3,
+            "candidate": 1
+          },
+          "top_file_path": {
+            "baseline": "E:/work/blog/分布式基础/共识/3pc.md",
+            "candidate": "E:/work/blog/分布式基础/共识/2pc.md"
+          },
+          "top_location": {
+            "baseline": "3pc.md:3-20",
+            "candidate": "2pc.md:85-91"
+          }
+        }
+      },
+      {
+        "id": "dist10-010",
+        "question": "文档里有没有介绍 ZooKeeper watch 机制？",
+        "case_type": "lookup",
+        "tags": [],
+        "changes": {
+          "abstained": {
+            "baseline": false,
+            "candidate": true
+          },
+          "abstain_correct": {
+            "baseline": false,
+            "candidate": true
+          },
+          "source_count": {
+            "baseline": 5,
+            "candidate": 0
+          }
+        }
+      }
+    ]
+  }
+}

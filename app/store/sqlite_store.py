@@ -324,6 +324,16 @@ class SQLiteMetadataStore:
         row = self._fetchone("SELECT * FROM chunks WHERE chunk_id = ?", (chunk_id,))
         return None if row is None else self._row_to_chunk(row)
 
+    def list_chunks_by_document(self, document_id: str) -> Sequence[StoredChunk]:
+        try:
+            cursor = self._connection.execute(
+                "SELECT * FROM chunks WHERE document_id = ? ORDER BY chunk_index, chunk_id",
+                (document_id,),
+            )
+        except sqlite3.Error as exc:
+            raise StoreError("failed to list document chunks") from exc
+        return tuple(self._row_to_chunk(row) for row in cursor)
+
     def iter_documents(self) -> Iterable[StoredDocument]:
         cursor = self._connection.execute("SELECT * FROM documents ORDER BY document_id")
         for row in cursor:

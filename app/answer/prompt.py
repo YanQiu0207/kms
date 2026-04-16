@@ -9,7 +9,7 @@ from typing import Sequence
 from app.retrieve.contracts import RetrievedChunk
 
 from .contracts import AnswerError, EvidencePackage, EvidenceSource, PromptAssembler
-from .guardrail import AbstainThresholds, evaluate_abstain
+from .guardrail import AbstainThresholds, GuardrailDecision, evaluate_abstain
 
 
 DEFAULT_SYSTEM_PROMPT = """你是 KMS 的答案编排器。
@@ -215,6 +215,7 @@ def build_prompt_package(
     *,
     render_config: PromptRenderConfig | None = None,
     thresholds: AbstainThresholds | object | None = None,
+    decision: GuardrailDecision | None = None,
 ) -> EvidencePackage:
     """Build the final prompt package used by `/ask`."""
 
@@ -223,7 +224,7 @@ def build_prompt_package(
     if not stripped_question:
         raise AnswerError("question cannot be empty")
 
-    decision = evaluate_abstain(chunks, thresholds)
+    decision = decision or evaluate_abstain(chunks, thresholds)
     if decision.abstained:
         return EvidencePackage(
             question=stripped_question,

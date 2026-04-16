@@ -20,8 +20,22 @@
 - `benchmark.ai*.jsonl`：AI 主题基准集
 - `benchmark.distributed*.jsonl`：分布式主题基准集
 - `benchmark.game*.jsonl`：游戏开发主题基准集
+- `benchmark.notes-frontmatter.real10.jsonl`：`E:/notes` 派生 front matter 语料的定向基准集
+- `index_stats.py` / `run_index_stats.py`：索引统计快照与 CLI
+- `compare.py` / `run_compare.py`：benchmark / index stats 对比工具
 - `run_benchmark.py`：本地 benchmark CLI
+- `suite.py` / `run_benchmark_suite.py`：多 benchmark suite 执行与 gate 汇总
+- `source_audit.py` / `run_source_audit.py`：source 结构与 metadata 覆盖审计
 - `results/*.json`：最近一次 benchmark 结果快照
+
+## 派生 Front Matter 语料
+
+- `config.notes-frontmatter.yaml` 指向 `data/corpora/e-notes-frontmatter-v1`
+- 该语料由 `scripts/build_notes_frontmatter_corpus.py` 从 `E:/notes` 派生生成
+- 目的不是替换原语料，而是构造一套 front matter 更密集、可复现的对照语料
+- `benchmark.notes-frontmatter.real10.jsonl` 刻意混合两类 case：
+  - 正文可答题：验证清洗不会破坏基础召回
+  - metadata-sensitive 题：验证 `category` / `tags` / 集合语义缺失时的误答、误拒答和排序偏移
 
 ## Case Schema
 
@@ -135,6 +149,15 @@
   --output eval/results/benchmark.sample.result.json
 ```
 
+也可直接打到本地已启动的 API：
+
+```powershell
+.\.venv\Scripts\python.exe -m eval.run_benchmark `
+  --benchmark eval/benchmark.sample.jsonl `
+  --base-url http://127.0.0.1:49154 `
+  --output eval/results/benchmark.sample.http.json
+```
+
 可选重建索引：
 
 ```powershell
@@ -144,10 +167,108 @@
   --reindex incremental
 ```
 
+索引统计快照：
+
+```powershell
+.\.venv\Scripts\python.exe -m eval.run_index_stats `
+  --config config.yaml `
+  --output eval/results/index-stats/baseline.current.json
+```
+
+若只想读取指定 SQLite：
+
+```powershell
+.\.venv\Scripts\python.exe -m eval.run_index_stats `
+  --sqlite data/meta.db `
+  --output eval/results/index-stats/baseline.current.json
+```
+
+对比 baseline 与 candidate：
+
+```powershell
+.\.venv\Scripts\python.exe -m eval.run_compare `
+  --baseline-benchmark eval/results/benchmark.ai.real10.m12.result.json `
+  --candidate-benchmark eval/results/benchmark.ai.real10.m12.result.json `
+  --baseline-index-stats eval/results/index-stats/baseline.current.json `
+  --candidate-index-stats eval/results/index-stats/baseline.current.json
+```
+
+说明：
+
+- `run_compare` 可只比较 benchmark，或只比较 index stats，也可两者一起比较。
+- benchmark diff 会输出：
+  - `overall`
+  - `by_type`
+  - `by_tag`
+  - `case_changes`
+- index stats diff 会输出：
+  - 文档数、chunk 数
+  - chunk 长度与 token 分布变化
+  - 每文档 chunk 数变化
+  - exact duplicate 变化
+  - `by_source` 变化
+
+## Suite
+
+单组 benchmark 适合修局部问题；阶段收口时，优先跑 suite。
+
+主入口：
+
+```powershell
+.\.venv\Scripts\python.exe -m eval.run_benchmark_suite `
+  --suite eval/benchmark-suite.m18.json `
+  --output eval/results/benchmark-suite.m18.current.json
+```
+
+当前 `run_benchmark_suite` 支持两种 HTTP 路径：
+
+- 全局覆盖：
+  - `--base-url http://127.0.0.1:49154`
+- entry 级别：
+  - 在 suite JSON 里给每个 entry 单独写 `base_url`
+
+本地双实例审查规格：
+
+- [eval/benchmark-suite.m18.local.json](/E:/github/mykms/eval/benchmark-suite.m18.local.json)
+
+推荐用法：
+
+```powershell
+.\.venv\Scripts\python.exe scripts\run_kms_server.py --config config.yaml --host 127.0.0.1 --port 49154
+.\.venv\Scripts\python.exe scripts\run_kms_server.py --config config.notes-frontmatter.yaml --host 127.0.0.1 --port 49155
+.\.venv\Scripts\python.exe -m eval.run_benchmark_suite `
+  --suite eval/benchmark-suite.m18.local.json `
+  --output eval/results/benchmark-suite.m18.local.current.json
+```
+
+说明：
+
+- `benchmark-suite.m18.local.current.json` 是当前 M18 阶段的权威整体验收结果。
+- 早期单实例输出 `benchmark-suite.m18.current.json` 保留，但不再作为混合配置场景下的最终审查结论。
+
+## Source Audit
+
+若要审查 source 结构和 metadata 覆盖，而不是只看 benchmark，使用：
+
+```powershell
+.\.venv\Scripts\python.exe -m eval.run_source_audit `
+  --config config.yaml `
+  --output eval/results/source-audit.m18.current.json
+```
+
+当前可输出：
+
+- `document_count`
+- `chunk_count`
+- front matter / category / tags / aliases 覆盖率
+- `by_source_id`
+- `by_top_level_path`
+
 ## 当前状态
 
 - 已兼容旧 benchmark schema
 - 已支持增强字段、分组统计与 hard-case 模板
+- 已支持 index stats 快照与结果对比工具，便于后续 cleaning 做 baseline/candidate 对照
 - 已保留真实主题 benchmark 结果快照：
   - `eval/results/benchmark.ai.result.json`
   - `eval/results/benchmark.distributed.result.json`

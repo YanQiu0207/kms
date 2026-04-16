@@ -62,6 +62,15 @@ class ChromaVectorStore:
     def collection(self):
         return self._ensure_collection()
 
+    def _max_batch_size(self) -> int:
+        client = self._client
+        get_max_batch_size = getattr(client, "get_max_batch_size", None)
+        if callable(get_max_batch_size):
+            max_batch_size = get_max_batch_size()
+            if isinstance(max_batch_size, int) and max_batch_size > 0:
+                return max_batch_size
+        return 1000
+
     def upsert(self, records: Sequence[VectorChunk]) -> None:
         if not records:
             return
@@ -87,13 +96,16 @@ class ChromaVectorStore:
             metadata.setdefault("title_path_json", json.dumps(list(record.title_path), ensure_ascii=False))
             metadatas.append(_sanitize_metadata(metadata))
 
+        batch_size = self._max_batch_size()
         try:
-            collection.upsert(
-                ids=ids,
-                documents=documents,
-                embeddings=embeddings,
-                metadatas=metadatas,
-            )
+            for start in range(0, len(ids), batch_size):
+                end = start + batch_size
+                collection.upsert(
+                    ids=ids[start:end],
+                    documents=documents[start:end],
+                    embeddings=embeddings[start:end],
+                    metadatas=metadatas[start:end],
+                )
         except Exception as exc:  # pragma: no cover - depends on optional dependency
             raise StoreError("failed to upsert vectors into chroma") from exc
 

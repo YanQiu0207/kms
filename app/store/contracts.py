@@ -134,6 +134,9 @@ class MetadataStore(Protocol):
     def list_file_states(self) -> Sequence[dict[str, object]]:
         raise NotImplementedError
 
+    def list_chunks_by_document(self, document_id: str) -> Sequence[StoredChunk]:
+        raise NotImplementedError
+
     def append_ingest_log(self, entry: IngestLogEntry) -> int:
         raise NotImplementedError
 

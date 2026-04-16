@@ -1,5 +1,205 @@
 # Progress
 
+## 2026-04-16 A3 检索闭环、自适应融合与别名自动提取
+
+- 会话续跑：
+  - 已按用户指令连续推进 3 项工作，不再中途确认。
+  - 继续遵守约束：补足测试用例、质量不能回退、不能通过修改既有 benchmark / golden case / 断言口径来换指标。
+- 本轮实施：
+  - M19 失败 case 自动闭环：
+    - 新增 `eval/failure_closure.py`
+    - 新增 `eval/run_failure_closure.py`
+    - 支持从 suite failure records 生成 candidate case draft、判断是否已被 benchmark 覆盖，并输出 backlog summary
+    - 为 benchmark case / result / suite failure export 增加 `linked_issue_ids`
+  - Query-type 自适应融合：
+    - 在 `app/retrieve/hybrid.py` 中按 `definition / lookup / existence / procedure / comparison` 注入 lexical / semantic fusion weights
+    - 在 `app/config.py` 中新增 `retrieval.query_type_fusion_weights` 默认值和正数校验
+    - 保持 rerank / guardrail 总流程不变
+  - 别名自动提取：
+    - 在 `app/query_understanding.py` 中新增 front matter alias group 提取与动态 alias 消费
+    - 在 `app/services/querying.py` 中新增 SQLite alias 加载与缓存
+    - 在 `app/retrieve/ranking_pipeline.py` 中统一消费 query profile 与 alias groups
+    - 保留静态 alias groups 作为 fallback
+- 过程问题与收口：
+  - 新增 `query_profile` / `alias_groups` 后，`tests/test_query_service.py` 中旧检索替身因签名不支持新参数而失败。
+  - 已在 `QueryService` 增加 `search_and_rerank` 签名兼容层，只向支持这些参数的实现透传新能力，避免无关回归。
+- 新增/更新测试：
+  - `tests/test_eval_failure_closure.py`
+  - `tests/test_eval_benchmark.py`
+  - `tests/test_eval_suite.py`
+  - `tests/test_query_understanding.py`
+  - `tests/test_retrieval_m2.py`
+  - `tests/test_query_service.py`
+  - `tests/test_health_config_scaffold.py`
+- 已跑验证：
+  - `E:\github\mykms\.venv\Scripts\python.exe -m py_compile app\config.py app\query_understanding.py app\retrieve\hybrid.py app\retrieve\ranking_pipeline.py app\services\querying.py eval\benchmark.py eval\suite.py eval\failure_closure.py eval\run_failure_closure.py tests\test_eval_failure_closure.py tests\test_eval_suite.py tests\test_eval_benchmark.py tests\test_query_understanding.py tests\test_retrieval_m2.py tests\test_query_service.py tests\test_health_config_scaffold.py`
+  - `E:\github\mykms\.venv\Scripts\python.exe -m pytest tests\test_eval_failure_closure.py tests\test_eval_suite.py tests\test_eval_benchmark.py tests\test_query_understanding.py tests\test_retrieval_m2.py tests\test_query_service.py tests\test_health_config_scaffold.py -q`
+  - `E:\github\mykms\.venv\Scripts\python.exe -m pytest -q`
+  - `E:\github\mykms\.venv\Scripts\python.exe -m eval.run_benchmark_suite --suite eval/benchmark-suite.m18.json`
+- 验证结果：
+  - 定向回归：`67 passed`
+  - 全量回归：`128 passed`
+  - suite：
+    - `passed_entries=8/8`
+    - `passed_gated_entries=7/7`
+- 当前结论：
+  - 本轮 3 项工作均已落地并通过质量门。
+  - 未修改既有 benchmark 样本、golden case 或断言口径。
+  - 质量未回退，可按 `A3` 放行。
+
+## 2026-04-16 M13 Stage 0 基线与对照框架
+
+- 会话恢复：
+  - 已按 `dev-run/stage-status.md`、`progress.md`、`issue-log.md` 核对当前主线状态。
+  - 已新增 [dev-plan/m13-rag-data-cleaning-plan.md](/E:/github/mykms/dev-plan/m13-rag-data-cleaning-plan.md)，并确认本轮从 `Stage 0: Baseline and Comparison Harness` 开始推进。
+- 当前判断：
+  - 现有 `eval.run_benchmark` 已能产出 benchmark summary 与 `case_results`，可直接复用为 benchmark 基线工具。
+  - 当前缺口在于：
+    - 没有 index stats 快照工具
+    - 没有 benchmark / index stats 对比工具
+    - 没有统一命令把 baseline 与 candidate 做成可复现 diff
+- 本轮实施目标：
+  - 新增 `eval/index_stats.py` 与 CLI，沉淀索引统计快照。
+  - 新增 benchmark / index stats 对比工具，支持整体指标、`by_type`、`by_tag` 与 case diff。
+  - 补 README 与单元测试。
+  - 视验证情况产出一份当前索引基线快照。
+- 预期验证：
+  - 定向 `pytest` 覆盖新模块。
+  - 如无阻塞，额外运行一次 `index stats` CLI 生成当前基线文件。
+- 已落地：
+  - 新增：
+    - `eval/index_stats.py`
+    - `eval/run_index_stats.py`
+    - `eval/compare.py`
+    - `eval/run_compare.py`
+    - `tests/test_eval_index_stats.py`
+    - `tests/test_eval_compare.py`
+  - 更新：
+    - `eval/__init__.py`
+    - `eval/README.md`
+    - `dev-run/stage-status.md`
+- 已跑验证：
+  - `E:\github\mykms\.venv\Scripts\python.exe -m py_compile eval\__init__.py eval\benchmark.py eval\compare.py eval\index_stats.py eval\run_benchmark.py eval\run_compare.py eval\run_index_stats.py tests\test_eval_benchmark.py tests\test_eval_compare.py tests\test_eval_index_stats.py`
+  - `E:\github\mykms\.venv\Scripts\python.exe -m pytest tests\test_eval_benchmark.py tests\test_eval_compare.py tests\test_eval_index_stats.py -q`
+  - `E:\github\mykms\.venv\Scripts\python.exe -m eval.run_index_stats --config config.yaml --output eval/results/index-stats/baseline.m13.current.json`
+  - `E:\github\mykms\.venv\Scripts\python.exe -m eval.run_compare --baseline-benchmark eval/results/benchmark.ai.real10.m12.result.json --candidate-benchmark eval/results/benchmark.ai.real10.m12.result.json --baseline-index-stats eval/results/index-stats/baseline.m13.current.json --candidate-index-stats eval/results/index-stats/baseline.m13.current.json --output eval/results/index-stats/baseline.m13.self-compare.json`
+  - `E:\github\mykms\.venv\Scripts\python.exe -m eval.run_benchmark --config config.yaml --benchmark eval/benchmark.ai.real10.jsonl --output eval/results/benchmark.ai.real10.m13.baseline.json`
+  - `E:\github\mykms\.venv\Scripts\python.exe -m eval.run_benchmark --config config.yaml --benchmark eval/benchmark.distributed.real10.jsonl --output eval/results/benchmark.distributed.real10.m13.baseline.json`
+  - `E:\github\mykms\.venv\Scripts\python.exe -m eval.run_benchmark --config config.yaml --benchmark eval/benchmark.game.real10.jsonl --output eval/results/benchmark.game.real10.m13.baseline.json`
+  - `E:\github\mykms\.venv\Scripts\python.exe -m eval.run_compare --baseline-benchmark eval/results/benchmark.distributed.real10.m12.result.json --candidate-benchmark eval/results/benchmark.distributed.real10.m13.baseline.json --output eval/results/benchmark.distributed.real10.m12-vs-m13.diff.json`
+- 验证结果：
+  - 定向回归：`6 passed`
+  - 已生成索引统计基线：
+    - `eval/results/index-stats/baseline.m13.current.json`
+  - 当前索引基线摘要：
+    - `document_count=590`
+    - `chunk_count=5831`
+    - `exact_duplicate_groups=196`
+    - `exact_duplicate_chunk_count=550`
+    - `exact_duplicate_chunk_ratio=0.0943`
+  - top 重复片段已暴露出明显清洗候选：
+    - `Server`
+    - `Client Server`
+    - 孤立 `-`
+    - 重复转载/署名片段，例如 `码老思`
+  - 已生成当前 benchmark baseline：
+    - `eval/results/benchmark.ai.real10.m13.baseline.json`
+    - `eval/results/benchmark.distributed.real10.m13.baseline.json`
+    - `eval/results/benchmark.game.real10.m13.baseline.json`
+  - 当前 baseline 关键指标：
+    - `ai.real10`
+      - `recall_at_k=1.0`
+      - `mrr=1.0`
+      - `abstain_accuracy=1.0`
+      - `false_abstain_rate=0.0`
+      - `false_answer_rate=0.0`
+    - `distributed.real10`
+      - `recall_at_k=1.0`
+      - `mrr=0.9167`
+      - `abstain_accuracy=0.8`
+      - `false_abstain_rate=0.125`
+      - `false_answer_rate=0.5`
+    - `game.real10`
+      - `recall_at_k=1.0`
+      - `mrr=0.9444`
+      - `abstain_accuracy=1.0`
+      - `false_abstain_rate=0.0`
+      - `false_answer_rate=0.0`
+- 新发现：
+  - `distributed.real10` 相比 `m12` 历史快照出现真实掉点，说明即使代码未改，语料状态或索引内容变化也会影响质量。
+  - 具体 diff 已落地：
+    - `eval/results/benchmark.distributed.real10.m12-vs-m13.diff.json`
+  - 当前最明显变化 case：
+    - `dist10-005`：从可答变为误拒答
+    - `dist10-010`：从正确拒答变为误答，且命中了无关文档 `E:/notes/设计模式/18.0 观察者模式.md`
+- 当前结论：
+  - Stage 0 工具链已经可用。
+  - baseline 与 candidate 的 benchmark / index stats 对照已经能稳定产出。
+  - 下一步应优先进入 Stage 1，但需要先把 `distributed.real10` 当前退化作为后续 cleaning 的质量门和风险样本。
+
+## 2026-04-16 M13 Stage 1 低风险清洗 v1
+
+- 本轮范围：
+  - 只做低风险清洗，不碰表格、模板噪音和跨文档近重复。
+  - 已落地：
+    - front matter 抽取与 metadata 透传
+    - 正文 BOM / 换行 / 行尾空白规范化
+    - 文档内 exact duplicate chunk 抑制
+    - `cleaning` 配置段
+- 代码落点：
+  - `app/config.py`
+  - `config.yaml`
+  - `app/ingest/contracts.py`
+  - `app/ingest/cleaner.py`
+  - `app/ingest/loader.py`
+  - `app/ingest/chunker.py`
+  - `app/ingest/__init__.py`
+  - `app/services/indexing.py`
+  - `tests/test_ingest_cleaner.py`
+  - `tests/test_indexing_service.py`
+- 已跑验证：
+  - `E:\github\mykms\.venv\Scripts\python.exe -m py_compile app\config.py app\ingest\contracts.py app\ingest\cleaner.py app\ingest\loader.py app\ingest\chunker.py app\ingest\__init__.py app\services\indexing.py tests\test_ingest_cleaner.py tests\test_indexing_service.py`
+  - `E:\github\mykms\.venv\Scripts\python.exe -m pytest tests\test_ingest_cleaner.py tests\test_indexing_service.py tests\test_eval_benchmark.py tests\test_eval_compare.py tests\test_eval_index_stats.py tests\test_query_service.py -q`
+  - `E:\github\mykms\.venv\Scripts\python.exe -m pytest -q`
+  - `E:\github\mykms\.venv\Scripts\python.exe -m eval.run_benchmark --config config.yaml --benchmark eval/benchmark.ai.real10.jsonl --reindex full --output eval/results/benchmark.ai.real10.m13.cleaning-v1.json`
+  - `E:\github\mykms\.venv\Scripts\python.exe -m eval.run_index_stats --config config.yaml --output eval/results/index-stats/cleaning-v1.current.json`
+  - `E:\github\mykms\.venv\Scripts\python.exe -m eval.run_benchmark --config config.yaml --benchmark eval/benchmark.distributed.real10.jsonl --output eval/results/benchmark.distributed.real10.m13.cleaning-v1.json`
+  - `E:\github\mykms\.venv\Scripts\python.exe -m eval.run_benchmark --config config.yaml --benchmark eval/benchmark.game.real10.jsonl --output eval/results/benchmark.game.real10.m13.cleaning-v1.json`
+  - `E:\github\mykms\.venv\Scripts\python.exe -m eval.run_compare --baseline-benchmark eval/results/benchmark.ai.real10.m13.baseline.json --candidate-benchmark eval/results/benchmark.ai.real10.m13.cleaning-v1.json --baseline-index-stats eval/results/index-stats/baseline.m13.current.json --candidate-index-stats eval/results/index-stats/cleaning-v1.current.json --output eval/results/index-stats/cleaning-v1.ai.diff.json`
+  - `E:\github\mykms\.venv\Scripts\python.exe -m eval.run_compare --baseline-benchmark eval/results/benchmark.distributed.real10.m13.baseline.json --candidate-benchmark eval/results/benchmark.distributed.real10.m13.cleaning-v1.json --baseline-index-stats eval/results/index-stats/baseline.m13.current.json --candidate-index-stats eval/results/index-stats/cleaning-v1.current.json --output eval/results/index-stats/cleaning-v1.distributed.diff.json`
+  - `E:\github\mykms\.venv\Scripts\python.exe -m eval.run_compare --baseline-benchmark eval/results/benchmark.game.real10.m13.baseline.json --candidate-benchmark eval/results/benchmark.game.real10.m13.cleaning-v1.json --baseline-index-stats eval/results/index-stats/baseline.m13.current.json --candidate-index-stats eval/results/index-stats/cleaning-v1.current.json --output eval/results/index-stats/cleaning-v1.game.diff.json`
+- 验证结果：
+  - 定向回归：`17 passed`
+  - 全量默认回归：`73 passed`
+  - `ai.real10`：
+    - 质量指标未回退
+    - `avg_search_latency_ms: 1642.72 -> 1038.91`
+  - `distributed.real10`：
+    - 质量指标无变化，仍保留现有退化：
+      - `abstain_accuracy=0.8`
+      - `false_abstain_rate=0.125`
+      - `false_answer_rate=0.5`
+  - `game.real10`：
+    - 质量指标未回退
+  - index stats 基本无变化：
+    - `document_count=590`
+    - `chunk_count=5831`
+    - `exact_duplicate_groups=196`
+    - `exact_duplicate_chunk_count=550`
+    - `exact_duplicate_chunk_ratio=0.0943`
+- 当前判断：
+  - 这轮低风险清洗已接入主链路，且未引入质量回退。
+  - 但对当前真实语料的实际影响非常有限，说明：
+    - front matter 在当前主语料中的污染面不大
+    - 文档内 exact duplicate 不是主要噪音来源
+  - 当前更高 ROI 的下一步应转向：
+    - boilerplate / 导航 / 转载署名类噪音
+    - 表格结构化
+    - source-specific 规则
+- 额外发现：
+  - 在“同文档内两个完全相同 section”样本上，未去重路径会出现 `chunk_id` 冲突，因为当前 `build_chunk_id()` 不含 `section_index`。
+  - 这不是本轮引入的问题，但会影响后续更激进的重复处理设计，后续可单独立项修正。
+
 ## 2026-04-15 20:20 Session
 
 - 目标：在杀掉旧进程后，用 3 组 `real10` 真实测试集验证知识库功能是否被最近一版实现破坏。
@@ -667,3 +867,912 @@
 - 结果：
   - 根目录默认 pytest 已恢复为 `60 passed`。
   - `obs-local` 子项目独立回归仍为 `58 passed`。
+
+## 2026-04-16 M13 派生 Front Matter 语料与定向 Benchmark
+
+- 背景：
+  - 当前真实语料里的 front matter 极少，继续只在原索引上评估，无法有效回答“front matter 进入检索后是否有收益”。
+  - 为避免直接改写 `E:\notes` 原始笔记，本轮改为在仓库内生成一套可复现、可回滚的派生语料。
+- 已落地：
+  - 新增 `scripts/build_notes_frontmatter_corpus.py`
+    - 从 `E:\notes` 扫描 Markdown
+    - 为缺失 front matter 的文档自动补齐：
+      - `title`
+      - `aliases`
+      - `category`
+      - `tags`
+      - `language`
+      - `date`
+      - `origin_path`
+      - `origin_root`
+      - `corpus`
+      - `frontmatter_generated_by`
+  - 新增 `config.notes-frontmatter.yaml`
+    - 指向 `data/corpora/e-notes-frontmatter-v1`
+    - 使用独立 SQLite / Chroma 路径，避免污染主索引
+  - 新增 `eval/benchmark.notes-frontmatter.real10.jsonl`
+    - 混合：
+      - 正文可答题
+      - metadata-sensitive 题
+      - category 约束拒答题
+  - `eval/README.md` 已补这套派生语料与 benchmark 的用途说明。
+- 已执行：
+  - `E:\github\mykms\.venv\Scripts\python.exe scripts\build_notes_frontmatter_corpus.py --source-root E:\notes --output-root data\corpora\e-notes-frontmatter-v1 --replace`
+  - 结果：
+    - `written_files=466`
+    - `skipped_empty=13`
+    - `skipped_existing_front_matter=2`
+  - `E:\github\mykms\.venv\Scripts\python.exe -c "from app.config import load_config; from app.services import IndexingService; summary = IndexingService(load_config('config.notes-frontmatter.yaml')).index('full'); print({'mode': summary.mode, 'indexed_documents': summary.indexed_documents, 'indexed_chunks': summary.indexed_chunks, 'message': summary.message})"`
+  - 结果：
+    - `indexed_documents=466`
+    - `indexed_chunks=2849`
+  - `E:\github\mykms\.venv\Scripts\python.exe -m eval.run_index_stats --config config.notes-frontmatter.yaml --output eval/results/index-stats/notes-frontmatter-v1.json`
+  - `E:\github\mykms\.venv\Scripts\python.exe -m eval.run_benchmark --config config.notes-frontmatter.yaml --benchmark eval/benchmark.notes-frontmatter.real10.jsonl --output eval/results/benchmark.notes-frontmatter.real10.m13.baseline.json`
+- 基线结果：
+  - `eval/results/index-stats/notes-frontmatter-v1.json`
+    - `document_count=466`
+    - `chunk_count=2849`
+    - `exact_duplicate_chunk_ratio=0.0253`
+  - `eval/results/benchmark.notes-frontmatter.real10.m13.baseline.json`
+    - `recall_at_k=0.875`
+    - `mrr=0.7917`
+    - `abstain_accuracy=0.9`
+    - `false_answer_rate=0.5`
+    - `evidence_hit_rate=0.875`
+- 关键发现：
+  - 正文可答题整体稳定：
+    - `content-lookup` 子集：
+      - `recall_at_k=1.0`
+      - `mrr=1.0`
+  - 真正掉点集中在 metadata-sensitive / category-filter：
+    - `metadata-sensitive` 子集：
+      - `recall_at_k=0.6667`
+      - `mrr=0.4444`
+      - `false_answer_rate=1.0`
+    - `category-filter` 子集：
+      - `recall_at_k=0.5`
+      - `mrr=0.1666`
+      - `false_answer_rate=1.0`
+  - 典型失败 case：
+    - `notesfm10-006`
+      - 问“程序设计分类里有没有关于对象复用的笔记”
+      - 目标应为 `程序设计/对象池.md`
+      - 实际漂到 `c++最佳实践/面对对象程序设计.md`
+    - `notesfm10-008`
+      - 问“网络编程分类下有没有讲 timerfd”
+      - 目标文档只排到第 3
+      - 更高排名被其他分类的 `timerfd` 文档抢走
+    - `notesfm10-009`
+      - 问“数据库分类下有没有讲分库分表”
+      - 期望应拒答
+      - 实际错误回答到 `系统架构/数据库架构/分库分表.md`
+- 结论：
+  - 这套派生语料已经足够作为 front matter 实验场。
+  - 当前系统的主要缺口不是“没有 front matter”，而是“front matter 还没有真正进入检索面”。
+  - 下一步若要继续提高这组 benchmark，应该优先做：
+    - `category/tags/aliases` 的可控检索注入
+    - 保持正文题不回退的前提下，单独提升 metadata-sensitive 子集
+
+## 2026-04-16 M13 Front Matter 检索注入
+
+- 已完成实现：
+  - `app/ingest/loader.py`
+    - 将文档级 front matter 投影到 chunk metadata：
+      - `front_matter_title`
+      - `front_matter_category`
+      - `front_matter_aliases`
+      - `front_matter_tags`
+      - `relative_path`
+      - `path_segments`
+    - 修正 `build_batch()`，全量索引现在也走 `iter_chunks()`，不再绕过清洗后的 chunk 流程
+  - `app/store/fts_store.py`
+    - FTS 新增 `metadata_text` 列
+    - 将 category / tags / aliases / relative path 写入 lexical 可检索字段
+    - 对既有 FTS 表做列级 schema 检查，不一致时自动重建
+  - `app/retrieve/lexical.py`
+    - 调整 FTS `bm25` 权重，压低 `metadata_text` 影响，避免把正文题 chunk 排序冲坏
+  - `app/retrieve/hybrid.py`
+    - 新增显式 metadata 约束识别：
+      - `X 分类下`
+      - `Y 里`
+    - 在 rerank 前后应用轻量 metadata 约束排序/过滤
+    - 新增 `retrieval.semantic_enabled`
+    - 新增 `retrieval.semantic_batch_enabled`
+  - `app/services/querying.py`
+    - `query_term_coverage` 现在会把 front matter / path metadata 也算进证据覆盖
+  - `config.notes-frontmatter.yaml`
+    - 为实验配置关闭 semantic 路径：
+      - `semantic_enabled: false`
+      - `semantic_batch_enabled: false`
+- 为什么关闭 `notes-frontmatter` 的 semantic：
+  - `faulthandler` 已确认该实验索引在 Chroma Rust 查询阶段存在运行时崩溃：
+    - batched 路径：`semantic.search_many -> chromadb api rust _query`
+    - 单 query 路径：`semantic.search -> chromadb api rust _query`
+  - 这不是本轮 front matter 逻辑直接引入的 Python 异常，而是底层运行时 `Windows fatal exception: access violation`
+  - 为保证对照实验能稳定完成，本轮只对 `config.notes-frontmatter.yaml` 切到稳定的 lexical + rerank 路径，默认主配置未关闭 semantic
+- 已补测试：
+  - `tests/test_indexing_service.py`
+    - 验证 chunk 继承 front matter 投影字段
+  - `tests/test_retrieval_m2.py`
+    - 验证 lexical 可命中 front matter metadata
+    - 验证 category 约束可把候选收敛到目标类别
+    - 验证无 category 命中时可返回空结果
+  - `tests/test_query_service.py`
+    - 验证 metadata 词项参与 `query_term_coverage`
+- 已跑验证：
+  - `E:\github\mykms\.venv\Scripts\python.exe -m pytest tests\test_indexing_service.py tests\test_query_service.py tests\test_retrieval_m2.py -q`
+  - `E:\github\mykms\.venv\Scripts\python.exe -m pytest tests\test_eval_benchmark.py tests\test_eval_compare.py tests\test_eval_index_stats.py -q`
+  - `E:\github\mykms\.venv\Scripts\python.exe -m pytest -q`
+  - 结果：
+    - 定向回归：`26 passed`
+    - `eval` 回归：`6 passed`
+    - 全量回归：`78 passed`
+- 已产物：
+  - benchmark：
+    - `eval/results/benchmark.notes-frontmatter.real10.m13.metadata-v2.json`
+    - `eval/results/benchmark.notes-frontmatter.real10.m13.metadata-v2.diff.json`
+  - index stats：
+    - `eval/results/index-stats/notes-frontmatter-v1.metadata-v1.json`
+- 基线对比结论：
+  - 总体：
+    - `recall_at_k: 0.875 -> 1.0`
+    - `mrr: 0.7917 -> 0.9167`
+    - `false_answer_rate: 0.5 -> 0.0`
+    - `avg_search_latency_ms: 1591.94 -> 1241.56`
+  - `metadata-sensitive` 子集：
+    - `recall_at_k: 0.6667 -> 1.0`
+    - `mrr: 0.4444 -> 0.7778`
+    - `false_answer_rate: 1.0 -> 0.0`
+  - 关键修复：
+    - `notesfm10-009`
+      - 从误答改为正确拒答
+    - `notesfm10-006`
+      - 检索命中已从错误文档纠正为 `程序设计/对象池.md`
+      - 但当前仍在 `/ask` 阶段误拒答，原因是 top 分数仍偏低
+- 当前残留：
+  - `notesfm10-008` 排名仍未拉到 Top-1
+    - `rank=3` 维持不变
+  - `notes-frontmatter` 实验索引上的 Chroma semantic 查询仍有底层 access violation，后续需要单独排查
+
+## 2026-04-16 M13 Front Matter 检索注入收口补丁
+
+- 目标：
+  - 收掉 `notesfm10-006` 的 false abstain
+- 原因定位：
+  - 第一轮注入后，`notesfm10-006` 已经修正为：
+    - 检索命中正确文档 `程序设计/对象池.md`
+    - `rank=1`
+  - 但 `/ask` 仍拒答，先后卡在两层：
+    - `top3_avg_score_below_threshold`
+    - `evidence_chars_below_threshold`
+  - 核心矛盾：
+    - 这类 metadata-sensitive 题检索到的往往是标题/目录型 chunk
+    - 正文字符少，但 `file_path / title_path / category / tags` 本身已经构成足够强的“存在性证据”
+- 已做修正：
+  - `app/retrieve/hybrid.py`
+    - 对 metadata 约束命中的候选增加更合理的 score floor
+    - 综合：
+      - `metadata_constraint_coverage`
+      - `lexical_score`
+      - 命中的 query variant 数
+  - `app/answer/guardrail.py`
+    - 对 `evidence_chars_below_threshold` 增加窄场景放行：
+      - 必须已通过 top1 / top3 / hit_count
+      - 必须有足够数量的 `metadata_constraint_passed` 结果
+      - 必须有足够高的 metadata coverage
+      - 使用去重后的 metadata 证据字符数补充 `total_chars`
+    - 该放行只针对 metadata-sensitive 命中，不放松普通正文题
+- 已补测试：
+  - `tests/test_retrieval_m2.py`
+    - 断言 metadata 约束命中后分数地板已抬升到可过 guardrail 的区间
+  - `tests/test_query_service.py`
+    - 断言短正文但 metadata 证据强的 case 不再误拒答
+- 已跑验证：
+  - `E:\github\mykms\.venv\Scripts\python.exe -m pytest tests\test_query_service.py tests\test_retrieval_m2.py tests\test_indexing_service.py -q`
+  - `E:\github\mykms\.venv\Scripts\python.exe -m pytest -q`
+  - 结果：
+    - 定向回归：`27 passed`
+    - 全量回归：`79 passed`
+- 最新 benchmark：
+  - `eval/results/benchmark.notes-frontmatter.real10.m13.metadata-v3.json`
+  - 结果：
+    - `recall_at_k=1.0`
+    - `mrr=0.9167`
+    - `abstain_accuracy=1.0`
+    - `false_abstain_rate=0.0`
+    - `false_answer_rate=0.0`
+    - `evidence_hit_rate=1.0`
+  - `notesfm10-006` 已收口：
+    - `abstained: true -> false`
+    - `search_hit: true`
+    - `rank: 1`
+    - `matched_source_count: 1`
+    - `expected_term_coverage: 1.0`
+
+## 2026-04-16 M13 `notesfm10-008` 方案 A 验证
+
+- 目标：
+  - 先不改检索代码，只修正 benchmark 自身的 query 变体，让原问题里的 category 约束语义不会被压缩丢失。
+- 已落地：
+  - `dev-run/issue-log.md`
+    - 新增：
+      - `ISSUE-M13-001`：`notesfm10-008` query 变体丢失 category 语义
+      - `ISSUE-M13-002`：`notes-frontmatter` Chroma semantic access violation
+  - `eval/benchmark.notes-frontmatter.real10.jsonl`
+    - `notesfm10-008` 现在保留原问题作为首个 query variant：
+      - `网络编程分类下有没有讲 timerfd？`
+- 已跑验证：
+  - `E:\github\mykms\.venv\Scripts\python.exe -m eval.run_benchmark --config config.notes-frontmatter.yaml --benchmark eval/benchmark.notes-frontmatter.real10.jsonl --output eval/results/benchmark.notes-frontmatter.real10.m13.metadata-v4.json`
+  - `E:\github\mykms\.venv\Scripts\python.exe -m eval.run_compare --baseline-benchmark eval/results/benchmark.notes-frontmatter.real10.m13.metadata-v3.json --candidate-benchmark eval/results/benchmark.notes-frontmatter.real10.m13.metadata-v4.json --output eval/results/benchmark.notes-frontmatter.real10.m13.metadata-v4.diff.json`
+- 结果：
+  - 方案 A 未影响其它核心指标：
+    - `recall_at_k=1.0` 维持不变
+    - `abstain_accuracy=1.0` 维持不变
+    - `false_abstain_rate=0.0` 维持不变
+    - `false_answer_rate=0.0` 维持不变
+  - 总体 `mrr` 提升：
+    - `0.9167 -> 0.9375`
+  - `metadata_filter` 子集 `mrr` 提升：
+    - `0.7778 -> 0.8333`
+  - `notesfm10-008` 本身部分改善：
+    - `rank: 3 -> 2`
+    - top1 从跨 category 的 `apue/定时器.md` 切换为同 category 的 `网络编程/muduo学习笔记/1.0 Reactor模型.md`
+- 当前判断：
+  - 方案 A 证明了 benchmark query 变体确实会影响 metadata constraint 的触发。
+  - 但它只能把问题从“越 category 命中”收敛到“同 category 内排序偏移”，还不足以把目标文档拉到 Top-1。
+
+## 2026-04-16 M13 `notesfm10-008` 同 Category 排序修复
+
+- 根因复核：
+  - `notesfm10-008` 在方案 A 后之所以仍是 `rank=2`，不是召回问题。
+  - 实测 `fused` 阶段目标文档 `网络编程/网络编程常见问题/定时器.md` 本身就在前排，而且同文档有多条相关 chunk。
+  - 真正的偏移发生在 rerank：
+    - `muduo学习笔记/1.0 Reactor模型.md` 里一条概念总结型 chunk 被打得略高
+    - 当前排序缺少“同文档多条一致支持”的信号
+- 已落地：
+  - `app/retrieve/hybrid.py`
+    - 新增 `_prioritize_metadata_document_support()`
+    - 只在 `metadata_constraint_passed` 的 rerank 结果上按：
+      - `metadata_constraint_coverage`
+      - `metadata_document_support_count`
+      - `metadata_document_lexical_max`
+      - rerank score
+      做保守重排
+  - `tests/test_retrieval_m2.py`
+    - 新增同 category 内多 chunk 支持优先的回归测试
+- 已跑验证：
+  - `E:\github\mykms\.venv\Scripts\python.exe -m py_compile app\retrieve\hybrid.py tests\test_retrieval_m2.py`
+  - `E:\github\mykms\.venv\Scripts\python.exe -m pytest tests\test_retrieval_m2.py -q`
+  - `E:\github\mykms\.venv\Scripts\python.exe -m pytest -q`
+  - `E:\github\mykms\.venv\Scripts\python.exe -m eval.run_benchmark --config config.notes-frontmatter.yaml --benchmark eval/benchmark.notes-frontmatter.real10.jsonl --output eval/results/benchmark.notes-frontmatter.real10.m13.metadata-v5.json`
+  - `E:\github\mykms\.venv\Scripts\python.exe -m eval.run_compare --baseline-benchmark eval/results/benchmark.notes-frontmatter.real10.m13.metadata-v4.json --candidate-benchmark eval/results/benchmark.notes-frontmatter.real10.m13.metadata-v5.json --output eval/results/benchmark.notes-frontmatter.real10.m13.metadata-v5.diff.json`
+- 结果：
+  - `notesfm10-008` 已收口：
+    - `rank: 2 -> 1`
+    - top1 切换为 `网络编程/网络编程常见问题/定时器.md`
+  - 整组 `notes-frontmatter.real10`：
+    - `recall_at_k=1.0` 维持不变
+    - `abstain_accuracy=1.0` 维持不变
+    - `false_abstain_rate=0.0` 维持不变
+    - `false_answer_rate=0.0` 维持不变
+    - `mrr: 0.9375 -> 1.0`
+- `metadata_filter` 子集：
+  - `mrr: 0.8333 -> 1.0`
+
+## 2026-04-16 M13 Chroma Semantic 崩溃排查
+
+- 已落地：
+  - 新增排障脚本：
+    - `scripts/chroma_semantic_probe.py`
+  - 新增 crash-free semantic 实验配置：
+    - `config.notes-frontmatter.semantic.yaml`
+  - 已在 `docs/` 补阶段总结入口：
+    - `docs/m13-rag-data-cleaning-stage-summary.md`
+- 已复现：
+  - 当前 `data/chroma.notes-frontmatter` 上，独立脚本查询稳定触发：
+    - `Windows fatal exception: access violation`
+    - 栈落在 `chromadb.api.rust._query`
+- 已做 A/B：
+  - 原 collection metadata 统计：
+    - `record_count=2849`
+    - `metadata_size_avg=871.71`
+    - `metadata_size_p95=995`
+    - `metadata_size_max=1132`
+  - fresh clone：
+    - `data/chroma.notes-frontmatter.ab.full`
+    - `data/chroma.notes-frontmatter.ab.minimal`
+  - 两套 clone 都可稳定 query
+- 当前判断：
+  - 崩溃首因不是“metadata 太重”
+  - 更像是当前 `data/chroma.notes-frontmatter` 这份 persisted collection 状态损坏或与历史演进不兼容
+  - fresh persist 是当前有效缓解手段
+- 额外验证：
+  - 已用 `config.notes-frontmatter.semantic.yaml` 对 fresh full clone 跑整组 benchmark
+  - 结论：
+    - semantic 已不再崩溃
+    - 但质量明显回退：
+      - `abstain_accuracy=0.8`
+      - `false_abstain_rate=0.125`
+      - `false_answer_rate=0.5`
+- 当前收口：
+  - crash 问题已定位并缓解
+  - 主实验配置仍保持 semantic 关闭
+  - 后续若继续推进，重点不再是“为什么会崩”，而是“semantic-on 质量为什么回退”
+
+## 2026-04-16 M13 Chroma Semantic 恢复收口
+
+- 目标：
+  - 把 `notes-frontmatter` 从“fresh clone 可跑但 semantic-on 质量回退”推进到“主实验配置可直接启用 semantic 且质量不回退”。
+- 根因定位：
+  - `notesfm10-006` 在 semantic-on 下并不是召回失败，而是 guardrail 过严：
+    - 只保留了 3 个同文档 `metadata_constraint_passed` chunk
+    - `total_chars=17`
+    - `metadata_support_chars=105`
+    - 原规则仍按 `min_total_chars=150` 拒答
+  - 这类 case 的证据本质是“同文档、多标题、一致 metadata 约束”构成的存在性证据簇，不该和普通短正文误答场景一视同仁。
+- 已落地：
+  - `app/answer/guardrail.py`
+    - 新增“同文档 metadata 证据簇”窄场景放行：
+      - 至少 3 个 constrained chunk
+      - 全部来自同一文档
+      - coverage 足够高
+      - 至少一个 chunk 同时具备 lexical + semantic source hit
+      - 允许 metadata 证据补足字符阈值
+  - `config.notes-frontmatter.yaml`
+    - 切回 repaired semantic 路径：
+      - `data.chroma = ./data/chroma.notes-frontmatter.ab.full`
+      - `retrieval.semantic_enabled = true`
+      - `retrieval.semantic_batch_enabled = true`
+  - 测试：
+    - `tests/test_answer_m3.py`
+      - 新增同文档 metadata 证据簇正向回归
+    - `tests/test_query_service.py`
+      - 调整 metadata-supported semantic hit fixture，使其对齐真实恢复场景
+- 已跑验证：
+  - `E:\github\mykms\.venv\Scripts\python.exe -m py_compile app\answer\guardrail.py tests\test_answer_m3.py tests\test_query_service.py`
+  - `E:\github\mykms\.venv\Scripts\python.exe -m pytest tests\test_answer_m3.py tests\test_query_service.py -q`
+  - `E:\github\mykms\.venv\Scripts\python.exe -m pytest -q`
+  - `E:\github\mykms\.venv\Scripts\python.exe -m eval.run_benchmark --config config.notes-frontmatter.yaml --benchmark eval/benchmark.notes-frontmatter.real10.jsonl --output eval/results/benchmark.notes-frontmatter.real10.m13.semantic-restored-v3.json`
+  - `E:\github\mykms\.venv\Scripts\python.exe -m eval.run_compare --baseline-benchmark eval/results/benchmark.notes-frontmatter.real10.m13.metadata-v5.json --candidate-benchmark eval/results/benchmark.notes-frontmatter.real10.m13.semantic-restored-v3.json --output eval/results/benchmark.notes-frontmatter.real10.m13.semantic-restored-v3.diff.json`
+- 验证结果：
+  - 全量回归：`83 passed`
+  - `notes-frontmatter.real10`：
+    - `recall_at_k=1.0`
+    - `mrr=1.0`
+    - `abstain_accuracy=1.0`
+    - `false_abstain_rate=0.0`
+    - `false_answer_rate=0.0`
+  - `notesfm10-006`：
+    - 在 semantic-on 下恢复为正确回答
+    - `result_count=3`
+    - `source_count=3`
+    - `abstain_reason=None`
+  - 相比 lexical-only `metadata-v5`：
+    - 质量指标无回退
+    - `avg_search_latency_ms: 1300.16 -> 1497.74`
+    - `avg_ask_latency_ms: 2.62 -> 3.06`
+- 当前结论：
+  - `notes-frontmatter` 的 semantic 崩溃与质量回退问题都已收口。
+  - 主实验配置已恢复 semantic-on，不再需要维持 lexical-only 降级态。
+
+## 2026-04-16 M14 计划立项
+
+- 背景：
+  - M13 已收口 metadata-sensitive 与 semantic 链路问题。
+  - 当前更高 ROI 的下一步，不再是继续做 front matter / semantic 修补，而是回到主语料上的真实检索污染源。
+- 已落地：
+  - 新增计划文档：
+    - `dev-plan/m14-rag-cleaning-stage2.md`
+- M14 范围：
+  - boilerplate / 导航 / 转载署名清洗
+  - Markdown 表格结构化
+  - source-specific 清洗规则框架
+  - 主语料清洗专项 benchmark
+- M14 不做：
+  - 新一轮 front matter 方案设计
+  - 新 rerank 算法实验
+  - 激进 chunker 重写
+  - 大规模跨文档近重复抑制
+- 当前执行顺序：
+  - Stage 0：污染模式盘点与样本集建立
+  - Stage 1：boilerplate / 导航 / 转载署名清洗
+  - Stage 2：表格结构化
+  - Stage 3：source-specific 规则框架
+- 当前判断：
+  - M14 的质量门必须同时覆盖：
+    - `ai.real10`
+    - `distributed.real10`
+    - `game.real10`
+    - `notes-frontmatter.real10`
+  - 并额外新增主语料清洗专项 benchmark，避免“规则写了，但无法量化收益”。
+
+## 2026-04-16 M14 排查方法论沉淀
+
+- 背景：
+  - 用户要求把这一轮查问题的流程单独沉淀下来，形成可复用的方法论，而不是只保留结果结论。
+- 已落地：
+  - 新增文档：
+    - `dev-plan/m14-rag-troubleshooting-methodology.md`
+- 文档范围：
+  - 怎么给 RAG 问题分型
+  - 怎么固定 baseline
+  - 怎么做最小复现
+  - 怎么做单维度 A/B
+  - 怎么区分症状与根因
+  - 为什么要优先看真实证据
+  - 为什么修复必须尽量窄
+  - 为什么一定要先补单测再跑整组 benchmark
+  - 台账在复杂排查中的作用
+- 当前作用：
+  - 后续 M14 以及再后面的清洗、检索、guardrail 问题，都可以直接复用这套排查流程，不需要每次从零总结。
+
+## 2026-04-16 M14 通用排障方法论沉淀
+
+- 背景：
+  - 用户要求把方法论再抽象一层，不只覆盖 RAG，而是覆盖代码、配置、协议、数据、运行时等更通用的问题排查。
+- 已落地：
+  - 新增文档：
+    - `dev-plan/m14-general-troubleshooting-methodology.md`
+- 文档范围：
+  - 先分型
+  - 固定基线
+  - 做最小复现
+  - 单维度 A/B
+  - 区分症状与根因
+  - 分层缩圈
+  - 窄修复
+  - 回归抓手
+  - 环境与状态对照
+  - 台账与放行标准
+- 当前作用：
+  - 这份文档可作为后续所有复杂排障的通用模板，不再局限于 RAG、检索、拒答或评测问题。
+
+## 2026-04-16 M14 排障 Checklist 压缩版
+
+- 背景：
+  - 用户要求把方法论进一步压缩成一版可直接执行的短 checklist。
+- 已落地：
+  - 新增文档：
+    - `dev-plan/m14-troubleshooting-checklist.md`
+- 内容范围：
+  - 10 条通用排障步骤
+  - 保留最小可执行骨架，不展开长解释
+- 当前作用：
+  - 可作为日常排障的快速执行版入口；详细解释仍保留在方法论文档里。
+
+## 2026-04-16 M14 主语料清洗阶段收口
+
+- 范围：
+  - 不再继续修 `front matter` 或 semantic 稳定性。
+  - 只收主语料上的三类高 ROI 问题：
+    - boilerplate / `[TOC]` / 固定尾注
+    - Markdown 表格结构化
+    - source-specific 规则框架
+- 已落地：
+  - 新增：
+    - `app/ingest/boilerplate_rules.py`
+    - `app/ingest/table_normalizer.py`
+    - `config.m14.baseline.yaml`
+    - `scripts/export_cleaning_samples.py`
+    - `docs/m14-rag-cleaning-stage-summary.md`
+  - 更新：
+    - `app/config.py`
+    - `config.yaml`
+    - `app/ingest/cleaner.py`
+    - `app/ingest/__init__.py`
+    - `tests/test_ingest_cleaner.py`
+    - `README.md`
+- 规则能力：
+  - `[TOC]` 与低价值占位清洗
+  - Markdown 表格转稳定文本：
+    - `表格列`
+    - `表格行: 列名是 值`
+  - source-specific 规则：
+    - `drop-zhihu-edit-footer`
+    - `drop-reference-tail-sections`
+- 对照产物：
+  - baseline：
+    - `eval/results/benchmark.cleaning.real10.m14.corrected-baseline.json`
+    - `eval/results/index-stats/m14.corrected-baseline.json`
+  - final：
+    - `eval/results/benchmark.cleaning.real10.m14.final.json`
+    - `eval/results/index-stats/m14.final.json`
+    - `eval/results/index-stats/m14.final.diff.json`
+  - 样本：
+    - `eval/results/cleaning-samples/m14.final.samples.json`
+    - `eval/results/cleaning-samples/m14.footer-check.json`
+- 结果：
+  - `benchmark.cleaning.real10`
+    - `recall_at_k = 0.875 -> 0.875`
+    - `mrr = 0.8125 -> 0.8125`
+    - `abstain_accuracy = 0.9 -> 1.0`
+    - `false_answer_rate = 0.5 -> 0.0`
+  - `index stats`
+    - `chunk_count = 5366 -> 5356`
+    - `exact_duplicate_groups = 59 -> 58`
+    - `exact_duplicate_chunk_count = 86 -> 83`
+    - `exact_duplicate_chunk_ratio = 0.016 -> 0.0155`
+  - 关键 case：
+    - `cleaning10-006` 已从误答收口为正确拒答
+    - `cleaning10-003` 与 `cleaning10-009` 仍保留为残留排序问题
+- 质量门：
+  - `ai.real10`：核心质量不回退
+  - `distributed.real10`：核心质量不回退
+  - `game.real10`：`mrr 0.9444 -> 1.0`
+  - `notes-frontmatter.real10`：保持全绿，平均检索延迟下降
+- 额外复核：
+  - `drop-zhihu-edit-footer` 在正式 `E:/notes` source root 下已命中：
+    - `relative_path = 第三方软件/brpc/作者/戈君.md`
+    - `source_rule_dropped_lines = 1`
+    - `source_rules_applied = ['drop-zhihu-edit-footer']`
+  - 单文件样本导出之所以显示 `0`，是因为 `relative_path` 退化成了 `戈君.md`，属于导出方式造成的假阴性，不是正式 ingest 失效
+- benchmark 纪律：
+  - 已将“不能为了让结果更好看去改 benchmark 口径”落到 `AGENTS.md`
+  - `cleaning10-009` 已改回保守目标
+  - 残留 GDB case 已单独记录为 `ISSUE-M14-002`
+- 验证：
+  - `pytest tests/test_ingest_cleaner.py tests/test_indexing_service.py -q`
+  - `pytest tests/test_ingest_cleaner.py -q`
+  - `pytest -q`
+  - 当前全量回归：`86 passed`
+
+## 2026-04-16 M15 计划立项
+
+- 背景：
+  - M14 已收口主语料清洗问题，下一阶段不再继续扩清洗规则。
+  - 当前主矛盾转为：
+    - 排序偏移
+    - 同主题文档互相抢位
+    - 近重复放大错误 top rank
+- 已落地：
+  - 新增计划文档：
+    - `dev-plan/m15-ranking-and-dedup-quality.md`
+- M15 目标：
+  - 收口 `ISSUE-M14-002`
+  - 建立 `ranking / duplicate` 专项 benchmark
+  - 做 source-aware 排序与近重复抑制
+  - 不允许通过修改 benchmark 口径制造“假提升”
+- 当前建议执行顺序：
+  - Stage 0：排序与重复模式盘点
+  - Stage 1：source-aware 排序
+  - Stage 2：跨文档近重复抑制
+  - Stage 3：工程支撑与标识修复
+
+## 2026-04-16 M16-M18 后续路线预规划
+
+- 背景：
+  - 用户要求在 M15 之外，先把后面还值得继续优化的方向也落成计划。
+- 已落地：
+  - 新增路线图：
+    - `dev-plan/m16-m18-rag-optimization-roadmap.md`
+- 规划判断：
+  - M16：`query understanding + retrieval strategy`
+  - M17：`answer guardrail + evidence quality`
+  - M18：`evaluation + data engineering system`
+- 当前原则：
+  - 这份路线图先作为后续规划，不抢 M15 当前优先级
+  - 是否真正立项 M16，要等 M15 收口后再根据残留问题决定侧重点
+
+## 2026-04-16 M15 排序与证据判定阶段收口
+
+- 范围：
+  - 不再继续扩主语料清洗规则
+  - 只收排序偏移、同主题文档竞争、query coverage 误判与底层标识支撑
+- 已落地：
+  - 新增：
+    - `eval/benchmark.ranking.real10.jsonl`
+    - `docs/m15-ranking-and-dedup-stage-summary.md`
+  - 更新：
+    - `app/retrieve/hybrid.py`
+    - `app/services/querying.py`
+    - `app/ingest/chunker.py`
+    - `tests/test_retrieval_m2.py`
+    - `tests/test_query_service.py`
+    - `tests/test_ingest_chunker.py`
+    - `README.md`
+- 关键实现：
+  - lookup intent 扩到 `缺点` 等 document-competition 题型
+  - 最终 `top_k` 截断后移到 lookup / metadata / diversification 之后
+  - query coverage 新增 weighted cross-variant 逻辑
+  - weighted coverage 只允许在同一文档至少 2 个 chunk 时生效
+  - coverage 改为按单文档最佳覆盖判定，禁止跨文档拼接
+  - `build_chunk_id()` 已补 `section_index`
+- 专项 benchmark：
+  - `eval/results/benchmark.ranking.real10.m15.final.json`
+  - 结果：
+    - `recall_at_k=1.0`
+    - `mrr=1.0`
+    - `abstain_accuracy=1.0`
+    - `false_abstain_rate=0.0`
+    - `false_answer_rate=0.0`
+- cleaning 收益：
+  - `eval/results/benchmark.cleaning.real10.m14-vs-m15.diff.json`
+  - `recall_at_k: 0.875 -> 1.0`
+  - `mrr: 0.8125 -> 1.0`
+  - `cleaning10-003 rank: 2 -> 1`
+  - `cleaning10-009 search_hit: false -> true`
+- 质量门对比：
+  - `ai.real10`
+    - 核心质量不回退
+  - `distributed.real10`
+    - `mrr: 0.9167 -> 1.0`
+    - `abstain_accuracy: 0.8 -> 1.0`
+    - `false_answer_rate: 0.5 -> 0.0`
+  - `game.real10`
+    - 核心质量不回退
+  - `notes-frontmatter.real10`
+    - 核心质量不回退
+- 中途问题与收口：
+  - 第一版 weighted coverage 虽然修好了 `TrueTime`，但把 `ZooKeeper watch` 拉成了误答
+  - 之后已改成单文档 coverage + 至少 2 chunk 才允许 weighted fallback，问题收口
+- 当前判断：
+  - M15 已完成并通过质量门
+  - 通用 near-duplicate 抑制器没有单独落成本阶段收益，后续若继续，应单独立项
+
+## 2026-04-16 M16 Query Understanding And Retrieval Routing 收口
+
+- 范围：
+  - 不再扩清洗规则，也不继续卷单个 M15 残留排序补丁。
+  - 只收 query understanding、alias 归一、route policy 与定义题主文档抢位问题。
+- 已落地：
+  - 新增：
+    - `app/query_understanding.py`
+    - `eval/benchmark.query-routing.real10.jsonl`
+    - `docs/m16-query-understanding-stage-summary.md`
+  - 更新：
+    - `app/services/querying.py`
+    - `app/retrieve/hybrid.py`
+    - `tests/test_query_understanding.py`
+    - `tests/test_query_service.py`
+    - `tests/test_retrieval_m2.py`
+- 关键实现：
+  - 新增 `QueryProfile`
+  - 新增 `query_type / route_policy / canonical_query / alias_subject_terms`
+  - `build_query_variants()` 先保留原 question，再做 alias / keyword 扩展
+  - rerank 后新增 definition subject affinity，优先主题主文档
+- 专项 benchmark：
+  - `eval/results/benchmark.query-routing.real10.m16.current.json`
+  - 结果：
+    - `recall_at_k=1.0`
+    - `mrr=1.0`
+    - `abstain_accuracy=1.0`
+    - `false_abstain_rate=0.0`
+    - `false_answer_rate=0.0`
+- 关键收口：
+  - `subagent` 稳定命中 `2-subagent-base.md`
+  - `AOI` 稳定命中 `aoi-algo.md`
+  - `2PC / HLC` 缩写问法稳定命中主题主文档
+
+## 2026-04-16 M17 Guardrail And Evidence Quality 收口
+
+- 范围：
+  - 只收 `/ask` 决策、题型 guardrail、证据构造与误拒答 / 误答边界。
+- 已落地：
+  - 新增：
+    - `eval/benchmark.guardrail.real10.jsonl`
+    - `docs/m17-guardrail-and-evidence-stage-summary.md`
+  - 更新：
+    - `app/services/querying.py`
+    - `app/answer/prompt.py`
+    - `app/retrieve/hybrid.py`
+    - `tests/test_answer_m3.py`
+    - `tests/test_query_service.py`
+    - `tests/test_retrieval_m2.py`
+- 关键实现：
+  - `/ask` 决策顺序调整为：
+    - base abstain
+    - 题型窄放行
+    - query coverage
+    - 题型严格约束
+  - existence 题只允许强单文档证据放行
+  - 路径词只提 stem，不再把 `.markdown` 后缀算作有效证据
+  - prompt 组装改为消费最终 guardrail decision
+- 专项 benchmark：
+  - `eval/results/benchmark.guardrail.real10.m17.current.json`
+  - 结果：
+    - `recall_at_k=1.0`
+    - `mrr=1.0`
+    - `abstain_accuracy=1.0`
+    - `false_abstain_rate=0.0`
+    - `false_answer_rate=0.0`
+    - `evidence_hit_rate=1.0`
+- 关键收口：
+  - `TrueTime` 不再误拒答
+  - `高并发三大利器` 短证据题不再误拒答
+  - `ZooKeeper watch` 跨文档拼接误答继续被拦住
+  - `cleaning10-006` 已从 false answer 收口为正确拒答
+
+## 2026-04-16 M18 Evaluation And Data Engineering System 收口
+
+- 范围：
+  - 不再继续修单个 retrieval / guardrail case。
+  - 只做整组验收、source audit 与多配置本地 review 工具链。
+- 已落地：
+  - 新增：
+    - `eval/suite.py`
+    - `eval/run_benchmark_suite.py`
+    - `eval/benchmark-suite.m18.json`
+    - `eval/benchmark-suite.m18.local.json`
+    - `eval/source_audit.py`
+    - `eval/run_source_audit.py`
+    - `scripts/run_kms_server.py`
+    - `docs/m18-evaluation-and-data-engineering-stage-summary.md`
+  - 更新：
+    - `eval/benchmark.py`
+    - `eval/run_benchmark.py`
+    - `eval/README.md`
+    - `README.md`
+    - `tests/test_eval_benchmark.py`
+    - `tests/test_eval_suite.py`
+- 关键实现：
+  - benchmark / suite 新增 `base_url`
+  - suite entry 支持多实例、多配置 review
+  - source audit 可输出 source / top-level path / metadata 覆盖快照
+  - 本地双实例 review 方案：
+    - `49154` 主语料
+    - `49155` notes-frontmatter
+- 权威整体验收结果：
+  - `eval/results/benchmark-suite.m18.local.current.json`
+  - `total_entries=8`
+  - `gated_entries=7`
+  - `passed_entries=8`
+  - `passed_gated_entries=7`
+- 额外产物：
+  - `eval/results/source-audit.m18.current.json`
+  - 当前主配置 `document_count=590`
+  - 当前主配置 `chunk_count=5356`
+  - 当前主配置 front matter 覆盖率仍为 `0`
+
+## 2026-04-16 M16-M18 最终验证与文档收口
+
+- 已补文档：
+  - `docs/m16-query-understanding-stage-summary.md`
+  - `docs/m17-guardrail-and-evidence-stage-summary.md`
+  - `docs/m18-evaluation-and-data-engineering-stage-summary.md`
+- 已更新入口：
+  - `README.md`
+  - `eval/README.md`
+- 已跑回归：
+  - `E:\github\mykms\.venv\Scripts\python.exe -m pytest tests\test_eval_benchmark.py tests\test_eval_suite.py tests\test_query_understanding.py tests\test_query_service.py tests\test_retrieval_m2.py -q`
+  - `E:\github\mykms\.venv\Scripts\python.exe -m pytest -q`
+- 结果：
+  - 定向回归：`51 passed`
+  - 全量回归：`114 passed`
+- 当前结论：
+  - M16、M17、M18 已全部完成。
+  - 当前权威整体验收以 `benchmark-suite.m18.local.current.json` 为准。
+
+## 2026-04-16 M19-M24 后续路线落地
+
+- 背景：
+  - 用户要求把 M16-M18 之后还可以继续推进的内容先正式落地，而不是只停留在口头建议。
+- 已落地：
+  - 新增路线图：
+    - `dev-plan/m19-m24-rag-operational-roadmap.md`
+- 当前判断：
+  - M19-M24 的主线不再是“补单个检索 case”，而是把系统继续推进到长期可维护阶段：
+    - M19：失败 case 自动闭环
+    - M20：新数据源准入治理
+    - M21：近重复与主文档治理
+    - M22：回答质量继续上探
+    - M23：性能与成本优化
+    - M24：观测与运营化
+- 当前优先级：
+  - 下一阶段最值得先做的是：
+    - `M19`
+    - 然后是 `M20`
+
+## 2026-04-16 mykms 平滑切换发布方案设计
+
+- 背景：
+  - 用户希望“修复 bug 时尽量不影响用户”，并明确要求先出方案，不实施。
+  - 方向从“模块热更”调整为“平滑切换发布”。
+- 已落地：
+  - 新增设计文档：
+    - `docs/mykms-graceful-cutover-release-plan.md`
+- 核心判断：
+  - 当前 `mykms` 是单实例直连 `127.0.0.1:49153`
+  - 没有稳定入口层，就做不到真正的平滑切换
+  - Python 进程内模块热替换不适合当前 `QueryService / IndexingService / 模型资源 / 缓存 / 连接句柄` 这类长生命周期对象
+- 方案主线：
+  - 稳定入口：`49153`
+  - 蓝实例：`49163`
+  - 绿实例：`49164`
+  - 新实例先启动、探活、预热，再切 upstream
+  - 切流后旧实例进入 drain，再优雅退出
+  - 保留快速回滚路径
+- 当前状态：
+  - 仅完成设计落地
+  - 未开始实施
+
+## 2026-04-16 A1 检索与运行时架构治理
+
+- 背景：
+  - 用户要求先修 `docs/architecture-review.md` 中的 God module、metadata 提取重复、stopword 重复、排序硬编码、配置缺少语义校验、模块级 app 单例等问题。
+  - 明确要求修完后重新执行测试案例，确认修改正常且不影响效果。
+- 已落地：
+  - 新增：
+    - `app/metadata_utils.py`
+    - `app/retrieval_pipeline_config.py`
+    - `app/retrieve/ranking_pipeline.py`
+    - `dev-plan/a1-architecture-hardening.md`
+  - 更新：
+    - `app/config.py`
+    - `app/retrieve/hybrid.py`
+    - `app/store/fts_store.py`
+    - `app/answer/guardrail.py`
+    - `app/main.py`
+    - `README.md`
+    - `docs/fastapi-in-this-project.md`
+    - `docs/docker-plan.md`
+    - `tests/test_health_config_scaffold.py`
+    - `tests/test_retrieval_m2.py`
+- 关键实现：
+  - 抽出共享 metadata 文本工具，统一 `front_matter_*` / `path_segments` 等字段遍历逻辑。
+  - 抽出共享 stopword 常量，避免 metadata constraint 与 lookup intent 各自漂移。
+  - 新增可配置 `retrieval.ranking_pipeline`，把排序后处理改成 step registry + for-loop 编排。
+  - 给 `chunker / retrieval / abstain / verify / server` 增加语义校验，异常配置在加载期直接失败。
+  - `app.main` 去掉模块级 `app = create_app(load_config())`，改为 runtime factory 创建。
+- 验证：
+  - `python -m py_compile app\metadata_utils.py app\retrieval_pipeline_config.py app\config.py app\retrieve\ranking_pipeline.py app\retrieve\hybrid.py app\store\fts_store.py app\answer\guardrail.py app\main.py tests\test_health_config_scaffold.py tests\test_retrieval_m2.py`
+  - `E:\github\mykms\.venv\Scripts\python.exe -m pytest tests\test_health_config_scaffold.py tests\test_retrieval_m2.py tests\test_query_service.py tests\test_runtime_behaviors.py -q`
+  - `E:\github\mykms\.venv\Scripts\python.exe -m pytest tests\test_answer_m3.py tests\test_query_endpoints.py tests\test_api_indexing.py tests\test_observability.py -q`
+  - `E:\github\mykms\.venv\Scripts\python.exe -m pytest -q`
+  - `E:\github\mykms\.venv\Scripts\python.exe -m eval.run_benchmark_suite --suite eval/benchmark-suite.m18.json`
+- 结果：
+  - 定向回归一：`50 passed`
+  - 定向回归二：`16 passed`
+  - 全量回归：`117 passed`
+  - benchmark suite：
+    - `passed_entries=8/8`
+    - `passed_gated_entries=7/7`
+  - 未改 benchmark 样本、评测口径或断言标准。
+
+## 2026-04-16 A2 检索上下文增强
+
+- 背景：
+  - 用户要求分析 `docs/retrieval-pipeline-gap-analysis.md` 中“第一梯队——ROI 最高，建议优先做”的改进项。
+  - 明确约束：值得做才处理，且必须保证原有效果不下降。
+- 已落地：
+  - 新增：
+    - `dev-plan/a2-retrieval-context-uplift.md`
+    - `dev-run/issue-log.md` 中 `ISSUE-A2-001`
+  - 更新：
+    - `app/config.py`
+    - `app/ingest/chunker.py`
+    - `app/ingest/__init__.py`
+    - `app/services/indexing.py`
+    - `app/services/querying.py`
+    - `app/store/contracts.py`
+    - `app/store/sqlite_store.py`
+    - `tests/test_ingest_chunker.py`
+    - `tests/test_indexing_service.py`
+    - `tests/test_query_service.py`
+- 关键实现：
+  - Parent Document Retrieval：
+    - `/ask` prompt 构建前对命中 chunk 做 parent context 扩展。
+    - 优先拉同 `document_id` 下同 `section_index` 的邻近 chunk，再按 `chunk_index` 补窗。
+    - 保持原检索排序、guardrail 输入与 source 锚点不变，只扩证据正文与行号窗口。
+  - Contextual Chunking：
+    - 新增 embedding-only contextual text，前缀包含文档标题、相对路径、标题路径。
+    - 向量 embedding 改为吃 contextual text，但 Chroma `documents` 和 prompt source 仍保存原始 chunk 正文。
+  - `/verify` 复用相同 parent context 扩展逻辑，避免 host 引用扩展证据时校验失真。
+- 验证：
+  - `E:\github\mykms\.venv\Scripts\python.exe -m py_compile app\config.py app\ingest\chunker.py app\ingest\__init__.py app\store\contracts.py app\store\sqlite_store.py app\services\indexing.py app\services\querying.py tests\test_ingest_chunker.py tests\test_indexing_service.py tests\test_query_service.py`
+  - `E:\github\mykms\.venv\Scripts\python.exe -m pytest tests\test_ingest_chunker.py tests\test_indexing_service.py tests\test_query_service.py tests\test_answer_m3.py -q`
+  - `E:\github\mykms\.venv\Scripts\python.exe -m pytest tests\test_query_endpoints.py tests\test_api_indexing.py tests\test_runtime_behaviors.py -q`
+  - `E:\github\mykms\.venv\Scripts\python.exe -m eval.run_benchmark_suite --suite eval/benchmark-suite.m18.json`
+- 结果：
+  - 定向回归：`33 passed`
+  - 接口回归：`9 passed`
+  - benchmark suite：
+    - `passed_entries=8/8`
+    - `passed_gated_entries=7/7`
+  - 已确认质量门未回退。
+  - 当前 stage 进入 `Review`。
+- 评审补充：
+  - 已补 `dev-run/review-log.md` 中的 A2 正式 review 记录。
+  - Review A / Review B 均未发现 accepted finding。
+  - 补跑全量回归：`E:\github\mykms\.venv\Scripts\python.exe -m pytest -q`
+  - 全量结果：`121 passed`
+  - A2 已正式收口并放行。

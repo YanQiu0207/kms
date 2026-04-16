@@ -1,0 +1,54 @@
+{
+  "entries": [
+    {
+      "name": "ai.real10",
+      "benchmark_path": "eval/benchmark.ai.real10.jsonl",
+      "config_path": "config.yaml",
+      "base_url": "http://127.0.0.1:49154"
+    },
+    {
+      "name": "distributed.real10",
+      "benchmark_path": "eval/benchmark.distributed.real10.jsonl",
+      "config_path": "config.yaml",
+      "base_url": "http://127.0.0.1:49154"
+    },
+    {
+      "name": "game.real10",
+      "benchmark_path": "eval/benchmark.game.real10.jsonl",
+      "config_path": "config.yaml",
+      "base_url": "http://127.0.0.1:49154"
+    },
+    {
+      "name": "cleaning.real10",
+      "benchmark_path": "eval/benchmark.cleaning.real10.jsonl",
+      "config_path": "config.yaml",
+      "base_url": "http://127.0.0.1:49154"
+    },
+    {
+      "name": "ranking.real10",
+      "benchmark_path": "eval/benchmark.ranking.real10.jsonl",
+      "config_path": "config.yaml",
+      "base_url": "http://127.0.0.1:49154"
+    },
+    {
+      "name": "notes-frontmatter.real10",
+      "benchmark_path": "eval/benchmark.notes-frontmatter.real10.jsonl",
+      "config_path": "config.notes-frontmatter.yaml",
+      "base_url": "http://127.0.0.1:49155"
+    },
+    {
+      "name": "query-routing.real10",
+      "benchmark_path": "eval/benchmark.query-routing.real10.jsonl",
+      "config_path": "config.yaml",
+      "base_url": "http://127.0.0.1:49154",
+      "gate": false,
+      "notes": "本地双实例 suite：主语料走 49154，notes-frontmatter 走 49155。"
+    },
+    {
+      "name": "guardrail.real10",
+      "benchmark_path": "eval/benchmark.guardrail.real10.jsonl",
+      "config_path": "config.yaml",
+      "base_url": "http://127.0.0.1:49154"
+    }
+  ]
+}

@@ -8,7 +8,15 @@ import threading
 from typing import Iterable, Sequence
 
 from app.config import AppConfig
-from app.ingest import FileState, IngestError, MarkdownChunk, MarkdownDocument, MarkdownIngestLoader, SourceSpec
+from app.ingest import (
+    FileState,
+    IngestError,
+    MarkdownChunk,
+    MarkdownDocument,
+    MarkdownIngestLoader,
+    SourceSpec,
+    build_contextual_chunk_text,
+)
 from app.observability import get_logger, timed_operation
 from app.services.embeddings import EmbeddingService
 from app.store import (
@@ -35,7 +43,7 @@ class IndexingSummary:
 
 
 def _document_metadata(document: MarkdownDocument) -> dict[str, object]:
-    return {
+    metadata = {
         "source_id": document.source_id,
         "source_root": document.source_root,
         "relative_path": document.relative_path,
@@ -44,6 +52,8 @@ def _document_metadata(document: MarkdownDocument) -> dict[str, object]:
         "size": document.size,
         "encoding": document.encoding,
     }
+    metadata.update(document.metadata)
+    return metadata
 
 
 def _to_stored_document(document: MarkdownDocument) -> StoredDocument:
@@ -76,6 +86,7 @@ def _to_stored_chunk(chunk: MarkdownChunk, *, stored_chunk_index: int) -> Stored
             "file_hash": chunk.file_hash,
             "start_line": chunk.start_line,
             "end_line": chunk.end_line,
+            **chunk.metadata,
         },
     )
 
@@ -97,6 +108,7 @@ def _to_vector_chunks(chunks: Sequence[MarkdownChunk], embeddings: Sequence[Sequ
                     "file_hash": chunk.file_hash,
                     "start_line": chunk.start_line,
                     "end_line": chunk.end_line,
+                    **chunk.metadata,
                 },
             )
         )
@@ -134,6 +146,7 @@ class IndexingService:
                     chunk_overlap=self.config.chunker.chunk_overlap,
                     chunker_version=self.config.chunker.version,
                     embedding_model=self.config.models.embedding,
+                    cleaning=self.config.cleaning,
                 )
                 metadata_store = SQLiteMetadataStore(self.config.data.sqlite)
                 fts_writer = FTS5Writer(metadata_store.connection)
@@ -310,7 +323,13 @@ class IndexingService:
 
             if chunks:
                 with timed_operation(LOGGER, "index.persist.vector", chunk_count=len(chunks)):
-                    embeddings = embedder.embed_texts([chunk.text for chunk in chunks])
+                    embedding_inputs = [
+                        build_contextual_chunk_text(chunk)
+                        if self.config.chunker.contextual_embedding_enabled
+                        else chunk.text
+                        for chunk in chunks
+                    ]
+                    embeddings = embedder.embed_texts(embedding_inputs)
                     vector_store.upsert(_to_vector_chunks(chunks, embeddings))
 
     def _build_sources(self) -> tuple[SourceSpec, ...]:

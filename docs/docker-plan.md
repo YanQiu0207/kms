@@ -50,7 +50,7 @@
 - 走多阶段 / 多 target：`FROM ... AS base-cpu` / `AS base-gpu`，compose 用 build args 选择
 - 安装：`pip install -e ".[models]"`
 - 环境变量：`HF_HOME=/var/kms/hf-cache`、`KMS_HOST=0.0.0.0`、`KMS_CONFIG_PATH=/etc/kms/config.yaml`
-- 启动：`uvicorn app.main:app --host 0.0.0.0 --port 49153`
+- 启动：`uvicorn app.main:create_app --factory --host 0.0.0.0 --port 49153`
 - 健康检查：`GET /health`
 
 ### 3.2 `obs-local-api`

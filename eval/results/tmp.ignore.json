@@ -1,0 +1,559 @@
+{
+  "benchmark": {
+    "overall": {
+      "recall_at_k": {
+        "baseline": 1.0,
+        "candidate": null,
+        "delta": null
+      },
+      "mrr": {
+        "baseline": 1.0,
+        "candidate": null,
+        "delta": null
+      },
+      "abstain_accuracy": {
+        "baseline": 1.0,
+        "candidate": null,
+        "delta": null
+      },
+      "abstain_precision": {
+        "baseline": 1.0,
+        "candidate": null,
+        "delta": null
+      },
+      "abstain_recall": {
+        "baseline": 1.0,
+        "candidate": null,
+        "delta": null
+      },
+      "false_abstain_rate": {
+        "baseline": 0.0,
+        "candidate": null,
+        "delta": null
+      },
+      "false_answer_rate": {
+        "baseline": 0.0,
+        "candidate": null,
+        "delta": null
+      },
+      "evidence_hit_rate": {
+        "baseline": 1.0,
+        "candidate": null,
+        "delta": null
+      },
+      "evidence_source_recall": {
+        "baseline": 0.9375,
+        "candidate": null,
+        "delta": null
+      },
+      "source_count_satisfaction_rate": {
+        "baseline": null,
+        "candidate": null,
+        "delta": null
+      },
+      "expected_term_coverage": {
+        "baseline": null,
+        "candidate": null,
+        "delta": null
+      },
+      "avg_search_latency_ms": {
+        "baseline": 1643.29,
+        "candidate": null,
+        "delta": null
+      },
+      "avg_ask_latency_ms": {
+        "baseline": 3.44,
+        "candidate": null,
+        "delta": null
+      }
+    },
+    "by_type": {
+      "lookup": {
+        "recall_at_k": {
+          "baseline": 1.0,
+          "candidate": null,
+          "delta": null
+        },
+        "mrr": {
+          "baseline": 1.0,
+          "candidate": null,
+          "delta": null
+        },
+        "abstain_accuracy": {
+          "baseline": 1.0,
+          "candidate": null,
+          "delta": null
+        },
+        "abstain_precision": {
+          "baseline": 1.0,
+          "candidate": null,
+          "delta": null
+        },
+        "abstain_recall": {
+          "baseline": 1.0,
+          "candidate": null,
+          "delta": null
+        },
+        "false_abstain_rate": {
+          "baseline": 0.0,
+          "candidate": null,
+          "delta": null
+        },
+        "false_answer_rate": {
+          "baseline": 0.0,
+          "candidate": null,
+          "delta": null
+        },
+        "evidence_hit_rate": {
+          "baseline": 1.0,
+          "candidate": null,
+          "delta": null
+        },
+        "evidence_source_recall": {
+          "baseline": 0.9375,
+          "candidate": null,
+          "delta": null
+        },
+        "source_count_satisfaction_rate": {
+          "baseline": null,
+          "candidate": null,
+          "delta": null
+        },
+        "expected_term_coverage": {
+          "baseline": null,
+          "candidate": null,
+          "delta": null
+        },
+        "avg_search_latency_ms": {
+          "baseline": 1643.29,
+          "candidate": null,
+          "delta": null
+        },
+        "avg_ask_latency_ms": {
+          "baseline": 3.44,
+          "candidate": null,
+          "delta": null
+        }
+      }
+    },
+    "by_tag": {},
+    "case_changes": [
+      {
+        "id": "ai10-001",
+        "question": "上下文处理包括什么？",
+        "case_type": "lookup",
+        "tags": [],
+        "changes": {
+          "abstained": {
+            "baseline": false,
+            "candidate": null
+          },
+          "abstain_correct": {
+            "baseline": true,
+            "candidate": null
+          },
+          "search_hit": {
+            "baseline": true,
+            "candidate": null
+          },
+          "rank": {
+            "baseline": 1,
+            "candidate": null
+          },
+          "source_count": {
+            "baseline": 6,
+            "candidate": null
+          },
+          "matched_source_count": {
+            "baseline": 2,
+            "candidate": null
+          },
+          "evidence_hit": {
+            "baseline": true,
+            "candidate": null
+          },
+          "top_file_path": {
+            "baseline": "E:/work/blog/ai/prompt-engineering.md",
+            "candidate": null
+          },
+          "top_location": {
+            "baseline": "prompt-engineering.md:55-75",
+            "candidate": null
+          }
+        }
+      },
+      {
+        "id": "ai10-002",
+        "question": "提示词结构包括哪些部分？",
+        "case_type": "lookup",
+        "tags": [],
+        "changes": {
+          "abstained": {
+            "baseline": false,
+            "candidate": null
+          },
+          "abstain_correct": {
+            "baseline": true,
+            "candidate": null
+          },
+          "search_hit": {
+            "baseline": true,
+            "candidate": null
+          },
+          "rank": {
+            "baseline": 1,
+            "candidate": null
+          },
+          "source_count": {
+            "baseline": 6,
+            "candidate": null
+          },
+          "matched_source_count": {
+            "baseline": 2,
+            "candidate": null
+          },
+          "evidence_hit": {
+            "baseline": true,
+            "candidate": null
+          },
+          "top_file_path": {
+            "baseline": "E:/work/blog/ai/prompt-engineering.md",
+            "candidate": null
+          },
+          "top_location": {
+            "baseline": "prompt-engineering.md:55-75",
+            "candidate": null
+          }
+        }
+      },
+      {
+        "id": "ai10-003",
+        "question": "Few-Shot 的作用是什么？",
+        "case_type": "lookup",
+        "tags": [],
+        "changes": {
+          "abstained": {
+            "baseline": false,
+            "candidate": null
+          },
+          "abstain_correct": {
+            "baseline": true,
+            "candidate": null
+          },
+          "search_hit": {
+            "baseline": true,
+            "candidate": null
+          },
+          "rank": {
+            "baseline": 1,
+            "candidate": null
+          },
+          "source_count": {
+            "baseline": 2,
+            "candidate": null
+          },
+          "matched_source_count": {
+            "baseline": 2,
+            "candidate": null
+          },
+          "evidence_hit": {
+            "baseline": true,
+            "candidate": null
+          },
+          "top_file_path": {
+            "baseline": "E:/work/blog/ai/tx-prompt-engineering.md",
+            "candidate": null
+          },
+          "top_location": {
+            "baseline": "tx-prompt-engineering.md:8-26",
+            "candidate": null
+          }
+        }
+      },
+      {
+        "id": "ai10-004",
+        "question": "AI Agent 的核心概念是什么？",
+        "case_type": "lookup",
+        "tags": [],
+        "changes": {
+          "abstained": {
+            "baseline": false,
+            "candidate": null
+          },
+          "abstain_correct": {
+            "baseline": true,
+            "candidate": null
+          },
+          "search_hit": {
+            "baseline": true,
+            "candidate": null
+          },
+          "rank": {
+            "baseline": 1,
+            "candidate": null
+          },
+          "source_count": {
+            "baseline": 6,
+            "candidate": null
+          },
+          "matched_source_count": {
+            "baseline": 1,
+            "candidate": null
+          },
+          "evidence_hit": {
+            "baseline": true,
+            "candidate": null
+          },
+          "top_file_path": {
+            "baseline": "E:/work/blog/ai/ai-agent.md",
+            "candidate": null
+          },
+          "top_location": {
+            "baseline": "ai-agent.md:9-10",
+            "candidate": null
+          }
+        }
+      },
+      {
+        "id": "ai10-005",
+        "question": "Claude Code 的安装怎么做？",
+        "case_type": "lookup",
+        "tags": [],
+        "changes": {
+          "abstained": {
+            "baseline": false,
+            "candidate": null
+          },
+          "abstain_correct": {
+            "baseline": true,
+            "candidate": null
+          },
+          "search_hit": {
+            "baseline": true,
+            "candidate": null
+          },
+          "rank": {
+            "baseline": 1,
+            "candidate": null
+          },
+          "source_count": {
+            "baseline": 6,
+            "candidate": null
+          },
+          "matched_source_count": {
+            "baseline": 1,
+            "candidate": null
+          },
+          "evidence_hit": {
+            "baseline": true,
+            "candidate": null
+          },
+          "top_file_path": {
+            "baseline": "E:/work/blog/ai/claude-code/0-install.md",
+            "candidate": null
+          },
+          "top_location": {
+            "baseline": "0-install.md:1-6",
+            "candidate": null
+          }
+        }
+      },
+      {
+        "id": "ai10-006",
+        "question": "Claude Code 的 settings 怎么配置？",
+        "case_type": "lookup",
+        "tags": [],
+        "changes": {
+          "abstained": {
+            "baseline": false,
+            "candidate": null
+          },
+          "abstain_correct": {
+            "baseline": true,
+            "candidate": null
+          },
+          "search_hit": {
+            "baseline": true,
+            "candidate": null
+          },
+          "rank": {
+            "baseline": 1,
+            "candidate": null
+          },
+          "source_count": {
+            "baseline": 6,
+            "candidate": null
+          },
+          "matched_source_count": {
+            "baseline": 1,
+            "candidate": null
+          },
+          "evidence_hit": {
+            "baseline": true,
+            "candidate": null
+          },
+          "top_file_path": {
+            "baseline": "E:/work/blog/ai/claude-code/0.3-setting.md",
+            "candidate": null
+          },
+          "top_location": {
+            "baseline": "0.3-setting.md:1-19",
+            "candidate": null
+          }
+        }
+      },
+      {
+        "id": "ai10-007",
+        "question": "Claude Code 的 memory 机制有什么用？",
+        "case_type": "lookup",
+        "tags": [],
+        "changes": {
+          "abstained": {
+            "baseline": false,
+            "candidate": null
+          },
+          "abstain_correct": {
+            "baseline": true,
+            "candidate": null
+          },
+          "search_hit": {
+            "baseline": true,
+            "candidate": null
+          },
+          "rank": {
+            "baseline": 1,
+            "candidate": null
+          },
+          "source_count": {
+            "baseline": 6,
+            "candidate": null
+          },
+          "matched_source_count": {
+            "baseline": 1,
+            "candidate": null
+          },
+          "evidence_hit": {
+            "baseline": true,
+            "candidate": null
+          },
+          "top_file_path": {
+            "baseline": "E:/work/blog/ai/claude-code/1-memory.md",
+            "candidate": null
+          },
+          "top_location": {
+            "baseline": "1-memory.md:11-15",
+            "candidate": null
+          }
+        }
+      },
+      {
+        "id": "ai10-008",
+        "question": "Claude Code 里 subagent 的基础概念是什么？",
+        "case_type": "lookup",
+        "tags": [],
+        "changes": {
+          "abstained": {
+            "baseline": false,
+            "candidate": null
+          },
+          "abstain_correct": {
+            "baseline": true,
+            "candidate": null
+          },
+          "search_hit": {
+            "baseline": true,
+            "candidate": null
+          },
+          "rank": {
+            "baseline": 1,
+            "candidate": null
+          },
+          "source_count": {
+            "baseline": 6,
+            "candidate": null
+          },
+          "matched_source_count": {
+            "baseline": 1,
+            "candidate": null
+          },
+          "evidence_hit": {
+            "baseline": true,
+            "candidate": null
+          },
+          "top_file_path": {
+            "baseline": "E:/work/blog/ai/claude-code/2-subagent-base.md",
+            "candidate": null
+          },
+          "top_location": {
+            "baseline": "2-subagent-base.md:133-137",
+            "candidate": null
+          }
+        }
+      },
+      {
+        "id": "ai10-009",
+        "question": "文档里有没有介绍扩散模型训练细节？",
+        "case_type": "lookup",
+        "tags": [],
+        "changes": {
+          "abstained": {
+            "baseline": true,
+            "candidate": null
+          },
+          "abstain_correct": {
+            "baseline": true,
+            "candidate": null
+          },
+          "search_hit": {
+            "baseline": false,
+            "candidate": null
+          },
+          "source_count": {
+            "baseline": 0,
+            "candidate": null
+          },
+          "matched_source_count": {
+            "baseline": 0,
+            "candidate": null
+          }
+        }
+      },
+      {
+        "id": "ai10-010",
+        "question": "文档里有没有 OpenCL GPU 内核优化手册？",
+        "case_type": "lookup",
+        "tags": [],
+        "changes": {
+          "abstained": {
+            "baseline": true,
+            "candidate": null
+          },
+          "abstain_correct": {
+            "baseline": true,
+            "candidate": null
+          },
+          "search_hit": {
+            "baseline": false,
+            "candidate": null
+          },
+          "source_count": {
+            "baseline": 0,
+            "candidate": null
+          },
+          "matched_source_count": {
+            "baseline": 0,
+            "candidate": null
+          },
+          "top_file_path": {
+            "baseline": "E:/notes/基础知识/futex.md",
+            "candidate": null
+          },
+          "top_location": {
+            "baseline": "futex.md:53-57",
+            "candidate": null
+          }
+        }
+      }
+    ]
+  }
+}

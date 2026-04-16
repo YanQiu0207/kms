@@ -1,0 +1,1144 @@
+{
+  "benchmark": {
+    "overall": {
+      "recall_at_k": {
+        "baseline": 0.875,
+        "candidate": 0.875,
+        "delta": 0.0
+      },
+      "mrr": {
+        "baseline": 0.8125,
+        "candidate": 0.8125,
+        "delta": 0.0
+      },
+      "abstain_accuracy": {
+        "baseline": 0.9,
+        "candidate": 1.0,
+        "delta": 0.1
+      },
+      "abstain_precision": {
+        "baseline": 1.0,
+        "candidate": 1.0,
+        "delta": 0.0
+      },
+      "abstain_recall": {
+        "baseline": 0.5,
+        "candidate": 1.0,
+        "delta": 0.5
+      },
+      "false_abstain_rate": {
+        "baseline": 0.0,
+        "candidate": 0.0,
+        "delta": 0.0
+      },
+      "false_answer_rate": {
+        "baseline": 0.5,
+        "candidate": 0.0,
+        "delta": -0.5
+      },
+      "evidence_hit_rate": {
+        "baseline": 0.875,
+        "candidate": 0.875,
+        "delta": 0.0
+      },
+      "evidence_source_recall": {
+        "baseline": 0.875,
+        "candidate": 0.875,
+        "delta": 0.0
+      },
+      "source_count_satisfaction_rate": {
+        "baseline": 1.0,
+        "candidate": 1.0,
+        "delta": 0.0
+      },
+      "expected_term_coverage": {
+        "baseline": 1.0,
+        "candidate": 1.0,
+        "delta": 0.0
+      },
+      "avg_search_latency_ms": {
+        "baseline": 985.22,
+        "candidate": 1130.73,
+        "delta": 145.51
+      },
+      "avg_ask_latency_ms": {
+        "baseline": 2.55,
+        "candidate": 2.7,
+        "delta": 0.15
+      }
+    },
+    "by_type": {
+      "abstain": {
+        "recall_at_k": {
+          "baseline": 0.0,
+          "candidate": 0.0,
+          "delta": 0.0
+        },
+        "mrr": {
+          "baseline": 0.0,
+          "candidate": 0.0,
+          "delta": 0.0
+        },
+        "abstain_accuracy": {
+          "baseline": 0.5,
+          "candidate": 1.0,
+          "delta": 0.5
+        },
+        "abstain_precision": {
+          "baseline": 1.0,
+          "candidate": 1.0,
+          "delta": 0.0
+        },
+        "abstain_recall": {
+          "baseline": 0.5,
+          "candidate": 1.0,
+          "delta": 0.5
+        },
+        "false_abstain_rate": {
+          "baseline": 0.0,
+          "candidate": 0.0,
+          "delta": 0.0
+        },
+        "false_answer_rate": {
+          "baseline": 0.5,
+          "candidate": 0.0,
+          "delta": -0.5
+        },
+        "evidence_hit_rate": {
+          "baseline": null,
+          "candidate": null,
+          "delta": null
+        },
+        "evidence_source_recall": {
+          "baseline": null,
+          "candidate": null,
+          "delta": null
+        },
+        "source_count_satisfaction_rate": {
+          "baseline": null,
+          "candidate": null,
+          "delta": null
+        },
+        "expected_term_coverage": {
+          "baseline": null,
+          "candidate": null,
+          "delta": null
+        },
+        "avg_search_latency_ms": {
+          "baseline": 824.17,
+          "candidate": 844.17,
+          "delta": 20.0
+        },
+        "avg_ask_latency_ms": {
+          "baseline": 0.86,
+          "candidate": 0.07,
+          "delta": -0.79
+        }
+      },
+      "lookup": {
+        "recall_at_k": {
+          "baseline": 0.875,
+          "candidate": 0.875,
+          "delta": 0.0
+        },
+        "mrr": {
+          "baseline": 0.8125,
+          "candidate": 0.8125,
+          "delta": 0.0
+        },
+        "abstain_accuracy": {
+          "baseline": 1.0,
+          "candidate": 1.0,
+          "delta": 0.0
+        },
+        "abstain_precision": {
+          "baseline": 0.0,
+          "candidate": 0.0,
+          "delta": 0.0
+        },
+        "abstain_recall": {
+          "baseline": 0.0,
+          "candidate": 0.0,
+          "delta": 0.0
+        },
+        "false_abstain_rate": {
+          "baseline": 0.0,
+          "candidate": 0.0,
+          "delta": 0.0
+        },
+        "false_answer_rate": {
+          "baseline": 0.0,
+          "candidate": 0.0,
+          "delta": 0.0
+        },
+        "evidence_hit_rate": {
+          "baseline": 0.875,
+          "candidate": 0.875,
+          "delta": 0.0
+        },
+        "evidence_source_recall": {
+          "baseline": 0.875,
+          "candidate": 0.875,
+          "delta": 0.0
+        },
+        "source_count_satisfaction_rate": {
+          "baseline": 1.0,
+          "candidate": 1.0,
+          "delta": 0.0
+        },
+        "expected_term_coverage": {
+          "baseline": 1.0,
+          "candidate": 1.0,
+          "delta": 0.0
+        },
+        "avg_search_latency_ms": {
+          "baseline": 1025.47,
+          "candidate": 1202.37,
+          "delta": 176.9
+        },
+        "avg_ask_latency_ms": {
+          "baseline": 2.98,
+          "candidate": 3.35,
+          "delta": 0.37
+        }
+      }
+    },
+    "by_tag": {
+      "abstain": {
+        "recall_at_k": {
+          "baseline": 0.0,
+          "candidate": 0.0,
+          "delta": 0.0
+        },
+        "mrr": {
+          "baseline": 0.0,
+          "candidate": 0.0,
+          "delta": 0.0
+        },
+        "abstain_accuracy": {
+          "baseline": 0.5,
+          "candidate": 1.0,
+          "delta": 0.5
+        },
+        "abstain_precision": {
+          "baseline": 1.0,
+          "candidate": 1.0,
+          "delta": 0.0
+        },
+        "abstain_recall": {
+          "baseline": 0.5,
+          "candidate": 1.0,
+          "delta": 0.5
+        },
+        "false_abstain_rate": {
+          "baseline": 0.0,
+          "candidate": 0.0,
+          "delta": 0.0
+        },
+        "false_answer_rate": {
+          "baseline": 0.5,
+          "candidate": 0.0,
+          "delta": -0.5
+        },
+        "evidence_hit_rate": {
+          "baseline": null,
+          "candidate": null,
+          "delta": null
+        },
+        "evidence_source_recall": {
+          "baseline": null,
+          "candidate": null,
+          "delta": null
+        },
+        "source_count_satisfaction_rate": {
+          "baseline": null,
+          "candidate": null,
+          "delta": null
+        },
+        "expected_term_coverage": {
+          "baseline": null,
+          "candidate": null,
+          "delta": null
+        },
+        "avg_search_latency_ms": {
+          "baseline": 824.17,
+          "candidate": 844.17,
+          "delta": 20.0
+        },
+        "avg_ask_latency_ms": {
+          "baseline": 0.86,
+          "candidate": 0.07,
+          "delta": -0.79
+        }
+      },
+      "apue": {
+        "recall_at_k": {
+          "baseline": 1.0,
+          "candidate": 1.0,
+          "delta": 0.0
+        },
+        "mrr": {
+          "baseline": 1.0,
+          "candidate": 1.0,
+          "delta": 0.0
+        },
+        "abstain_accuracy": {
+          "baseline": 1.0,
+          "candidate": 1.0,
+          "delta": 0.0
+        },
+        "abstain_precision": {
+          "baseline": 0.0,
+          "candidate": 0.0,
+          "delta": 0.0
+        },
+        "abstain_recall": {
+          "baseline": 0.0,
+          "candidate": 0.0,
+          "delta": 0.0
+        },
+        "false_abstain_rate": {
+          "baseline": 0.0,
+          "candidate": 0.0,
+          "delta": 0.0
+        },
+        "false_answer_rate": {
+          "baseline": 0.0,
+          "candidate": 0.0,
+          "delta": 0.0
+        },
+        "evidence_hit_rate": {
+          "baseline": 1.0,
+          "candidate": 1.0,
+          "delta": 0.0
+        },
+        "evidence_source_recall": {
+          "baseline": 1.0,
+          "candidate": 1.0,
+          "delta": 0.0
+        },
+        "source_count_satisfaction_rate": {
+          "baseline": 1.0,
+          "candidate": 1.0,
+          "delta": 0.0
+        },
+        "expected_term_coverage": {
+          "baseline": 1.0,
+          "candidate": 1.0,
+          "delta": 0.0
+        },
+        "avg_search_latency_ms": {
+          "baseline": 760.51,
+          "candidate": 930.06,
+          "delta": 169.55
+        },
+        "avg_ask_latency_ms": {
+          "baseline": 2.69,
+          "candidate": 3.63,
+          "delta": 0.94
+        }
+      },
+      "cleaning": {
+        "recall_at_k": {
+          "baseline": 0.875,
+          "candidate": 0.875,
+          "delta": 0.0
+        },
+        "mrr": {
+          "baseline": 0.8125,
+          "candidate": 0.8125,
+          "delta": 0.0
+        },
+        "abstain_accuracy": {
+          "baseline": 0.9,
+          "candidate": 1.0,
+          "delta": 0.1
+        },
+        "abstain_precision": {
+          "baseline": 1.0,
+          "candidate": 1.0,
+          "delta": 0.0
+        },
+        "abstain_recall": {
+          "baseline": 0.5,
+          "candidate": 1.0,
+          "delta": 0.5
+        },
+        "false_abstain_rate": {
+          "baseline": 0.0,
+          "candidate": 0.0,
+          "delta": 0.0
+        },
+        "false_answer_rate": {
+          "baseline": 0.5,
+          "candidate": 0.0,
+          "delta": -0.5
+        },
+        "evidence_hit_rate": {
+          "baseline": 0.875,
+          "candidate": 0.875,
+          "delta": 0.0
+        },
+        "evidence_source_recall": {
+          "baseline": 0.875,
+          "candidate": 0.875,
+          "delta": 0.0
+        },
+        "source_count_satisfaction_rate": {
+          "baseline": 1.0,
+          "candidate": 1.0,
+          "delta": 0.0
+        },
+        "expected_term_coverage": {
+          "baseline": 1.0,
+          "candidate": 1.0,
+          "delta": 0.0
+        },
+        "avg_search_latency_ms": {
+          "baseline": 985.22,
+          "candidate": 1130.73,
+          "delta": 145.51
+        },
+        "avg_ask_latency_ms": {
+          "baseline": 2.55,
+          "candidate": 2.7,
+          "delta": 0.15
+        }
+      },
+      "footer-noise": {
+        "recall_at_k": {
+          "baseline": 0.0,
+          "candidate": 0.0,
+          "delta": 0.0
+        },
+        "mrr": {
+          "baseline": 0.0,
+          "candidate": 0.0,
+          "delta": 0.0
+        },
+        "abstain_accuracy": {
+          "baseline": 1.0,
+          "candidate": 1.0,
+          "delta": 0.0
+        },
+        "abstain_precision": {
+          "baseline": 1.0,
+          "candidate": 1.0,
+          "delta": 0.0
+        },
+        "abstain_recall": {
+          "baseline": 1.0,
+          "candidate": 1.0,
+          "delta": 0.0
+        },
+        "false_abstain_rate": {
+          "baseline": 0.0,
+          "candidate": 0.0,
+          "delta": 0.0
+        },
+        "false_answer_rate": {
+          "baseline": 0.0,
+          "candidate": 0.0,
+          "delta": 0.0
+        },
+        "evidence_hit_rate": {
+          "baseline": null,
+          "candidate": null,
+          "delta": null
+        },
+        "evidence_source_recall": {
+          "baseline": null,
+          "candidate": null,
+          "delta": null
+        },
+        "source_count_satisfaction_rate": {
+          "baseline": null,
+          "candidate": null,
+          "delta": null
+        },
+        "expected_term_coverage": {
+          "baseline": null,
+          "candidate": null,
+          "delta": null
+        },
+        "avg_search_latency_ms": {
+          "baseline": 796.69,
+          "candidate": 819.56,
+          "delta": 22.87
+        },
+        "avg_ask_latency_ms": {
+          "baseline": 0.07,
+          "candidate": 0.07,
+          "delta": 0.0
+        }
+      },
+      "outline": {
+        "recall_at_k": {
+          "baseline": 1.0,
+          "candidate": 1.0,
+          "delta": 0.0
+        },
+        "mrr": {
+          "baseline": 1.0,
+          "candidate": 1.0,
+          "delta": 0.0
+        },
+        "abstain_accuracy": {
+          "baseline": 1.0,
+          "candidate": 1.0,
+          "delta": 0.0
+        },
+        "abstain_precision": {
+          "baseline": 0.0,
+          "candidate": 0.0,
+          "delta": 0.0
+        },
+        "abstain_recall": {
+          "baseline": 0.0,
+          "candidate": 0.0,
+          "delta": 0.0
+        },
+        "false_abstain_rate": {
+          "baseline": 0.0,
+          "candidate": 0.0,
+          "delta": 0.0
+        },
+        "false_answer_rate": {
+          "baseline": 0.0,
+          "candidate": 0.0,
+          "delta": 0.0
+        },
+        "evidence_hit_rate": {
+          "baseline": 1.0,
+          "candidate": 1.0,
+          "delta": 0.0
+        },
+        "evidence_source_recall": {
+          "baseline": 1.0,
+          "candidate": 1.0,
+          "delta": 0.0
+        },
+        "source_count_satisfaction_rate": {
+          "baseline": 1.0,
+          "candidate": 1.0,
+          "delta": 0.0
+        },
+        "expected_term_coverage": {
+          "baseline": 1.0,
+          "candidate": 1.0,
+          "delta": 0.0
+        },
+        "avg_search_latency_ms": {
+          "baseline": 2084.1,
+          "candidate": 2151.62,
+          "delta": 67.52
+        },
+        "avg_ask_latency_ms": {
+          "baseline": 2.88,
+          "candidate": 2.96,
+          "delta": 0.08
+        }
+      },
+      "program-design": {
+        "recall_at_k": {
+          "baseline": 1.0,
+          "candidate": 1.0,
+          "delta": 0.0
+        },
+        "mrr": {
+          "baseline": 1.0,
+          "candidate": 1.0,
+          "delta": 0.0
+        },
+        "abstain_accuracy": {
+          "baseline": 1.0,
+          "candidate": 1.0,
+          "delta": 0.0
+        },
+        "abstain_precision": {
+          "baseline": 0.0,
+          "candidate": 0.0,
+          "delta": 0.0
+        },
+        "abstain_recall": {
+          "baseline": 0.0,
+          "candidate": 0.0,
+          "delta": 0.0
+        },
+        "false_abstain_rate": {
+          "baseline": 0.0,
+          "candidate": 0.0,
+          "delta": 0.0
+        },
+        "false_answer_rate": {
+          "baseline": 0.0,
+          "candidate": 0.0,
+          "delta": 0.0
+        },
+        "evidence_hit_rate": {
+          "baseline": 1.0,
+          "candidate": 1.0,
+          "delta": 0.0
+        },
+        "evidence_source_recall": {
+          "baseline": 1.0,
+          "candidate": 1.0,
+          "delta": 0.0
+        },
+        "source_count_satisfaction_rate": {
+          "baseline": 1.0,
+          "candidate": 1.0,
+          "delta": 0.0
+        },
+        "expected_term_coverage": {
+          "baseline": 1.0,
+          "candidate": 1.0,
+          "delta": 0.0
+        },
+        "avg_search_latency_ms": {
+          "baseline": 638.7,
+          "candidate": 663.57,
+          "delta": 24.87
+        },
+        "avg_ask_latency_ms": {
+          "baseline": 2.21,
+          "candidate": 1.98,
+          "delta": -0.23
+        }
+      },
+      "shell": {
+        "recall_at_k": {
+          "baseline": 1.0,
+          "candidate": 1.0,
+          "delta": 0.0
+        },
+        "mrr": {
+          "baseline": 1.0,
+          "candidate": 1.0,
+          "delta": 0.0
+        },
+        "abstain_accuracy": {
+          "baseline": 1.0,
+          "candidate": 1.0,
+          "delta": 0.0
+        },
+        "abstain_precision": {
+          "baseline": 0.0,
+          "candidate": 0.0,
+          "delta": 0.0
+        },
+        "abstain_recall": {
+          "baseline": 0.0,
+          "candidate": 0.0,
+          "delta": 0.0
+        },
+        "false_abstain_rate": {
+          "baseline": 0.0,
+          "candidate": 0.0,
+          "delta": 0.0
+        },
+        "false_answer_rate": {
+          "baseline": 0.0,
+          "candidate": 0.0,
+          "delta": 0.0
+        },
+        "evidence_hit_rate": {
+          "baseline": 1.0,
+          "candidate": 1.0,
+          "delta": 0.0
+        },
+        "evidence_source_recall": {
+          "baseline": 1.0,
+          "candidate": 1.0,
+          "delta": 0.0
+        },
+        "source_count_satisfaction_rate": {
+          "baseline": 1.0,
+          "candidate": 1.0,
+          "delta": 0.0
+        },
+        "expected_term_coverage": {
+          "baseline": 1.0,
+          "candidate": 1.0,
+          "delta": 0.0
+        },
+        "avg_search_latency_ms": {
+          "baseline": 799.22,
+          "candidate": 922.58,
+          "delta": 123.36
+        },
+        "avg_ask_latency_ms": {
+          "baseline": 5.91,
+          "candidate": 6.2,
+          "delta": 0.29
+        }
+      },
+      "table": {
+        "recall_at_k": {
+          "baseline": 0.8333,
+          "candidate": 0.8333,
+          "delta": 0.0
+        },
+        "mrr": {
+          "baseline": 0.75,
+          "candidate": 0.75,
+          "delta": 0.0
+        },
+        "abstain_accuracy": {
+          "baseline": 1.0,
+          "candidate": 1.0,
+          "delta": 0.0
+        },
+        "abstain_precision": {
+          "baseline": 0.0,
+          "candidate": 0.0,
+          "delta": 0.0
+        },
+        "abstain_recall": {
+          "baseline": 0.0,
+          "candidate": 0.0,
+          "delta": 0.0
+        },
+        "false_abstain_rate": {
+          "baseline": 0.0,
+          "candidate": 0.0,
+          "delta": 0.0
+        },
+        "false_answer_rate": {
+          "baseline": 0.0,
+          "candidate": 0.0,
+          "delta": 0.0
+        },
+        "evidence_hit_rate": {
+          "baseline": 0.8333,
+          "candidate": 0.8333,
+          "delta": 0.0
+        },
+        "evidence_source_recall": {
+          "baseline": 0.8333,
+          "candidate": 0.8333,
+          "delta": 0.0
+        },
+        "source_count_satisfaction_rate": {
+          "baseline": 1.0,
+          "candidate": 1.0,
+          "delta": 0.0
+        },
+        "expected_term_coverage": {
+          "baseline": 1.0,
+          "candidate": 1.0,
+          "delta": 0.0
+        },
+        "avg_search_latency_ms": {
+          "baseline": 672.6,
+          "candidate": 885.95,
+          "delta": 213.35
+        },
+        "avg_ask_latency_ms": {
+          "baseline": 3.01,
+          "candidate": 3.48,
+          "delta": 0.47
+        }
+      },
+      "toc-noise": {
+        "recall_at_k": {
+          "baseline": 1.0,
+          "candidate": 1.0,
+          "delta": 0.0
+        },
+        "mrr": {
+          "baseline": 1.0,
+          "candidate": 1.0,
+          "delta": 0.0
+        },
+        "abstain_accuracy": {
+          "baseline": 0.6667,
+          "candidate": 1.0,
+          "delta": 0.3333
+        },
+        "abstain_precision": {
+          "baseline": 0.0,
+          "candidate": 1.0,
+          "delta": 1.0
+        },
+        "abstain_recall": {
+          "baseline": 0.0,
+          "candidate": 1.0,
+          "delta": 1.0
+        },
+        "false_abstain_rate": {
+          "baseline": 0.0,
+          "candidate": 0.0,
+          "delta": 0.0
+        },
+        "false_answer_rate": {
+          "baseline": 1.0,
+          "candidate": 0.0,
+          "delta": -1.0
+        },
+        "evidence_hit_rate": {
+          "baseline": 1.0,
+          "candidate": 1.0,
+          "delta": 0.0
+        },
+        "evidence_source_recall": {
+          "baseline": 1.0,
+          "candidate": 1.0,
+          "delta": 0.0
+        },
+        "source_count_satisfaction_rate": {
+          "baseline": 1.0,
+          "candidate": 1.0,
+          "delta": 0.0
+        },
+        "expected_term_coverage": {
+          "baseline": 1.0,
+          "candidate": 1.0,
+          "delta": 0.0
+        },
+        "avg_search_latency_ms": {
+          "baseline": 1673.28,
+          "candidate": 1724.01,
+          "delta": 50.73
+        },
+        "avg_ask_latency_ms": {
+          "baseline": 2.47,
+          "candidate": 2.0,
+          "delta": -0.47
+        }
+      },
+      "tooling": {
+        "recall_at_k": {
+          "baseline": 0.5,
+          "candidate": 0.5,
+          "delta": 0.0
+        },
+        "mrr": {
+          "baseline": 0.25,
+          "candidate": 0.25,
+          "delta": 0.0
+        },
+        "abstain_accuracy": {
+          "baseline": 1.0,
+          "candidate": 1.0,
+          "delta": 0.0
+        },
+        "abstain_precision": {
+          "baseline": 0.0,
+          "candidate": 0.0,
+          "delta": 0.0
+        },
+        "abstain_recall": {
+          "baseline": 0.0,
+          "candidate": 0.0,
+          "delta": 0.0
+        },
+        "false_abstain_rate": {
+          "baseline": 0.0,
+          "candidate": 0.0,
+          "delta": 0.0
+        },
+        "false_answer_rate": {
+          "baseline": 0.0,
+          "candidate": 0.0,
+          "delta": 0.0
+        },
+        "evidence_hit_rate": {
+          "baseline": 0.5,
+          "candidate": 0.5,
+          "delta": 0.0
+        },
+        "evidence_source_recall": {
+          "baseline": 0.5,
+          "candidate": 0.5,
+          "delta": 0.0
+        },
+        "source_count_satisfaction_rate": {
+          "baseline": 1.0,
+          "candidate": 1.0,
+          "delta": 0.0
+        },
+        "expected_term_coverage": {
+          "baseline": 1.0,
+          "candidate": 1.0,
+          "delta": 0.0
+        },
+        "avg_search_latency_ms": {
+          "baseline": 538.33,
+          "candidate": 934.72,
+          "delta": 396.39
+        },
+        "avg_ask_latency_ms": {
+          "baseline": 2.28,
+          "candidate": 2.72,
+          "delta": 0.44
+        }
+      }
+    },
+    "case_changes": [
+      {
+        "id": "cleaning10-001",
+        "question": "高并发系统的三大目标是什么？",
+        "case_type": "lookup",
+        "tags": [
+          "cleaning",
+          "toc-noise",
+          "outline"
+        ],
+        "changes": {
+          "top_location": {
+            "baseline": "0 概观.md:25-37",
+            "candidate": "0 概观.md:24-36"
+          }
+        }
+      },
+      {
+        "id": "cleaning10-002",
+        "question": "find -type 支持哪些文件类型参数？",
+        "case_type": "lookup",
+        "tags": [
+          "cleaning",
+          "table",
+          "shell"
+        ],
+        "changes": {
+          "top_location": {
+            "baseline": "shell学习笔记.md:127-151",
+            "candidate": "shell学习笔记.md:60-94"
+          }
+        }
+      },
+      {
+        "id": "cleaning10-004",
+        "question": "异步日志库的默认日志格式包含哪些字段？",
+        "case_type": "lookup",
+        "tags": [
+          "cleaning",
+          "table",
+          "program-design"
+        ],
+        "changes": {
+          "top_location": {
+            "baseline": "多线程异步日志库.md:53-59",
+            "candidate": "多线程异步日志库.md:53-58"
+          }
+        }
+      },
+      {
+        "id": "cleaning10-005",
+        "question": "S_ISDIR 表示什么文件类型？",
+        "case_type": "lookup",
+        "tags": [
+          "cleaning",
+          "table",
+          "apue"
+        ],
+        "changes": {
+          "source_count": {
+            "baseline": 4,
+            "candidate": 5
+          },
+          "top_location": {
+            "baseline": "chapter4 文件与目录.md:5-35",
+            "candidate": "chapter4 文件与目录.md:4-32"
+          }
+        }
+      },
+      {
+        "id": "cleaning10-006",
+        "question": "知识库里有没有专门介绍 Markdown TOC 指令原理？",
+        "case_type": "abstain",
+        "tags": [
+          "cleaning",
+          "toc-noise",
+          "abstain"
+        ],
+        "changes": {
+          "abstained": {
+            "baseline": false,
+            "candidate": true
+          },
+          "abstain_correct": {
+            "baseline": false,
+            "candidate": true
+          },
+          "source_count": {
+            "baseline": 6,
+            "candidate": 0
+          },
+          "top_file_path": {
+            "baseline": "E:/notes/分布式论文笔记/paxos/phxpaxos.md",
+            "candidate": "E:/work/blog/分布式基础/事件排序/logic-clock.md"
+          },
+          "top_location": {
+            "baseline": "phxpaxos.md:1-3",
+            "candidate": "logic-clock.md:1-14"
+          }
+        }
+      },
+      {
+        "id": "cleaning10-008",
+        "question": "高并发系统包括哪些部分？",
+        "case_type": "lookup",
+        "tags": [
+          "cleaning",
+          "toc-noise",
+          "outline"
+        ],
+        "changes": {
+          "top_location": {
+            "baseline": "0 概观.md:9-21",
+            "candidate": "0 概观.md:8-20"
+          }
+        }
+      },
+      {
+        "id": "cleaning10-010",
+        "question": "文件访问权限里用户读写执行对应哪些宏？",
+        "case_type": "lookup",
+        "tags": [
+          "cleaning",
+          "table",
+          "apue"
+        ],
+        "changes": {
+          "top_location": {
+            "baseline": "chapter4 文件与目录.md:52-73",
+            "candidate": "chapter4 文件与目录.md:47-67"
+          }
+        }
+      }
+    ]
+  },
+  "index_stats": {
+    "document_count": {
+      "baseline": 590,
+      "candidate": 590,
+      "delta": 0.0
+    },
+    "chunk_count": {
+      "baseline": 5366,
+      "candidate": 5356,
+      "delta": -10.0
+    },
+    "exact_duplicate_groups": {
+      "baseline": 59,
+      "candidate": 58,
+      "delta": -1.0
+    },
+    "exact_duplicate_chunk_count": {
+      "baseline": 86,
+      "candidate": 83,
+      "delta": -3.0
+    },
+    "exact_duplicate_chunk_ratio": {
+      "baseline": 0.016,
+      "candidate": 0.0155,
+      "delta": -0.0005
+    },
+    "chunk_length_chars": {
+      "avg": {
+        "baseline": 179.0186,
+        "candidate": 178.6309,
+        "delta": -0.3877
+      },
+      "median": {
+        "baseline": 86.0,
+        "candidate": 86.0,
+        "delta": 0.0
+      },
+      "min": {
+        "baseline": 1.0,
+        "candidate": 1.0,
+        "delta": 0.0
+      },
+      "max": {
+        "baseline": 800.0,
+        "candidate": 800.0,
+        "delta": 0.0
+      }
+    },
+    "chunk_token_count": {
+      "avg": {
+        "baseline": 94.3824,
+        "candidate": 95.2044,
+        "delta": 0.822
+      },
+      "median": {
+        "baseline": 50.0,
+        "candidate": 50.0,
+        "delta": 0.0
+      },
+      "min": {
+        "baseline": 0.0,
+        "candidate": 0.0,
+        "delta": 0.0
+      },
+      "max": {
+        "baseline": 639.0,
+        "candidate": 639.0,
+        "delta": 0.0
+      }
+    },
+    "chunks_per_document": {
+      "avg": {
+        "baseline": 9.3322,
+        "candidate": 9.3148,
+        "delta": -0.0174
+      },
+      "median": {
+        "baseline": 5.0,
+        "candidate": 5.0,
+        "delta": 0.0
+      },
+      "min": {
+        "baseline": 1.0,
+        "candidate": 1.0,
+        "delta": 0.0
+      },
+      "max": {
+        "baseline": 1357.0,
+        "candidate": 1357.0,
+        "delta": 0.0
+      }
+    },
+    "by_source": {
+      "4d47b33ec28f": {
+        "document_count": {
+          "baseline": 4,
+          "candidate": 4,
+          "delta": 0.0
+        },
+        "chunk_count": {
+          "baseline": 31,
+          "candidate": 31,
+          "delta": 0.0
+        }
+      },
+      "d3a6b6c9f8b1": {
+        "document_count": {
+          "baseline": 107,
+          "candidate": 107,
+          "delta": 0.0
+        },
+        "chunk_count": {
+          "baseline": 2376,
+          "candidate": 2371,
+          "delta": -5.0
+        }
+      },
+      "d639f54124bb": {
+        "document_count": {
+          "baseline": 479,
+          "candidate": 479,
+          "delta": 0.0
+        },
+        "chunk_count": {
+          "baseline": 2959,
+          "candidate": 2954,
+          "delta": -5.0
+        }
+      }
+    }
+  }
+}

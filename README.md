@@ -16,12 +16,19 @@
 
 - `/ask` 链路与 Markdown 预处理说明：[docs/ask-and-ingest.md](/E:/github/mykms/docs/ask-and-ingest.md)
 - `RAG` 评测方案原理：[docs/rag-evaluation-methodology.md](/E:/github/mykms/docs/rag-evaluation-methodology.md)
+- `RAG` 质量提升总结与落地清单：[docs/rag-quality-improvement-roadmap.md](/E:/github/mykms/docs/rag-quality-improvement-roadmap.md)
+- `M13` 数据清洗阶段总结：[docs/m13-rag-data-cleaning-stage-summary.md](/E:/github/mykms/docs/m13-rag-data-cleaning-stage-summary.md)
+- `M14` 主语料清洗阶段总结：[docs/m14-rag-cleaning-stage-summary.md](/E:/github/mykms/docs/m14-rag-cleaning-stage-summary.md)
+- `M15` 排序与证据判定阶段总结：[docs/m15-ranking-and-dedup-stage-summary.md](/E:/github/mykms/docs/m15-ranking-and-dedup-stage-summary.md)
+- `M16` Query understanding 阶段总结：[docs/m16-query-understanding-stage-summary.md](/E:/github/mykms/docs/m16-query-understanding-stage-summary.md)
+- `M17` Guardrail 与证据判定阶段总结：[docs/m17-guardrail-and-evidence-stage-summary.md](/E:/github/mykms/docs/m17-guardrail-and-evidence-stage-summary.md)
+- `M18` 评测与数据工程阶段总结：[docs/m18-evaluation-and-data-engineering-stage-summary.md](/E:/github/mykms/docs/m18-evaluation-and-data-engineering-stage-summary.md)
 
 ## 启动
 
 ```bash
 pip install -e .
-uvicorn app.main:app --host 127.0.0.1 --port 49153
+uvicorn app.main:create_app --factory --host 127.0.0.1 --port 49153
 ```
 
 或：
@@ -36,6 +43,53 @@ kms-api
 python scripts/start_kms.py
 python scripts/stop_kms.py
 ```
+
+若需要单独探活或手动触发索引，可直接使用：
+
+```bash
+python scripts/probe_kms.py
+python scripts/update_index.py --mode incremental
+```
+
+说明：
+
+- `scripts/probe_kms.py` 默认访问当前配置对应的 `GET /health`，成功时返回简化后的健康 JSON，失败时返回错误 JSON 并以非 `0` 退出。
+- `scripts/update_index.py` 默认触发 `POST /index` 的增量索引；可用 `--mode full` 执行全量重建。
+- 两个脚本都支持 `--config`、`--host`、`--port` 覆盖目标地址。
+
+若需要按不同配置启动多台本地实例做 review，可使用：
+
+```bash
+python scripts/run_kms_server.py --config config.yaml --host 127.0.0.1 --port 49154
+python scripts/run_kms_server.py --config config.notes-frontmatter.yaml --host 127.0.0.1 --port 49155
+```
+
+说明：
+
+- `scripts/run_kms_server.py` 适合 M18 这类多配置 benchmark / suite 审查场景。
+- 当前本地双实例 suite 规格见：[eval/benchmark-suite.m18.local.json](/E:/github/mykms/eval/benchmark-suite.m18.local.json)
+
+若需要在 Windows 下开机后无人登录也自动启动 `mykms` 与 `obs-local`，可在“管理员 PowerShell”中执行：
+
+```powershell
+powershell -ExecutionPolicy Bypass -File .\scripts\install_windows_startup.ps1
+```
+
+说明：
+
+- 默认会注册两个计划任务：
+  - `mykms-start-kms`
+  - `mykms-start-obs-local`
+- 默认触发方式是 `AtStartup`，运行账户是 `SYSTEM`，因此机器开机后即使没人登录也会启动。
+- 两个任务都会复用仓库内已有启动脚本。
+- 若只安装单个任务，可用：
+  - `powershell -ExecutionPolicy Bypass -File .\scripts\install_windows_startup.ps1 -Target kms`
+  - `powershell -ExecutionPolicy Bypass -File .\scripts\install_windows_startup.ps1 -Target obs-local`
+- 若你仍然想改回“用户登录时启动”，可用：
+  - `powershell -ExecutionPolicy Bypass -File .\scripts\install_windows_startup.ps1 -TriggerMode logon`
+- 卸载可用：
+  - `powershell -ExecutionPolicy Bypass -File .\scripts\uninstall_windows_startup.ps1`
+- 详细说明见：[docs/windows-startup.md](/E:/github/mykms/docs/windows-startup.md)
 
 若需要把历史 SQLite 时间字段一次性迁移为本地时间字符串，可使用：
 

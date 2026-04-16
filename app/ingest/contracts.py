@@ -36,6 +36,7 @@ class MarkdownDocument:
     size: int
     text: str
     encoding: str = "utf-8"
+    metadata: dict[str, object] = field(default_factory=dict)
 
     def to_record(self) -> dict[str, object]:
         return {
@@ -50,6 +51,7 @@ class MarkdownDocument:
             "size": self.size,
             "encoding": self.encoding,
             "text": self.text,
+            "metadata": self.metadata,
         }
 
 
@@ -101,6 +103,7 @@ class MarkdownChunk:
     token_count: int = 0
     chunker_version: str = "v1"
     embedding_model: str = ""
+    metadata: dict[str, object] = field(default_factory=dict)
 
     def to_record(self) -> dict[str, object]:
         return {
@@ -118,6 +121,7 @@ class MarkdownChunk:
             "token_count": self.token_count,
             "chunker_version": self.chunker_version,
             "embedding_model": self.embedding_model,
+            "metadata": self.metadata,
         }
 
 

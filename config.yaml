@@ -6,6 +6,10 @@ server:
 sources:
   - path: E:\work\blog
     excludes: []
+  - path: E:\notes
+    excludes: []
+  - path: E:\work\privy-blog
+    excludes: []
 
 data:
   sqlite: ./data/meta.db
@@ -24,6 +28,40 @@ chunker:
   version: v1
   chunk_size: 800
   chunk_overlap: 100
+
+cleaning:
+  enabled: true
+  extract_front_matter: true
+  drop_front_matter_from_content: true
+  normalize_whitespace: true
+  drop_toc_markers: true
+  drop_low_value_placeholders: true
+  normalize_markdown_tables: true
+  dedupe_exact_chunks: true
+  source_rules:
+    - id: drop-zhihu-edit-footer
+      enabled: true
+      path_globs:
+        - "第三方软件/brpc/作者/*.md"
+        - "snmp/*.md"
+        - "分布式基础/**/*.md"
+        - "游戏开发/future.md"
+      drop_line_patterns:
+        - "^\\[编辑于\\s+\\d{4}-\\d{2}-\\d{2}.*\\)$"
+    - id: drop-reference-tail-sections
+      enabled: true
+      source_root_globs:
+        - "*/work/blog"
+        - "*/notes"
+      path_globs:
+        - "snmp/*.md"
+        - "分布式基础/**/*.md"
+        - "ai/**/*.md"
+      drop_trailing_heading_titles:
+        - "参考链接"
+        - "参考资料"
+        - "参考文献"
+        - "参考博客"
 
 retrieval:
   recall_top_k: 20

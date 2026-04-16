@@ -176,3 +176,94 @@
 - API schemas cover planned endpoints without overcommitting behavior
 - Skeleton modules are safe placeholders, not dead imports
 - Basic verification commands are recorded per stage
+
+## A2 检索上下文增强（2026-04-16）
+
+- Status: Approved
+- Review A:
+  - 范围：
+    - `app/services/querying.py`
+    - `app/services/indexing.py`
+    - `app/ingest/chunker.py`
+    - `app/config.py`
+    - `app/store/sqlite_store.py`
+  - 关注点：
+    - 协议与返回口径是否保持稳定
+    - parent context 扩展是否只影响 prompt / verify，不反向污染检索排序与 guardrail
+    - contextual embedding 是否只影响 embedding 输入，不污染存储正文与展示正文
+  - 结论：
+    - 未发现 accepted finding。
+    - `/ask` 的 source 结构、`/verify` 的 chunk_id 契约、`/search` 的排序输出均保持兼容。
+    - 证据窗口扩展被限制在 answer/verify 层，未改变 lexical / semantic / RRF / rerank 主链路语义。
+- Review B:
+  - 范围：
+    - 同上，并核对新增测试覆盖
+  - 关注点：
+    - 配置语义校验是否完整
+    - SQLite parent context 查询是否跨文档泄漏
+    - 测试是否覆盖“只扩上下文、不改展示文本”的核心约束
+  - 结论：
+    - 未发现 accepted finding。
+    - `retrieval.parent_context_max_chunks` 已补正数校验。
+    - parent context 仅按 `document_id` 取数，并按 `section_index / chunk_index` 受限选择。
+    - 新增测试已覆盖 contextual embedding、prompt 扩窗、verify 扩窗三条主路径。
+- 已验证：
+  - `E:\github\mykms\.venv\Scripts\python.exe -m py_compile app\config.py app\ingest\chunker.py app\ingest\__init__.py app\store\contracts.py app\store\sqlite_store.py app\services\indexing.py app\services\querying.py tests\test_ingest_chunker.py tests\test_indexing_service.py tests\test_query_service.py`
+  - `E:\github\mykms\.venv\Scripts\python.exe -m pytest tests\test_ingest_chunker.py tests\test_indexing_service.py tests\test_query_service.py tests\test_answer_m3.py -q`
+  - `E:\github\mykms\.venv\Scripts\python.exe -m pytest tests\test_query_endpoints.py tests\test_api_indexing.py tests\test_runtime_behaviors.py -q`
+  - `E:\github\mykms\.venv\Scripts\python.exe -m pytest -q`
+  - `E:\github\mykms\.venv\Scripts\python.exe -m eval.run_benchmark_suite --suite eval/benchmark-suite.m18.json`
+- 结果：
+  - 全量回归：`121 passed`
+  - benchmark suite：
+    - `passed_entries=8/8`
+    - `passed_gated_entries=7/7`
+  - 本轮未修改 benchmark 样本、评测口径或断言标准。
+
+## A3 检索闭环、自适应融合与别名自动提取（2026-04-16）
+
+- Status: Approved
+- Review A:
+  - 范围：
+    - `eval/failure_closure.py`
+    - `eval/run_failure_closure.py`
+    - `eval/benchmark.py`
+    - `eval/suite.py`
+    - `app/retrieve/hybrid.py`
+    - `app/config.py`
+  - 关注点：
+    - failure case 自动闭环是否只新增 backlog / draft 能力，不改变既有 benchmark 执行口径
+    - query-type 自适应融合是否只改 lexical / semantic RRF 贡献，不破坏 rerank 和 guardrail
+    - 配置默认值与校验是否足够严格
+  - 结论：
+    - 未发现 accepted finding。
+    - `linked_issue_ids` 只作为额外台账关联字段进入 benchmark / suite 结果，不影响既有判分逻辑。
+    - 自适应融合仅在 RRF 层按 query type 调整 source weight，rerank 与 guardrail 行为保持不变。
+    - `retrieval.query_type_fusion_weights` 已补正数与结构校验。
+- Review B:
+  - 范围：
+    - `app/query_understanding.py`
+    - `app/services/querying.py`
+    - `app/retrieve/ranking_pipeline.py`
+    - 新增与更新测试
+  - 关注点：
+    - front matter alias 自动提取是否与现有静态 alias 能力兼容
+    - QueryService 是否对旧替身/兼容路径产生无关回归
+    - 测试是否覆盖“补能力、不放宽口径”的核心约束
+  - 结论：
+    - 未发现 accepted finding。
+    - 动态 alias groups 以静态 alias groups 为 fallback，SQLite 缺失或无 front matter 时不会退化。
+    - `QueryService` 已对不支持新参数的 `search_and_rerank` 实现保持签名兼容。
+    - 新增测试覆盖 failure backlog、fusion weight 生效、动态 alias 提取以及配置校验。
+- 已验证：
+  - `E:\github\mykms\.venv\Scripts\python.exe -m py_compile app\config.py app\query_understanding.py app\retrieve\hybrid.py app\retrieve\ranking_pipeline.py app\services\querying.py eval\benchmark.py eval\suite.py eval\failure_closure.py eval\run_failure_closure.py tests\test_eval_failure_closure.py tests\test_eval_suite.py tests\test_eval_benchmark.py tests\test_query_understanding.py tests\test_retrieval_m2.py tests\test_query_service.py tests\test_health_config_scaffold.py`
+  - `E:\github\mykms\.venv\Scripts\python.exe -m pytest tests\test_eval_failure_closure.py tests\test_eval_suite.py tests\test_eval_benchmark.py tests\test_query_understanding.py tests\test_retrieval_m2.py tests\test_query_service.py tests\test_health_config_scaffold.py -q`
+  - `E:\github\mykms\.venv\Scripts\python.exe -m pytest -q`
+  - `E:\github\mykms\.venv\Scripts\python.exe -m eval.run_benchmark_suite --suite eval/benchmark-suite.m18.json`
+- 结果：
+  - 定向回归：`67 passed`
+  - 全量回归：`128 passed`
+  - benchmark suite：
+    - `passed_entries=8/8`
+    - `passed_gated_entries=7/7`
+  - 本轮未修改 benchmark 样本、评测口径、golden case 或断言标准。

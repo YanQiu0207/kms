@@ -19,6 +19,12 @@ obs-local/frontend/.tmp-tests/
 # Local data
 data/
 
+# Runtime logs
+.run-logs/*.log
+.run-logs/*.log.*
+.run-logs/*.json
+.claude/settings.local.json
+
 # IDE and OS
 .idea/
 .vscode/

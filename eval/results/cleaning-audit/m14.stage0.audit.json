@@ -1,0 +1,102 @@
+{
+  "config_path": "config.yaml",
+  "summary": {
+    "documents": 590,
+    "toc_docs": 66,
+    "table_docs": 35,
+    "author_docs": 5,
+    "reference_docs": 22,
+    "placeholder_docs": 59
+  },
+  "by_root": {
+    "E:/work/blog": {
+      "documents": 107,
+      "toc_docs": 13,
+      "table_docs": 13,
+      "author_docs": 4,
+      "reference_docs": 16,
+      "placeholder_docs": 13
+    },
+    "E:/notes": {
+      "documents": 479,
+      "toc_docs": 53,
+      "table_docs": 22,
+      "author_docs": 1,
+      "reference_docs": 5,
+      "placeholder_docs": 46
+    },
+    "E:/work/privy-blog": {
+      "documents": 4,
+      "toc_docs": 0,
+      "table_docs": 0,
+      "author_docs": 0,
+      "reference_docs": 1,
+      "placeholder_docs": 0
+    }
+  },
+  "samples": {
+    "toc_docs": [
+      "E:/work/blog/ai/prompt-engineering.md",
+      "E:/work/blog/ai/tx-prompt-engineering.md",
+      "E:/work/blog/C++/class.md",
+      "E:/work/blog/git/branching-strategy.md",
+      "E:/work/blog/git/tips.md",
+      "E:/work/blog/分布式基础/basic-notion.md",
+      "E:/work/blog/分布式基础/ratelimit.md",
+      "E:/work/blog/分布式基础/共识/背景.md",
+      "E:/work/blog/大数据经典论文/GFS.md",
+      "E:/work/blog/应用架构/ddd.md",
+      "E:/work/blog/应用架构/应用架构.md",
+      "E:/work/blog/游戏开发/network-sync.md"
+    ],
+    "reference_docs": [
+      "E:/work/blog/ai/prompt-engineering.md",
+      "E:/work/blog/ai/tx-prompt-engineering.md",
+      "E:/work/blog/ai/claude-code/0-install.md",
+      "E:/work/blog/分布式基础/cache.md",
+      "E:/work/blog/分布式基础/ratelimit.md",
+      "E:/work/blog/分布式基础/分布式锁.md",
+      "E:/work/blog/分布式基础/事件排序/physical-time.markdown",
+      "E:/work/blog/分布式基础/事务/serializability.md",
+      "E:/work/blog/分布式基础/共识/2pc.md",
+      "E:/work/blog/分布式基础/共识/3pc.md",
+      "E:/work/blog/分布式基础/共识/basic-paxos-log_replication.md",
+      "E:/work/blog/分布式基础/共识/leader_election.md"
+    ],
+    "table_docs": [
+      "E:/work/blog/ai/claude-code/0.4-comm-cmd.md",
+      "E:/work/blog/ai/claude-code/guide.md",
+      "E:/work/blog/ai/claude-code/skill.md",
+      "E:/work/blog/git/branching-strategy.md",
+      "E:/work/blog/git/tips.md",
+      "E:/work/blog/system-design/use-back-of-the-envelope-calculations.md",
+      "E:/work/blog/vscode/config.md",
+      "E:/work/blog/win/tips.md",
+      "E:/work/blog/业务建模/UML入门.md",
+      "E:/work/blog/买房/买房决策的六大核心维度.md",
+      "E:/work/blog/分布式基础/basic-notion.md",
+      "E:/work/blog/游戏开发/服务器架构设计.md"
+    ],
+    "placeholder_docs": [
+      "E:/work/blog/algorithm/0-1-knapsack.md",
+      "E:/work/blog/system-design/overview.md",
+      "E:/work/blog/分布式基础/共识/leader_election.md",
+      "E:/work/blog/分布式基础/共识/multi-paxos-member-change.md",
+      "E:/work/blog/分布式基础/共识/paxos可靠直观的解释.md",
+      "E:/work/blog/分布式基础/共识/raft_learning_plan.md",
+      "E:/work/blog/大数据经典论文/GFS.md",
+      "E:/work/blog/应用架构/ddd.md",
+      "E:/work/blog/摄影/beijing.md",
+      "E:/work/blog/摄影/goutu.md",
+      "E:/work/blog/摄影/mobile-phone.md",
+      "E:/work/blog/摄影/shenmei.md"
+    ],
+    "author_docs": [
+      "E:/work/blog/分布式基础/事件排序/hlc.md",
+      "E:/work/blog/分布式基础/共识/3pc.md",
+      "E:/work/blog/分布式基础/共识/raft_learning_plan.md",
+      "E:/work/blog/游戏开发/future.md",
+      "E:/notes/第三方软件/brpc/作者/戈君.md"
+    ]
+  }
+}

@@ -104,7 +104,7 @@ class LexicalRetriever:
             WITH ranked AS (
                 SELECT
                     chunk_id,
-                    bm25({self.table_name}) AS bm25_score
+                    bm25({self.table_name}, 0.0, 0.0, 0.0, 2.5, 1.5, 0.2) AS bm25_score
                 FROM {self.table_name}
                 WHERE {self.table_name} MATCH ?
                 ORDER BY bm25_score ASC

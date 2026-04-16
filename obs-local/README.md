@@ -23,6 +23,26 @@ E:\github\mykms\.venv\Scripts\python.exe scripts\start_obs_local.py
 - 启动前端开发页：`http://127.0.0.1:4174`
 - 等待后端 `/api/health` 与前端首页都可访问后再返回
 
+如果你希望 Windows 开机后即使无人登录也自动启动 `mykms` 与 `obs-local`，请在“管理员 PowerShell”里到仓库根目录执行：
+
+```powershell
+powershell -ExecutionPolicy Bypass -File .\scripts\install_windows_startup.ps1
+```
+
+只注册 `obs-local` 可执行：
+
+```powershell
+powershell -ExecutionPolicy Bypass -File .\scripts\install_windows_startup.ps1 -Target obs-local
+```
+
+如果你只想保留“登录后启动”模式，可执行：
+
+```powershell
+powershell -ExecutionPolicy Bypass -File .\scripts\install_windows_startup.ps1 -TriggerMode logon
+```
+
+更完整的安装、卸载、验证与排障说明见：[docs/windows-startup.md](/E:/github/mykms/docs/windows-startup.md)。
+
 如果你只想手工启动后端，必须先进入 `obs-local/` 目录，再执行：
 
 ```powershell

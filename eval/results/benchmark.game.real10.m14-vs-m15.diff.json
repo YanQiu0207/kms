@@ -1,0 +1,155 @@
+{
+  "benchmark": {
+    "overall": {
+      "recall_at_k": {
+        "baseline": 1.0,
+        "candidate": 1.0,
+        "delta": 0.0
+      },
+      "mrr": {
+        "baseline": 1.0,
+        "candidate": 1.0,
+        "delta": 0.0
+      },
+      "abstain_accuracy": {
+        "baseline": 1.0,
+        "candidate": 1.0,
+        "delta": 0.0
+      },
+      "abstain_precision": {
+        "baseline": 1.0,
+        "candidate": 1.0,
+        "delta": 0.0
+      },
+      "abstain_recall": {
+        "baseline": 1.0,
+        "candidate": 1.0,
+        "delta": 0.0
+      },
+      "false_abstain_rate": {
+        "baseline": 0.0,
+        "candidate": 0.0,
+        "delta": 0.0
+      },
+      "false_answer_rate": {
+        "baseline": 0.0,
+        "candidate": 0.0,
+        "delta": 0.0
+      },
+      "evidence_hit_rate": {
+        "baseline": 1.0,
+        "candidate": 1.0,
+        "delta": 0.0
+      },
+      "evidence_source_recall": {
+        "baseline": 1.0,
+        "candidate": 1.0,
+        "delta": 0.0
+      },
+      "source_count_satisfaction_rate": {
+        "baseline": null,
+        "candidate": null,
+        "delta": null
+      },
+      "expected_term_coverage": {
+        "baseline": null,
+        "candidate": null,
+        "delta": null
+      },
+      "avg_search_latency_ms": {
+        "baseline": 1690.01,
+        "candidate": 1701.01,
+        "delta": 11.0
+      },
+      "avg_ask_latency_ms": {
+        "baseline": 4.8,
+        "candidate": 4.09,
+        "delta": -0.71
+      }
+    },
+    "by_type": {
+      "lookup": {
+        "recall_at_k": {
+          "baseline": 1.0,
+          "candidate": 1.0,
+          "delta": 0.0
+        },
+        "mrr": {
+          "baseline": 1.0,
+          "candidate": 1.0,
+          "delta": 0.0
+        },
+        "abstain_accuracy": {
+          "baseline": 1.0,
+          "candidate": 1.0,
+          "delta": 0.0
+        },
+        "abstain_precision": {
+          "baseline": 1.0,
+          "candidate": 1.0,
+          "delta": 0.0
+        },
+        "abstain_recall": {
+          "baseline": 1.0,
+          "candidate": 1.0,
+          "delta": 0.0
+        },
+        "false_abstain_rate": {
+          "baseline": 0.0,
+          "candidate": 0.0,
+          "delta": 0.0
+        },
+        "false_answer_rate": {
+          "baseline": 0.0,
+          "candidate": 0.0,
+          "delta": 0.0
+        },
+        "evidence_hit_rate": {
+          "baseline": 1.0,
+          "candidate": 1.0,
+          "delta": 0.0
+        },
+        "evidence_source_recall": {
+          "baseline": 1.0,
+          "candidate": 1.0,
+          "delta": 0.0
+        },
+        "source_count_satisfaction_rate": {
+          "baseline": null,
+          "candidate": null,
+          "delta": null
+        },
+        "expected_term_coverage": {
+          "baseline": null,
+          "candidate": null,
+          "delta": null
+        },
+        "avg_search_latency_ms": {
+          "baseline": 1690.01,
+          "candidate": 1701.01,
+          "delta": 11.0
+        },
+        "avg_ask_latency_ms": {
+          "baseline": 4.8,
+          "candidate": 4.09,
+          "delta": -0.71
+        }
+      }
+    },
+    "by_tag": {},
+    "case_changes": [
+      {
+        "id": "game10-002",
+        "question": "网格化 AOI 的优缺点是什么？",
+        "case_type": "lookup",
+        "tags": [],
+        "changes": {
+          "top_location": {
+            "baseline": "aoi-algo.md:107-133",
+            "candidate": "aoi-algo.md:61-105"
+          }
+        }
+      }
+    ]
+  }
+}

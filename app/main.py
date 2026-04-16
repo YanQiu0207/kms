@@ -272,12 +272,10 @@ def create_app(config: AppConfig | None = None) -> FastAPI:
     return app
 
 
-app = create_app(load_config())
-
-
 def run() -> None:
     import uvicorn
 
+    app = create_app(load_config())
     configure_logging()
     log_event(
         LOGGER,

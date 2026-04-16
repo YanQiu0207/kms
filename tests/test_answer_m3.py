@@ -85,6 +85,121 @@ def test_guardrail_evaluation_reports_scores():
     assert decision.hit_count == 2
 
 
+def test_guardrail_rejects_single_substantive_hit_plus_metadata_shell():
+    chunks = [
+        RetrievedChunk(
+            document_id="doc-1",
+            file_path="E:/github/mykms/data/corpora/e-notes-frontmatter-v1/数据库问题.md",
+            content="业务分库影响需要同时查询不同数据库中表的 sql 语句。",
+            score=0.48,
+            metadata={
+                "metadata_constraint_passed": True,
+                "metadata_constraint_coverage": 1.0,
+                "relative_path": "数据库问题.md",
+                "front_matter_category": "数据库",
+            },
+        ),
+        RetrievedChunk(
+            document_id="doc-2",
+            file_path="E:/github/mykms/data/corpora/e-notes-frontmatter-v1/数据库.md",
+            content="# 数据库",
+            score=0.40,
+            metadata={
+                "metadata_constraint_passed": True,
+                "metadata_constraint_coverage": 1.0,
+                "relative_path": "数据库.md",
+                "front_matter_category": "数据库",
+                "source_hits": ["semantic:q1"],
+            },
+        ),
+    ]
+
+    decision = evaluate_abstain(
+        chunks,
+        AbstainThresholds(top1_min=0.2, top3_avg_min=0.3, min_hits=2, min_total_chars=150),
+    )
+
+    assert decision.abstained is True
+    assert decision.reason == "recall_hits_below_threshold"
+
+
+def test_guardrail_allows_same_document_metadata_cluster_with_semantic_support():
+    chunks = [
+        RetrievedChunk(
+            document_id="doc-1",
+            file_path="E:/github/mykms/data/corpora/e-notes-frontmatter-v1/程序设计/对象池.md",
+            title_path=("对象池",),
+            content="# 对象池",
+            score=0.4167,
+            metadata={
+                "metadata_constraint_passed": True,
+                "metadata_constraint_coverage": 1.0,
+                "relative_path": "程序设计/对象池.md",
+                "front_matter_title": "对象池",
+                "front_matter_category": "程序设计",
+                "front_matter_aliases": ["对象池"],
+                "front_matter_tags": ["程序设计", "对象池"],
+                "path_segments": ["程序设计", "对象池.md"],
+                "source_hits": [
+                    "lexical:程序设计 对象 复用",
+                    "lexical:程序设计 分类 对象复用",
+                    "semantic:程序设计 对象 复用",
+                ],
+            },
+        ),
+        RetrievedChunk(
+            document_id="doc-1",
+            file_path="E:/github/mykms/data/corpora/e-notes-frontmatter-v1/程序设计/对象池.md",
+            title_path=("对象池", "关键技术"),
+            content="## 关键技术",
+            score=0.3847,
+            metadata={
+                "metadata_constraint_passed": True,
+                "metadata_constraint_coverage": 1.0,
+                "relative_path": "程序设计/对象池.md",
+                "front_matter_title": "对象池",
+                "front_matter_category": "程序设计",
+                "front_matter_aliases": ["对象池"],
+                "front_matter_tags": ["程序设计", "对象池"],
+                "path_segments": ["程序设计", "对象池.md"],
+                "source_hits": [
+                    "lexical:程序设计 对象 复用",
+                    "lexical:程序设计 分类 对象复用",
+                ],
+            },
+        ),
+        RetrievedChunk(
+            document_id="doc-1",
+            file_path="E:/github/mykms/data/corpora/e-notes-frontmatter-v1/程序设计/对象池.md",
+            title_path=("对象池", "测试"),
+            content="## 测试",
+            score=0.3839,
+            metadata={
+                "metadata_constraint_passed": True,
+                "metadata_constraint_coverage": 1.0,
+                "relative_path": "程序设计/对象池.md",
+                "front_matter_title": "对象池",
+                "front_matter_category": "程序设计",
+                "front_matter_aliases": ["对象池"],
+                "front_matter_tags": ["程序设计", "对象池"],
+                "path_segments": ["程序设计", "对象池.md"],
+                "source_hits": [
+                    "lexical:程序设计 对象 复用",
+                    "lexical:程序设计 分类 对象复用",
+                ],
+            },
+        ),
+    ]
+
+    decision = evaluate_abstain(
+        chunks,
+        AbstainThresholds(top1_min=0.2, top3_avg_min=0.3, min_hits=2, min_total_chars=150),
+    )
+
+    assert decision.abstained is False
+    assert decision.reason is None
+
+
 def test_citation_verifier_matches_against_chunk_text_mapping():
     answer = "混合检索结合了词法与语义检索的优势 [notes/rag.md#7]。"
     used_chunk_ids = ["notes/rag.md#7"]

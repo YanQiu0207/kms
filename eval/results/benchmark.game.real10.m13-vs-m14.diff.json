@@ -1,0 +1,199 @@
+{
+  "benchmark": {
+    "overall": {
+      "recall_at_k": {
+        "baseline": 1.0,
+        "candidate": 1.0,
+        "delta": 0.0
+      },
+      "mrr": {
+        "baseline": 0.9444,
+        "candidate": 1.0,
+        "delta": 0.0556
+      },
+      "abstain_accuracy": {
+        "baseline": 1.0,
+        "candidate": 1.0,
+        "delta": 0.0
+      },
+      "abstain_precision": {
+        "baseline": 1.0,
+        "candidate": 1.0,
+        "delta": 0.0
+      },
+      "abstain_recall": {
+        "baseline": 1.0,
+        "candidate": 1.0,
+        "delta": 0.0
+      },
+      "false_abstain_rate": {
+        "baseline": 0.0,
+        "candidate": 0.0,
+        "delta": 0.0
+      },
+      "false_answer_rate": {
+        "baseline": 0.0,
+        "candidate": 0.0,
+        "delta": 0.0
+      },
+      "evidence_hit_rate": {
+        "baseline": 1.0,
+        "candidate": 1.0,
+        "delta": 0.0
+      },
+      "evidence_source_recall": {
+        "baseline": 1.0,
+        "candidate": 1.0,
+        "delta": 0.0
+      },
+      "source_count_satisfaction_rate": {
+        "baseline": null,
+        "candidate": null,
+        "delta": null
+      },
+      "expected_term_coverage": {
+        "baseline": null,
+        "candidate": null,
+        "delta": null
+      },
+      "avg_search_latency_ms": {
+        "baseline": 1618.93,
+        "candidate": 1690.01,
+        "delta": 71.08
+      },
+      "avg_ask_latency_ms": {
+        "baseline": 4.17,
+        "candidate": 4.8,
+        "delta": 0.63
+      }
+    },
+    "by_type": {
+      "lookup": {
+        "recall_at_k": {
+          "baseline": 1.0,
+          "candidate": 1.0,
+          "delta": 0.0
+        },
+        "mrr": {
+          "baseline": 0.9444,
+          "candidate": 1.0,
+          "delta": 0.0556
+        },
+        "abstain_accuracy": {
+          "baseline": 1.0,
+          "candidate": 1.0,
+          "delta": 0.0
+        },
+        "abstain_precision": {
+          "baseline": 1.0,
+          "candidate": 1.0,
+          "delta": 0.0
+        },
+        "abstain_recall": {
+          "baseline": 1.0,
+          "candidate": 1.0,
+          "delta": 0.0
+        },
+        "false_abstain_rate": {
+          "baseline": 0.0,
+          "candidate": 0.0,
+          "delta": 0.0
+        },
+        "false_answer_rate": {
+          "baseline": 0.0,
+          "candidate": 0.0,
+          "delta": 0.0
+        },
+        "evidence_hit_rate": {
+          "baseline": 1.0,
+          "candidate": 1.0,
+          "delta": 0.0
+        },
+        "evidence_source_recall": {
+          "baseline": 1.0,
+          "candidate": 1.0,
+          "delta": 0.0
+        },
+        "source_count_satisfaction_rate": {
+          "baseline": null,
+          "candidate": null,
+          "delta": null
+        },
+        "expected_term_coverage": {
+          "baseline": null,
+          "candidate": null,
+          "delta": null
+        },
+        "avg_search_latency_ms": {
+          "baseline": 1618.93,
+          "candidate": 1690.01,
+          "delta": 71.08
+        },
+        "avg_ask_latency_ms": {
+          "baseline": 4.17,
+          "candidate": 4.8,
+          "delta": 0.63
+        }
+      }
+    },
+    "by_tag": {},
+    "case_changes": [
+      {
+        "id": "game10-004",
+        "question": "灯塔 AOI 相比九宫格有什么特点？",
+        "case_type": "lookup",
+        "tags": [],
+        "changes": {
+          "rank": {
+            "baseline": 2,
+            "candidate": 1
+          },
+          "top_file_path": {
+            "baseline": "E:/work/privy-blog/独立aoi进程.md",
+            "candidate": "E:/work/blog/游戏开发/aoi-algo.md"
+          },
+          "top_location": {
+            "baseline": "独立aoi进程.md:122-140",
+            "candidate": "aoi-algo.md:196-213"
+          }
+        }
+      },
+      {
+        "id": "game10-005",
+        "question": "帧同步有哪些优点？",
+        "case_type": "lookup",
+        "tags": [],
+        "changes": {
+          "top_location": {
+            "baseline": "network-sync.md:71-89",
+            "candidate": "network-sync.md:70-88"
+          }
+        }
+      },
+      {
+        "id": "game10-006",
+        "question": "快照同步的主要缺点是什么？",
+        "case_type": "lookup",
+        "tags": [],
+        "changes": {
+          "top_location": {
+            "baseline": "network-sync.md:239-244",
+            "candidate": "network-sync.md:238-243"
+          }
+        }
+      },
+      {
+        "id": "game10-007",
+        "question": "分区分服有什么优点？",
+        "case_type": "lookup",
+        "tags": [],
+        "changes": {
+          "top_location": {
+            "baseline": "服务器架构设计.md:9-33",
+            "candidate": "服务器架构设计.md:8-32"
+          }
+        }
+      }
+    ]
+  }
+}

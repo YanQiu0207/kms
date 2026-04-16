@@ -5,6 +5,7 @@ from pathlib import Path
 
 from app.config import AppConfig, ChunkerConfig, DataConfig, ModelConfig, RetrievalConfig, SourceConfig
 from app.services import IndexingService
+from eval import benchmark as benchmark_module
 from eval.benchmark import load_benchmark_cases, run_benchmark
 
 
@@ -45,6 +46,7 @@ def test_load_benchmark_cases_supports_enhanced_fields(tmp_path: Path):
                 "question": "问题",
                 "queries": ["问题", "补充"],
                 "expected_file_paths": ["a.md"],
+                "linked_issue_ids": ["ISSUE-1", "ISSUE-2"],
                 "should_abstain": False,
                 "case_type": "rewrite",
                 "tags": ["ai", "rewrite"],
@@ -61,6 +63,7 @@ def test_load_benchmark_cases_supports_enhanced_fields(tmp_path: Path):
 
     assert len(cases) == 1
     assert cases[0].expected_file_paths == ("a.md",)
+    assert cases[0].linked_issue_ids == ("ISSUE-1", "ISSUE-2")
     assert cases[0].queries == ("问题", "补充")
     assert cases[0].case_type == "rewrite"
     assert cases[0].tags == ("ai", "rewrite")
@@ -89,6 +92,7 @@ def test_run_benchmark_computes_extended_metrics_and_breakdown(tmp_path: Path):
                         "question": "为什么不能只做向量检索？",
                         "queries": ["为什么不能只做向量检索", "混合检索 优势"],
                         "expected_file_paths": [str((source_dir / "rag.md").as_posix())],
+                        "linked_issue_ids": ["ISSUE-ANSWER-1"],
                         "should_abstain": False,
                         "case_type": "rewrite",
                         "tags": ["ai", "rewrite"],
@@ -143,6 +147,7 @@ def test_run_benchmark_computes_extended_metrics_and_breakdown(tmp_path: Path):
     assert answer_case.question == "为什么不能只做向量检索？"
     assert answer_case.case_type == "rewrite"
     assert answer_case.tags == ("ai", "rewrite")
+    assert answer_case.linked_issue_ids == ("ISSUE-ANSWER-1",)
     assert answer_case.search_hit is True
     assert answer_case.rank == 1
     assert answer_case.evidence_hit is True
@@ -156,3 +161,68 @@ def test_run_benchmark_computes_extended_metrics_and_breakdown(tmp_path: Path):
     assert payload["by_type"]["abstain"]["total_cases"] == 1
     assert payload["by_tag"]["ai"]["recall_at_k"] == 1.0
     assert payload["by_tag"]["negative"]["abstain_accuracy"] == 1.0
+
+
+def test_run_benchmark_supports_http_client_mode(tmp_path: Path, monkeypatch):
+    benchmark = tmp_path / "benchmark.jsonl"
+    benchmark.write_text(
+        json.dumps(
+            {
+                "id": "answer-1",
+                "question": "Claude Code 里 subagent 的基础概念是什么？",
+                "queries": ["subagent 基础 概念", "Claude Code subagent"],
+                "expected_file_paths": ["E:/work/blog/ai/claude-code/2-subagent-base.md"],
+                "should_abstain": False,
+                "case_type": "rewrite",
+                "tags": ["ai"],
+                "min_expected_sources": 1,
+            },
+            ensure_ascii=False,
+        ),
+        encoding="utf-8",
+    )
+
+    def _fake_search(self, queries):
+        return {
+            "results": [
+                {
+                    "chunk_id": "chunk-1",
+                    "file_path": "E:/work/blog/ai/claude-code/2-subagent-base.md",
+                    "location": "2-subagent-base.md:1-20",
+                    "title_path": ["子代理"],
+                    "text": "子代理相当于一个专职小助手。",
+                    "score": 0.97,
+                    "doc_id": "doc-1",
+                }
+            ]
+        }
+
+    def _fake_ask(self, question, queries):
+        return {
+            "abstained": False,
+            "confidence": 0.91,
+            "prompt": "prompt",
+            "abstain_reason": None,
+            "sources": [
+                {
+                    "ref_index": 1,
+                    "chunk_id": "chunk-1",
+                    "file_path": "E:/work/blog/ai/claude-code/2-subagent-base.md",
+                    "location": "2-subagent-base.md:1-20",
+                    "title_path": ["子代理"],
+                    "text": "子代理相当于一个专职小助手。",
+                    "score": 0.97,
+                    "doc_id": "doc-1",
+                }
+            ],
+        }
+
+    monkeypatch.setattr(benchmark_module.BenchmarkHttpClient, "search", _fake_search)
+    monkeypatch.setattr(benchmark_module.BenchmarkHttpClient, "ask", _fake_ask)
+
+    summary = run_benchmark(benchmark, base_url="http://127.0.0.1:49153")
+
+    assert summary.total_cases == 1
+    assert summary.recall_at_k == 1.0
+    assert summary.abstain_accuracy == 1.0
+    assert summary.case_results[0].top_file_path == "E:/work/blog/ai/claude-code/2-subagent-base.md"

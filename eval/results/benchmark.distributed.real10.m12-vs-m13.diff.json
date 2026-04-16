@@ -1,0 +1,211 @@
+{
+  "benchmark": {
+    "overall": {
+      "recall_at_k": {
+        "baseline": 1.0,
+        "candidate": 1.0,
+        "delta": 0.0
+      },
+      "mrr": {
+        "baseline": 0.9167,
+        "candidate": 0.9167,
+        "delta": 0.0
+      },
+      "abstain_accuracy": {
+        "baseline": 1.0,
+        "candidate": 0.8,
+        "delta": -0.2
+      },
+      "abstain_precision": {
+        "baseline": 1.0,
+        "candidate": 0.5,
+        "delta": -0.5
+      },
+      "abstain_recall": {
+        "baseline": 1.0,
+        "candidate": 0.5,
+        "delta": -0.5
+      },
+      "false_abstain_rate": {
+        "baseline": 0.0,
+        "candidate": 0.125,
+        "delta": 0.125
+      },
+      "false_answer_rate": {
+        "baseline": 0.0,
+        "candidate": 0.5,
+        "delta": 0.5
+      },
+      "evidence_hit_rate": {
+        "baseline": 1.0,
+        "candidate": 0.875,
+        "delta": -0.125
+      },
+      "evidence_source_recall": {
+        "baseline": 1.0,
+        "candidate": 0.875,
+        "delta": -0.125
+      },
+      "source_count_satisfaction_rate": {
+        "baseline": null,
+        "candidate": null,
+        "delta": null
+      },
+      "expected_term_coverage": {
+        "baseline": null,
+        "candidate": null,
+        "delta": null
+      },
+      "avg_search_latency_ms": {
+        "baseline": 1947.04,
+        "candidate": 1792.38,
+        "delta": -154.66
+      },
+      "avg_ask_latency_ms": {
+        "baseline": 3.95,
+        "candidate": 3.68,
+        "delta": -0.27
+      }
+    },
+    "by_type": {
+      "lookup": {
+        "recall_at_k": {
+          "baseline": 1.0,
+          "candidate": 1.0,
+          "delta": 0.0
+        },
+        "mrr": {
+          "baseline": 0.9167,
+          "candidate": 0.9167,
+          "delta": 0.0
+        },
+        "abstain_accuracy": {
+          "baseline": 1.0,
+          "candidate": 0.8,
+          "delta": -0.2
+        },
+        "abstain_precision": {
+          "baseline": 1.0,
+          "candidate": 0.5,
+          "delta": -0.5
+        },
+        "abstain_recall": {
+          "baseline": 1.0,
+          "candidate": 0.5,
+          "delta": -0.5
+        },
+        "false_abstain_rate": {
+          "baseline": 0.0,
+          "candidate": 0.125,
+          "delta": 0.125
+        },
+        "false_answer_rate": {
+          "baseline": 0.0,
+          "candidate": 0.5,
+          "delta": 0.5
+        },
+        "evidence_hit_rate": {
+          "baseline": 1.0,
+          "candidate": 0.875,
+          "delta": -0.125
+        },
+        "evidence_source_recall": {
+          "baseline": 1.0,
+          "candidate": 0.875,
+          "delta": -0.125
+        },
+        "source_count_satisfaction_rate": {
+          "baseline": null,
+          "candidate": null,
+          "delta": null
+        },
+        "expected_term_coverage": {
+          "baseline": null,
+          "candidate": null,
+          "delta": null
+        },
+        "avg_search_latency_ms": {
+          "baseline": 1947.04,
+          "candidate": 1792.38,
+          "delta": -154.66
+        },
+        "avg_ask_latency_ms": {
+          "baseline": 3.95,
+          "candidate": 3.68,
+          "delta": -0.27
+        }
+      }
+    },
+    "by_tag": {},
+    "case_changes": [
+      {
+        "id": "dist10-004",
+        "question": "逻辑时钟解决了什么问题？",
+        "case_type": "lookup",
+        "tags": [],
+        "changes": {
+          "source_count": {
+            "baseline": 6,
+            "candidate": 5
+          }
+        }
+      },
+      {
+        "id": "dist10-005",
+        "question": "TrueTime 的关键价值是什么？",
+        "case_type": "lookup",
+        "tags": [],
+        "changes": {
+          "abstained": {
+            "baseline": false,
+            "candidate": true
+          },
+          "abstain_correct": {
+            "baseline": true,
+            "candidate": false
+          },
+          "source_count": {
+            "baseline": 5,
+            "candidate": 0
+          },
+          "matched_source_count": {
+            "baseline": 1,
+            "candidate": 0
+          },
+          "evidence_hit": {
+            "baseline": true,
+            "candidate": false
+          }
+        }
+      },
+      {
+        "id": "dist10-010",
+        "question": "文档里有没有介绍 ZooKeeper watch 机制？",
+        "case_type": "lookup",
+        "tags": [],
+        "changes": {
+          "abstained": {
+            "baseline": true,
+            "candidate": false
+          },
+          "abstain_correct": {
+            "baseline": true,
+            "candidate": false
+          },
+          "source_count": {
+            "baseline": 0,
+            "candidate": 5
+          },
+          "top_file_path": {
+            "baseline": "E:/work/blog/分布式基础/共识/raft_learning_plan.md",
+            "candidate": "E:/notes/设计模式/18.0 观察者模式.md"
+          },
+          "top_location": {
+            "baseline": "raft_learning_plan.md:259-263",
+            "candidate": "18.0 观察者模式.md:1"
+          }
+        }
+      }
+    ]
+  }
+}

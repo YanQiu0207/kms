@@ -11,6 +11,8 @@ import time
 from urllib.error import URLError
 from urllib.request import urlopen
 
+from process_utils import find_listening_pid, pid_exists
+
 ROOT = Path(__file__).resolve().parents[1]
 if str(ROOT) not in sys.path:
     sys.path.insert(0, str(ROOT))
@@ -33,14 +35,6 @@ def _resolve_runtime_python() -> str:
         return str(venv_python)
 
     return sys.executable
-
-
-def _pid_exists(pid: int) -> bool:
-    try:
-        os.kill(pid, 0)
-    except OSError:
-        return False
-    return True
 
 
 def _wait_for_health(host: str, port: int, timeout_seconds: float) -> bool:
@@ -81,13 +75,30 @@ def main() -> int:
     stdout_path = log_dir / "kms-api.stdout.log"
     stderr_path = log_dir / "kms-api.stderr.log"
 
+    listening_pid = find_listening_pid(port)
+    if listening_pid and pid_exists(listening_pid):
+        payload = {
+            "pid": listening_pid,
+            "host": host,
+            "port": port,
+            "config_path": str(config_path.resolve()),
+            "python": "unknown",
+            "log_dir": str(log_dir),
+            "stdout_log": str(stdout_path),
+            "stderr_log": str(stderr_path),
+            "started_at": format_local_datetime(),
+        }
+        pid_file.write_text(json.dumps(payload, ensure_ascii=False, indent=2), encoding="utf-8")
+        print(json.dumps({"status": "already_running", **payload, "pid_file": str(pid_file)}, ensure_ascii=False))
+        return 0
+
     if pid_file.exists():
         try:
             existing = json.loads(pid_file.read_text(encoding="utf-8"))
         except json.JSONDecodeError:
             existing = {}
         existing_pid = int(existing.get("pid") or 0)
-        if existing_pid and _pid_exists(existing_pid):
+        if existing_pid and pid_exists(existing_pid):
             print(json.dumps({"status": "already_running", "pid": existing_pid, "pid_file": str(pid_file)}, ensure_ascii=False))
             return 0
         pid_file.unlink(missing_ok=True)
@@ -113,17 +124,30 @@ def main() -> int:
             creationflags=creationflags,
         )
 
-    ready = _wait_for_health(host, port, args.timeout)
+    deadline = time.time() + args.timeout
+    ready = False
+    listening_pid = None
+    while time.time() < deadline:
+        if process.poll() is not None:
+            break
+        listening_pid = find_listening_pid(port)
+        if listening_pid and _wait_for_health(host, port, 2):
+            ready = True
+            break
+        time.sleep(1)
     if not ready:
         if os.name == "nt":
-            process.terminate()
+            if process.poll() is None:
+                process.terminate()
         else:
-            os.kill(process.pid, signal.SIGTERM)
+            if process.poll() is None:
+                os.kill(process.pid, signal.SIGTERM)
         print(
             json.dumps(
                 {
-                    "status": "startup_timeout",
+                    "status": "startup_failed" if process.poll() is not None else "startup_timeout",
                     "pid": process.pid,
+                    "exit_code": process.poll(),
                     "host": host,
                     "port": port,
                     "stdout_log": str(stdout_path),
@@ -135,7 +159,7 @@ def main() -> int:
         return 1
 
     payload = {
-        "pid": process.pid,
+        "pid": listening_pid or process.pid,
         "host": host,
         "port": port,
         "config_path": str(config_path.resolve()),

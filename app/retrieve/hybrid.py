@@ -1,15 +1,16 @@
 from __future__ import annotations
 
 from dataclasses import dataclass, replace
-from pathlib import Path
 from typing import Sequence
 
 from app.config import AppConfig
 from app.observability import get_logger, timed_operation
+from app.query_understanding import QueryProfile
 from app.store import SQLiteMetadataStore
 
 from .contracts import RetrievedChunk, RetrievalError, SearchDebug, SearchResultSet
 from .lexical import LexicalRetriever
+from .ranking_pipeline import RankingPipelineContext, run_ranking_pipeline
 from .rerank import RerankerProtocol, build_reranker
 from .semantic import EmbeddingEncoder, SemanticRetriever, build_embedding_encoder
 
@@ -28,25 +29,36 @@ def _normalize_queries(queries: Sequence[str] | str) -> tuple[str, ...]:
     return tuple(query.strip() for query in queries if query and query.strip())
 
 
-def _unique_queries(queries: Sequence[str]) -> tuple[str, ...]:
-    unique_queries: list[str] = []
-    seen: set[str] = set()
-    for query in queries:
-        if query in seen:
-            continue
-        seen.add(query)
-        unique_queries.append(query)
-    return tuple(unique_queries)
+def _source_type(source: str) -> str:
+    return source.split(":", 1)[0].strip().casefold()
 
 
-def _add_rrf_score(bucket: dict[str, _FusedCandidate], hit: RetrievedChunk, *, rank: int, rrf_k: int, source: str) -> None:
+def _fusion_weights_for_query_type(config: AppConfig, query_type: str | None) -> dict[str, float]:
+    weights = dict(config.retrieval.query_type_fusion_weights.get((query_type or "").strip(), {}))
+    return {
+        "lexical": float(weights.get("lexical", 1.0) or 1.0),
+        "semantic": float(weights.get("semantic", 1.0) or 1.0),
+    }
+
+
+def _add_rrf_score(
+    bucket: dict[str, _FusedCandidate],
+    hit: RetrievedChunk,
+    *,
+    rank: int,
+    rrf_k: int,
+    source: str,
+    source_weights: dict[str, float],
+) -> None:
     chunk_id = hit.chunk_id or hit.document_id
     candidate = bucket.get(chunk_id)
     if candidate is None:
         candidate = _FusedCandidate(chunk=hit)
         bucket[chunk_id] = candidate
 
-    candidate.rrf_score += 1.0 / float(rrf_k + rank)
+    source_type = _source_type(source)
+    source_weight = float(source_weights.get(source_type, 1.0) or 1.0)
+    candidate.rrf_score += source_weight * (1.0 / float(rrf_k + rank))
 
     metadata = dict(candidate.chunk.metadata)
     metadata.setdefault("source_hits", [])
@@ -54,6 +66,10 @@ def _add_rrf_score(bucket: dict[str, _FusedCandidate], hit: RetrievedChunk, *, r
     source_hits.append(source)
     metadata["source_hits"] = source_hits
     metadata["rrf_score"] = candidate.rrf_score
+    metadata.setdefault("fusion_weights", {})
+    fusion_weights = dict(metadata["fusion_weights"]) if isinstance(metadata["fusion_weights"], dict) else {}
+    fusion_weights[source_type] = source_weight
+    metadata["fusion_weights"] = fusion_weights
     if source.startswith("lexical"):
         metadata["lexical_score"] = float(hit.metadata.get("lexical_score", hit.score or 0.0) or 0.0)
     if source.startswith("semantic"):
@@ -65,11 +81,13 @@ def reciprocal_rank_fusion(
     candidate_lists: Sequence[tuple[str, Sequence[RetrievedChunk]]],
     *,
     rrf_k: int = 60,
+    source_weights: dict[str, float] | None = None,
 ) -> tuple[RetrievedChunk, ...]:
     bucket: dict[str, _FusedCandidate] = {}
+    source_weights = dict(source_weights or {})
     for source, hits in candidate_lists:
         for rank, hit in enumerate(hits, start=1):
-            _add_rrf_score(bucket, hit, rank=rank, rrf_k=rrf_k, source=source)
+            _add_rrf_score(bucket, hit, rank=rank, rrf_k=rrf_k, source=source, source_weights=source_weights)
 
     ranked = sorted(
         bucket.values(),
@@ -115,59 +133,6 @@ def _build_reranker(config: AppConfig, reranker: RerankerProtocol | None = None)
     )
 
 
-def _filter_low_score_results(results: Sequence[RetrievedChunk], *, min_output_score: float) -> tuple[RetrievedChunk, ...]:
-    threshold = max(0.0, float(min_output_score))
-    if threshold <= 0.0:
-        return tuple(results)
-    return tuple(chunk for chunk in results if float(chunk.score or 0.0) >= threshold)
-
-
-def _limit_rerank_candidates(results: Sequence[RetrievedChunk], *, candidate_limit: int) -> tuple[RetrievedChunk, ...]:
-    limit = max(0, int(candidate_limit))
-    if limit <= 0:
-        return tuple(results)
-    return tuple(results[:limit])
-
-
-def _rerank_candidates(
-    reranker: RerankerProtocol,
-    queries: Sequence[str],
-    candidates: Sequence[RetrievedChunk],
-    *,
-    top_k: int | None = None,
-) -> tuple[RetrievedChunk, ...]:
-    if not candidates:
-        return ()
-
-    unique_queries = _unique_queries(queries)
-    if not unique_queries:
-        return ()
-
-    if len(unique_queries) == 1:
-        return tuple(reranker.rerank(unique_queries[0], candidates, top_k=top_k))
-
-    best_by_chunk_id: dict[str, RetrievedChunk] = {}
-    for query in unique_queries:
-        reranked = reranker.rerank(query, candidates, top_k=None)
-        for rank, chunk in enumerate(reranked, start=1):
-            chunk_id = chunk.chunk_id or chunk.document_id
-            metadata = dict(chunk.metadata or {})
-            metadata["rerank_query"] = query
-            metadata["rerank_query_rank"] = rank
-            reranked_chunk = replace(chunk, metadata=metadata)
-            current = best_by_chunk_id.get(chunk_id)
-            if current is None or float(reranked_chunk.score or 0.0) > float(current.score or 0.0):
-                best_by_chunk_id[chunk_id] = reranked_chunk
-
-    merged = sorted(
-        best_by_chunk_id.values(),
-        key=lambda item: (-float(item.score or 0.0), item.chunk_id or item.document_id),
-    )
-    if top_k is not None:
-        return tuple(merged[: max(0, int(top_k))])
-    return tuple(merged)
-
-
 @dataclass(slots=True)
 class HybridRetrievalService:
     """End-to-end hybrid retrieval pipeline used by `/search`."""
@@ -211,6 +176,7 @@ class HybridRetrievalService:
         queries: Sequence[str] | str,
         recall_top_k: int | None = None,
         rerank_top_k: int | None = None,
+        query_type: str | None = None,
     ) -> SearchResultSet:
         cleaned_queries = _normalize_queries(queries)
         if not cleaned_queries:
@@ -219,12 +185,16 @@ class HybridRetrievalService:
         recall_top_k = self.config.retrieval.recall_top_k if recall_top_k is None else int(recall_top_k)
         rrf_k = self.config.retrieval.rrf_k if self.rrf_k is None else int(self.rrf_k)
 
+        fusion_weights = _fusion_weights_for_query_type(self.config, query_type)
+
         with timed_operation(
             LOGGER,
             "retrieval.search",
             query_count=len(cleaned_queries),
             recall_top_k=recall_top_k,
             rrf_k=rrf_k,
+            query_type=query_type,
+            fusion_weights=fusion_weights,
         ) as span:
             with SQLiteMetadataStore(self.config.data.sqlite) as metadata_store:
                 lexical = self.lexical_retriever or _build_lexical_retriever(metadata_store)
@@ -237,7 +207,11 @@ class HybridRetrievalService:
                         lexical_span.set(hit_count=len(lexical_hits))
                     candidate_lists.append((f"lexical:{query}", lexical_hits))
 
-                if len(cleaned_queries) > 1 and callable(getattr(semantic, "search_many", None)):
+                if self.config.retrieval.semantic_enabled and (
+                    self.config.retrieval.semantic_batch_enabled
+                    and len(cleaned_queries) > 1
+                    and callable(getattr(semantic, "search_many", None))
+                ):
                     with timed_operation(
                         LOGGER,
                         "retrieval.semantic_stage",
@@ -252,14 +226,14 @@ class HybridRetrievalService:
                         )
                     for query, semantic_hits in zip(cleaned_queries, semantic_batches, strict=True):
                         candidate_lists.append((f"semantic:{query}", semantic_hits))
-                else:
+                elif self.config.retrieval.semantic_enabled:
                     for query in cleaned_queries:
                         with timed_operation(LOGGER, "retrieval.semantic_stage", query=query, limit=recall_top_k) as semantic_span:
                             semantic_hits = semantic.search(query, limit=recall_top_k)
                             semantic_span.set(hit_count=len(semantic_hits))
                         candidate_lists.append((f"semantic:{query}", semantic_hits))
 
-                fused = reciprocal_rank_fusion(candidate_lists, rrf_k=rrf_k)
+                fused = reciprocal_rank_fusion(candidate_lists, rrf_k=rrf_k, source_weights=fusion_weights)
                 span.set(candidate_list_count=len(candidate_lists), fused_count=len(fused))
                 debug = SearchDebug(
                     queries_count=len(cleaned_queries),
@@ -273,6 +247,8 @@ class HybridRetrievalService:
         queries: Sequence[str] | str,
         recall_top_k: int | None = None,
         rerank_top_k: int | None = None,
+        query_profile: QueryProfile | None = None,
+        alias_groups: Sequence[Sequence[str]] | None = None,
     ) -> SearchResultSet:
         cleaned_queries = _normalize_queries(queries)
         if not cleaned_queries:
@@ -286,29 +262,37 @@ class HybridRetrievalService:
             rerank_top_k=rerank_top_k,
         ) as span:
             rerank_top_k = self.config.retrieval.rerank_top_k if rerank_top_k is None else int(rerank_top_k)
-            fused = self.search(cleaned_queries, recall_top_k=recall_top_k)
-            candidates = _limit_rerank_candidates(
-                fused.results,
-                candidate_limit=self.config.retrieval.rerank_candidate_limit,
+            fused = self.search(
+                cleaned_queries,
+                recall_top_k=recall_top_k,
+                query_type=query_profile.query_type if query_profile is not None else None,
             )
             reranker = _build_reranker(self.config, self.reranker)
-            reranked = _rerank_candidates(
-                reranker,
-                cleaned_queries,
-                candidates,
-                top_k=rerank_top_k,
+            ranking_context = RankingPipelineContext(
+                config=self.config,
+                queries=tuple(cleaned_queries),
+                reranker=reranker,
+                rerank_top_k=rerank_top_k,
+                query_profile=query_profile,
+                alias_groups=tuple(tuple(group) for group in (alias_groups or ())),
             )
-            filtered = _filter_low_score_results(
-                reranked,
-                min_output_score=self.config.retrieval.min_output_score,
+            ranked = run_ranking_pipeline(
+                fused.results,
+                context=ranking_context,
+                steps=self.config.retrieval.ranking_pipeline,
             )
-            span.set(recall_count=len(fused.results), candidate_count=len(candidates), rerank_count=len(filtered))
+            span.set(
+                recall_count=len(fused.results),
+                candidate_count=ranking_context.counts.get("candidate_count", len(fused.results)),
+                constrained_candidate_count=ranking_context.counts.get("constrained_candidate_count", len(ranked)),
+                rerank_count=len(ranked),
+            )
             debug = SearchDebug(
                 queries_count=fused.debug.queries_count,
                 recall_count=fused.debug.recall_count,
-                rerank_count=len(filtered),
+                rerank_count=len(ranked),
             )
-            return SearchResultSet(results=filtered, debug=debug)
+            return SearchResultSet(results=ranked, debug=debug)
 
     def retrieve(self, query: str, limit: int = 5) -> Sequence[RetrievedChunk]:
         return self.search_and_rerank(query, recall_top_k=limit, rerank_top_k=limit).results

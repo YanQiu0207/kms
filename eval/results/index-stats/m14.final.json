@@ -1,0 +1,188 @@
+{
+  "sqlite_path": "data\\meta.db",
+  "document_count": 590,
+  "chunk_count": 5356,
+  "chunk_length_chars": {
+    "count": 5356,
+    "min": 1,
+    "max": 800,
+    "avg": 178.7819,
+    "median": 86.0
+  },
+  "chunk_token_count": {
+    "count": 5356,
+    "min": 0,
+    "max": 639,
+    "avg": 95.3575,
+    "median": 50.0
+  },
+  "chunks_per_document": {
+    "count": 575,
+    "min": 1,
+    "max": 1357,
+    "avg": 9.3148,
+    "median": 5.0
+  },
+  "exact_duplicate_groups": 58,
+  "exact_duplicate_chunk_count": 83,
+  "exact_duplicate_chunk_ratio": 0.0155,
+  "top_repeated_snippets": [
+    {
+      "normalized_preview": "## 扩展",
+      "occurrences": 8,
+      "sample_chunk_ids": [
+        "c8a74cdaa13264d29d83d25aed113598f730cf14",
+        "3cea281695b3e17be056443a88e1988d2fa44eb2",
+        "ecfb268f4f72e148dc2596052a05e296eccedb69"
+      ],
+      "sample_file_paths": [
+        "E:/work/blog/应用架构/ddd.md",
+        "E:/notes/设计模式/12.0 装饰者模式.md",
+        "E:/notes/设计模式/13.0 策略模式.md"
+      ]
+    },
+    {
+      "normalized_preview": "## 实现",
+      "occurrences": 6,
+      "sample_chunk_ids": [
+        "f7d121049100a980ecba1bb4171df515c5e6027e",
+        "24874d0b96376bfc8cf3bace049fc9eb06b0a9ba",
+        "5d579d9f7d9fc901b5508032df77b92c188f7764"
+      ],
+      "sample_file_paths": [
+        "E:/work/privy-blog/独立aoi进程.md",
+        "E:/notes/coroutine/协程切换.md",
+        "E:/notes/libco/hook 系统调用.md"
+      ]
+    },
+    {
+      "normalized_preview": "# 移动语义",
+      "occurrences": 5,
+      "sample_chunk_ids": [
+        "0e1dab23f71aec0618ce14948cc4cf2e8041d4da",
+        "e313e276f980cce6aecb0773ad5d487bf595458d",
+        "3fba9b16aed31bc79db1899dfcac1cfe5665993c"
+      ],
+      "sample_file_paths": [
+        "E:/notes/c++11新特性/移动/移动语义.md",
+        "E:/notes/c++11新特性/移动语义.md",
+        "E:/notes/c++常见问题/右值引用.md"
+      ]
+    },
+    {
+      "normalized_preview": "## 右值引用的意义 意义： - **移动语义**。触发移动操作，窃取即将销毁对象的资源，减少拷贝的次数。 - **完美转发**。将实参的原始类型转发给目标函数，确保转发函数和目标函数接收到的实参是完全一样的。",
+      "occurrences": 5,
+      "sample_chunk_ids": [
+        "dd038317008172dcaa8d7e95ce91ff8202180612",
+        "43bb17ea749cde62d03baefdc309eeda7bbd1bef",
+        "7c0d9c8205e6bde54fc0853f7bf2f888953bdf8a"
+      ],
+      "sample_file_paths": [
+        "E:/notes/c++11新特性/移动/移动语义.md",
+        "E:/notes/c++11新特性/移动语义.md",
+        "E:/notes/c++常见问题/右值引用.md"
+      ]
+    },
+    {
+      "normalized_preview": "## 右值引用 **右值引用**就是对一个右值进行引用的类型。事实上，**由于右值通常不具有名字，我们也只能通过引用的方式找到它的存在**。通常情况下，右值引用是不能够绑定到任何左值的。 **常量左值引用**是一个万能的引用类型。它可...",
+      "occurrences": 4,
+      "sample_chunk_ids": [
+        "dd9cc8f7ad8f31037df8e3969e94de94c63f7e7a",
+        "b2a8203e48a133a6572bdefce976f86d023dc16a",
+        "6a1373915c0da25b4e48635bcd5e192f3bbdcb0c"
+      ],
+      "sample_file_paths": [
+        "E:/notes/c++11新特性/移动/移动语义.md",
+        "E:/notes/c++11新特性/移动语义.md",
+        "E:/notes/c++常见问题/右值引用.md"
+      ]
+    },
+    {
+      "normalized_preview": "## 左值、右值 如何区分左值和右值？ - **左值**：可以取地址、有名字的就是左值 - **右值**：不能取地址、没有名字的就是右值。在C++11中，右值又分为**将亡值**和**纯右值** - 纯右值：函数返回的临时变量值，一些...",
+      "occurrences": 4,
+      "sample_chunk_ids": [
+        "43d1a84c836a8216506abeb9a628f736f392d08d",
+        "1a4576fb678d1d872ec2f7b9997211c5e1047161",
+        "562a4923faa3d0cdc24181e6572a0d04edcf8d0d"
+      ],
+      "sample_file_paths": [
+        "E:/notes/c++11新特性/移动/移动语义.md",
+        "E:/notes/c++11新特性/移动语义.md",
+        "E:/notes/c++常见问题/右值引用.md"
+      ]
+    },
+    {
+      "normalized_preview": "### 移动 `std::move` 函数没有移动任何东西，唯一的功能是**将一个左值强制转化为右值引用，继而将右值引用用于移动语义，以窃取左值的资源。**。如果我们用这个右值来初始化对象或把这个右值赋予对象，就会触发移动操作，例如 ...",
+      "occurrences": 4,
+      "sample_chunk_ids": [
+        "9e2ab6eb733ff654b5ec3ce4659df8a66acc2d49",
+        "1a22a112026c214a4e14d915334ea27f48f8ae45",
+        "2e7c664c634252b6a77198570b6adf2dfd5c2477"
+      ],
+      "sample_file_paths": [
+        "E:/notes/c++11新特性/移动/移动语义.md",
+        "E:/notes/c++11新特性/移动语义.md",
+        "E:/notes/c++常见问题/右值引用.md"
+      ]
+    },
+    {
+      "normalized_preview": "## 实战",
+      "occurrences": 3,
+      "sample_chunk_ids": [
+        "5f3263ce8fc2866a00f42e408ec9d3d457a6ed6a",
+        "5aa7444b1f882b31429daa38b7c7f1ddf3905190",
+        "5b886e13091f9b30878d1b2f81511f8e61995ca8"
+      ],
+      "sample_file_paths": [
+        "E:/work/blog/ai/claude-code/1-memory.md",
+        "E:/work/blog/摄影/mobile-phone.md",
+        "E:/notes/数据结构与算法/39 回溯算法.md"
+      ]
+    },
+    {
+      "normalized_preview": "## 应用",
+      "occurrences": 3,
+      "sample_chunk_ids": [
+        "0e673b0fdc1207da322a8abb435cb6d0ce5c85a3",
+        "eecb31a7c16ea5504660ef3c06ef127e344c4857",
+        "c4e8790e80fba9411b91efe355f8d554ff993632"
+      ],
+      "sample_file_paths": [
+        "E:/work/blog/分布式基础/Lease.md",
+        "E:/work/blog/分布式基础/事件排序/hlc.md",
+        "E:/notes/数据结构与算法/20. 哈希算法（上）.md"
+      ]
+    },
+    {
+      "normalized_preview": "## 适用场景",
+      "occurrences": 3,
+      "sample_chunk_ids": [
+        "8158e2c96ec8652d4b07152905acc4ba087ad3ad",
+        "51b7b5a3794df9ad121fd25b86a310bf89622883",
+        "4af0ff656424b3510d7be63cc1eb9a9a40778c92"
+      ],
+      "sample_file_paths": [
+        "E:/notes/系统架构/架构设计.md",
+        "E:/notes/系统架构/缓存/进程内缓存.md",
+        "E:/notes/设计模式/2.0 单例模式.md"
+      ]
+    }
+  ],
+  "by_source": [
+    {
+      "source_id": "4d47b33ec28f",
+      "document_count": 4,
+      "chunk_count": 31
+    },
+    {
+      "source_id": "d3a6b6c9f8b1",
+      "document_count": 107,
+      "chunk_count": 2371
+    },
+    {
+      "source_id": "d639f54124bb",
+      "document_count": 479,
+      "chunk_count": 2954
+    }
+  ]
+}

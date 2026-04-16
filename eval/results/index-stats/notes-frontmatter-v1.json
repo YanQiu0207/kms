@@ -1,0 +1,174 @@
+{
+  "sqlite_path": "data\\meta.notes-frontmatter.db",
+  "document_count": 466,
+  "chunk_count": 2849,
+  "chunk_length_chars": {
+    "count": 2849,
+    "min": 3,
+    "max": 800,
+    "avg": 210.0541,
+    "median": 135.0
+  },
+  "chunk_token_count": {
+    "count": 2849,
+    "min": 1,
+    "max": 622,
+    "avg": 103.9561,
+    "median": 74.0
+  },
+  "chunks_per_document": {
+    "count": 466,
+    "min": 1,
+    "max": 58,
+    "avg": 6.1137,
+    "median": 5.0
+  },
+  "exact_duplicate_groups": 51,
+  "exact_duplicate_chunk_count": 72,
+  "exact_duplicate_chunk_ratio": 0.0253,
+  "top_repeated_snippets": [
+    {
+      "normalized_preview": "## 扩展",
+      "occurrences": 7,
+      "sample_chunk_ids": [
+        "5077d85a02900be475280306b84008df5e14dd38",
+        "d904a4b9ea7d2bc40ed89cf4544c735933acc09e",
+        "408917e06629db6dd921197cdc4e31de4b2fdf3b"
+      ],
+      "sample_file_paths": [
+        "E:/github/mykms/data/corpora/e-notes-frontmatter-v1/设计模式/12.0 装饰者模式.md",
+        "E:/github/mykms/data/corpora/e-notes-frontmatter-v1/设计模式/13.0 策略模式.md",
+        "E:/github/mykms/data/corpora/e-notes-frontmatter-v1/设计模式/17.0 组合模式.md"
+      ]
+    },
+    {
+      "normalized_preview": "# 移动语义",
+      "occurrences": 5,
+      "sample_chunk_ids": [
+        "3f9bb0b59c66406440a5b6e4f7ac700eca516c77",
+        "2d282f1832964382a3a95e14281bcf9c5ee8a178",
+        "5e38290f9f457920bf6b31d2707223ae5b65a7b2"
+      ],
+      "sample_file_paths": [
+        "E:/github/mykms/data/corpora/e-notes-frontmatter-v1/c++11新特性/移动/移动语义.md",
+        "E:/github/mykms/data/corpora/e-notes-frontmatter-v1/c++11新特性/移动语义.md",
+        "E:/github/mykms/data/corpora/e-notes-frontmatter-v1/c++常见问题/右值引用.md"
+      ]
+    },
+    {
+      "normalized_preview": "## 右值引用的意义 意义： - **移动语义**。触发移动操作，窃取即将销毁对象的资源，减少拷贝的次数。 - **完美转发**。将实参的原始类型转发给目标函数，确保转发函数和目标函数接收到的实参是完全一样的。",
+      "occurrences": 5,
+      "sample_chunk_ids": [
+        "6c96fed0113d4dc9eb0e80da6654eb2b6032f03c",
+        "d0991a9836983117f600b3fd49a785752267149b",
+        "28a571c75791a70774bef5c2df0ac15637daa81c"
+      ],
+      "sample_file_paths": [
+        "E:/github/mykms/data/corpora/e-notes-frontmatter-v1/c++11新特性/移动/移动语义.md",
+        "E:/github/mykms/data/corpora/e-notes-frontmatter-v1/c++11新特性/移动语义.md",
+        "E:/github/mykms/data/corpora/e-notes-frontmatter-v1/c++常见问题/右值引用.md"
+      ]
+    },
+    {
+      "normalized_preview": "## 实现",
+      "occurrences": 5,
+      "sample_chunk_ids": [
+        "258d35a4b3d5be3164e44e207b12d2d272dfa4b4",
+        "b41e8159f4f4ce564684ad9a4c1ca8d07ea21e70",
+        "b0fcb6b90e38b1ea6eb3ef0196664dc0ab8b80d2"
+      ],
+      "sample_file_paths": [
+        "E:/github/mykms/data/corpora/e-notes-frontmatter-v1/coroutine/协程切换.md",
+        "E:/github/mykms/data/corpora/e-notes-frontmatter-v1/libco/hook 系统调用.md",
+        "E:/github/mykms/data/corpora/e-notes-frontmatter-v1/线程同步/lock-free/2.2 acquire-release关系.md"
+      ]
+    },
+    {
+      "normalized_preview": "## 右值引用 **右值引用**就是对一个右值进行引用的类型。事实上，**由于右值通常不具有名字，我们也只能通过引用的方式找到它的存在**。通常情况下，右值引用是不能够绑定到任何左值的。 **常量左值引用**是一个万能的引用类型。它可...",
+      "occurrences": 4,
+      "sample_chunk_ids": [
+        "48b84022f6019d4a1c71e5ab9734a681d98d5f58",
+        "ab98909d6db1f8a1145c91dceaeb111beb4498a9",
+        "418363b22277d8617d9448e6c5d66a4127cecb9c"
+      ],
+      "sample_file_paths": [
+        "E:/github/mykms/data/corpora/e-notes-frontmatter-v1/c++11新特性/移动/移动语义.md",
+        "E:/github/mykms/data/corpora/e-notes-frontmatter-v1/c++11新特性/移动语义.md",
+        "E:/github/mykms/data/corpora/e-notes-frontmatter-v1/c++常见问题/右值引用.md"
+      ]
+    },
+    {
+      "normalized_preview": "## 左值、右值 如何区分左值和右值？ - **左值**：可以取地址、有名字的就是左值 - **右值**：不能取地址、没有名字的就是右值。在C++11中，右值又分为**将亡值**和**纯右值** - 纯右值：函数返回的临时变量值，一些...",
+      "occurrences": 4,
+      "sample_chunk_ids": [
+        "ee712ac36161adbaf442ccea589fbad12d79ebbd",
+        "d91c38779f1ae33e2ac4151bc8417eaea0ba2e72",
+        "1d45e475a8366986785652e03256a706e0ef9ebb"
+      ],
+      "sample_file_paths": [
+        "E:/github/mykms/data/corpora/e-notes-frontmatter-v1/c++11新特性/移动/移动语义.md",
+        "E:/github/mykms/data/corpora/e-notes-frontmatter-v1/c++11新特性/移动语义.md",
+        "E:/github/mykms/data/corpora/e-notes-frontmatter-v1/c++常见问题/右值引用.md"
+      ]
+    },
+    {
+      "normalized_preview": "### 移动 `std::move` 函数没有移动任何东西，唯一的功能是**将一个左值强制转化为右值引用，继而将右值引用用于移动语义，以窃取左值的资源。**。如果我们用这个右值来初始化对象或把这个右值赋予对象，就会触发移动操作，例如 ...",
+      "occurrences": 4,
+      "sample_chunk_ids": [
+        "20d761949b2e0e4c1eb8369e8d439c69a652f5c0",
+        "b7af92ca7155f390b3aae210fd6669c1c38ed968",
+        "1c37d04cade5dfa3c4e8c2b95b3a0cec23d43a13"
+      ],
+      "sample_file_paths": [
+        "E:/github/mykms/data/corpora/e-notes-frontmatter-v1/c++11新特性/移动/移动语义.md",
+        "E:/github/mykms/data/corpora/e-notes-frontmatter-v1/c++11新特性/移动语义.md",
+        "E:/github/mykms/data/corpora/e-notes-frontmatter-v1/c++常见问题/右值引用.md"
+      ]
+    },
+    {
+      "normalized_preview": "## 适用场景",
+      "occurrences": 3,
+      "sample_chunk_ids": [
+        "ebceaa74908b84d97d94f7e2a0c22cb2d056e4df",
+        "16424d86faa3d64736f92f1212f2f05b640021d1",
+        "aa246ec87b64c40c681fe504cbfa19296ad02b9d"
+      ],
+      "sample_file_paths": [
+        "E:/github/mykms/data/corpora/e-notes-frontmatter-v1/系统架构/架构设计.md",
+        "E:/github/mykms/data/corpora/e-notes-frontmatter-v1/系统架构/缓存/进程内缓存.md",
+        "E:/github/mykms/data/corpora/e-notes-frontmatter-v1/设计模式/2.0 单例模式.md"
+      ]
+    },
+    {
+      "normalized_preview": "# bvar",
+      "occurrences": 2,
+      "sample_chunk_ids": [
+        "cb02f01907bf16a8670be34d5330a15fb99a0056",
+        "b9ee31350b3130e727d395d685065172b6fe8f06"
+      ],
+      "sample_file_paths": [
+        "E:/github/mykms/data/corpora/e-notes-frontmatter-v1/第三方软件/brpc/bvar.md",
+        "E:/github/mykms/data/corpora/e-notes-frontmatter-v1/第三方软件/brpc/bvar/bvar.md"
+      ]
+    },
+    {
+      "normalized_preview": "# 内存对齐",
+      "occurrences": 2,
+      "sample_chunk_ids": [
+        "d5841a2aeda2bab2c7db70ecef6ac9b3720a7096",
+        "be7ead4f90225817c505513d3d1ed9a06a04f9e1"
+      ],
+      "sample_file_paths": [
+        "E:/github/mykms/data/corpora/e-notes-frontmatter-v1/c++常见问题/内存对齐.md",
+        "E:/github/mykms/data/corpora/e-notes-frontmatter-v1/基础知识/内存对齐.md"
+      ]
+    }
+  ],
+  "by_source": [
+    {
+      "source_id": "4ed7a7926259",
+      "document_count": 466,
+      "chunk_count": 2849
+    }
+  ]
+}

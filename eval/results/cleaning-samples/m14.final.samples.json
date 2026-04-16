@@ -1,0 +1,197 @@
+[
+  {
+    "file_path": "E:/notes/高并发系统设计/0 概观.md",
+    "relative_path": "0 概观.md",
+    "cleaning": {
+      "enabled": true,
+      "bom_removed": false,
+      "front_matter_extracted": false,
+      "front_matter_line_count": 0,
+      "whitespace_normalized": false,
+      "toc_markers_removed": 1,
+      "low_value_placeholders_removed": 0,
+      "tables_normalized": 0,
+      "normalized_table_rows": 0,
+      "source_rule_dropped_lines": 0,
+      "source_rule_dropped_sections": 0
+    },
+    "raw_preview": "# 概观\n\n[TOC]\n\n## 为什么要有高并发系统？\n\n产生缘由？\n\n## 什么是高并发系统？\n\n**高并发**的概念，可以用哪些指标量化？\n\n高并发系统包括哪些部分，这些部分的功能是怎样的，哪个部分比较重要？\n\n- 数据库\n- 缓存\n- 消息队列\n- 分布式服务\n- 维护\n\n**高并发系统**：能够处理大量用户请求并发访问的系统。\n\n## 怎么设计高并发系统？\n\n### 三大目标\n\n高并发系统的三大目标：\n\n- **高性能**：代表系统的使用体验\n- **高可用**：代表系统正常服务用户的时间\n- **可扩展**：代表系统根据流量大小自动调整容量的能力\n\n设计思路\n\n哪些需要注意的点\n\n哪些仍然存在的问题\n\n## 比较\n\n工业界有哪些高并发系统的设计值得参考？",
+    "cleaned_preview": "# 概观\n\n\n## 为什么要有高并发系统？\n\n产生缘由？\n\n## 什么是高并发系统？\n\n**高并发**的概念，可以用哪些指标量化？\n\n高并发系统包括哪些部分，这些部分的功能是怎样的，哪个部分比较重要？\n\n- 数据库\n- 缓存\n- 消息队列\n- 分布式服务\n- 维护\n\n**高并发系统**：能够处理大量用户请求并发访问的系统。\n\n## 怎么设计高并发系统？\n\n### 三大目标\n\n高并发系统的三大目标：\n\n- **高性能**：代表系统的使用体验\n- **高可用**：代表系统正常服务用户的时间\n- **可扩展**：代表系统根据流量大小自动调整容量的能力\n\n设计思路\n\n哪些需要注意的点\n\n哪些仍然存在的问题\n\n## 比较\n\n工业界有哪些高并发系统的设计值得参考？",
+    "chunks": [
+      {
+        "chunk_id": "a6024388d10953406dc65c5cb603402630a04b0d",
+        "start_line": 1,
+        "end_line": 1,
+        "preview": "# 概观"
+      },
+      {
+        "chunk_id": "0e831674f5d4debc43a24f4e53680f030e31a165",
+        "start_line": 4,
+        "end_line": 6,
+        "preview": "## 为什么要有高并发系统？\n\n产生缘由？"
+      },
+      {
+        "chunk_id": "2a0f637dddd2c3f34a6b8892306fc9bcaf528dd5",
+        "start_line": 8,
+        "end_line": 20,
+        "preview": "## 什么是高并发系统？\n\n**高并发**的概念，可以用哪些指标量化？\n\n高并发系统包括哪些部分，这些部分的功能是怎样的，哪个部分比较重要？\n\n- 数据库\n- 缓存\n- 消息队列\n- 分布式服务\n- 维护\n\n**高并发系统**：能够处理大量用户请求并发访问的系统。"
+      }
+    ]
+  },
+  {
+    "file_path": "E:/notes/shell/shell学习笔记.md",
+    "relative_path": "shell学习笔记.md",
+    "cleaning": {
+      "enabled": true,
+      "bom_removed": false,
+      "front_matter_extracted": false,
+      "front_matter_line_count": 0,
+      "whitespace_normalized": true,
+      "toc_markers_removed": 0,
+      "low_value_placeholders_removed": 0,
+      "tables_normalized": 3,
+      "normalized_table_rows": 16,
+      "source_rule_dropped_lines": 0,
+      "source_rule_dropped_sections": 0
+    },
+    "raw_preview": "## shell学习笔记         \n\n### 一、将命令输出读入变量                        \n1. var=$(ls | cat -n) #子shell生成了一个独立的进程\n2. var=\"$(cat test.txt)\"  #保留了空格和换行符(\\n) \n3. var=`ls | cat -n`     \n\n### 二、日期             \n1. 读取日期 `date`       \n2. 打印纪元时 `date +%s` \n3. 打印时间 时分秒 年月日 `date \"+%H:%M:%S %Y/%m/%d\"`                                               \n\n### 三、从键盘或标准输入中读取文本                \n1. 从输入中读取n个字符并存入变量var `$ read -n 2 var`                                               \n2. 无回显的方式读取密码 `$ read -s var`           \n3. 显示提示信息 `$ read -p \"Enter input:\" var`    \n4. 在特定时限内读取输入 `$ read -t timeout var`   \n5. 用特定的定界符作为输入行的结束 `read -d delim_char var`                                          \n\n### 四、读取函数和脚本参数                        \n1. `$1` 第一个参数       \n2. `$n` 第n个参数        \n3. $0` 程序或参数名     \n4. `$@` 被扩展成“$1\" \"$2\" \"$3\"等     ",
+    "cleaned_preview": "## shell学习笔记\n\n### 一、将命令输出读入变量\n1. var=$(ls | cat -n) #子shell生成了一个独立的进程\n2. var=\"$(cat test.txt)\"  #保留了空格和换行符(\\n)\n3. var=`ls | cat -n`\n\n### 二、日期\n1. 读取日期 `date`\n2. 打印纪元时 `date +%s`\n3. 打印时间 时分秒 年月日 `date \"+%H:%M:%S %Y/%m/%d\"`\n\n### 三、从键盘或标准输入中读取文本\n1. 从输入中读取n个字符并存入变量var `$ read -n 2 var`\n2. 无回显的方式读取密码 `$ read -s var`\n3. 显示提示信息 `$ read -p \"Enter input:\" var`\n4. 在特定时限内读取输入 `$ read -t timeout var`\n5. 用特定的定界符作为输入行的结束 `read -d delim_char var`\n\n### 四、读取函数和脚本参数\n1. `$1` 第一个参数\n2. `$n` 第n个参数\n3. $0` 程序或参数名\n4. `$@` 被扩展成“$1\" \"$2\" \"$3\"等\n5. `$*` 被扩展成\"$1c$2c$3\", 其中c是IFS的第一个字符\n\n### 五、字段分隔符IFS\n1. 默认值为空白字符（换行符、制表符或者空格）\n\n### 六、重定向\n1. 重定向标准输出和标准错误到/dev/null `$ ls + &> out.txt`\n2. `tee`:将数据重定向到文件，同时还能提供一份重定向数据的副本作为后续命令的标准输入数据\n    - `cat a.txt|tee out.txt|cat -n`\n3. 用`stdin`作为参数，只需要将`-`作为命令的文件名参数即可 `cmd1|cmd2 -`\n4. 将脚本",
+    "chunks": [
+      {
+        "chunk_id": "c6de88b9b0b7ba0c41f37c11b3ea5ad3491b5be7",
+        "start_line": 1,
+        "end_line": 1,
+        "preview": "## shell学习笔记"
+      },
+      {
+        "chunk_id": "bcce8823e65b6426a5d7c73a03c56052ad349b6a",
+        "start_line": 3,
+        "end_line": 6,
+        "preview": "### 一、将命令输出读入变量\n1. var=$(ls | cat -n) #子shell生成了一个独立的进程\n2. var=\"$(cat test.txt)\"  #保留了空格和换行符(\\n)\n3. var=`ls | cat -n`"
+      },
+      {
+        "chunk_id": "f0e90eb6df3a6a97a2b63a586c798c77a6104be5",
+        "start_line": 8,
+        "end_line": 11,
+        "preview": "### 二、日期\n1. 读取日期 `date`\n2. 打印纪元时 `date +%s`\n3. 打印时间 时分秒 年月日 `date \"+%H:%M:%S %Y/%m/%d\"`"
+      }
+    ]
+  },
+  {
+    "file_path": "E:/notes/第三方软件/gdb/1.0 基础知识.md",
+    "relative_path": "1.0 基础知识.md",
+    "cleaning": {
+      "enabled": true,
+      "bom_removed": false,
+      "front_matter_extracted": false,
+      "front_matter_line_count": 0,
+      "whitespace_normalized": false,
+      "toc_markers_removed": 0,
+      "low_value_placeholders_removed": 0,
+      "tables_normalized": 1,
+      "normalized_table_rows": 24,
+      "source_rule_dropped_lines": 0,
+      "source_rule_dropped_sections": 0
+    },
+    "raw_preview": "# GDB调试\n\n## 调试信息\n\n编译debug版本的程序需要加上如下选项：\n\n```sehll\n-g: 加上调试信息\n-O0: 关闭编译器优化选项\n```\n\n编译release版本的程序需要加上如下选项：\n\n```shell\n-O2: 编译器优化级别选2\n-DNDEBUG: assert()不起作用\n```\n\n也可以用`strip` 命令去除程序的调试信息。\n\n## 启动GDB调试\n\n1. 直接调试目标程序：`gdb filename` , filename是可执行文件的名字\n\n2. 附加进程\n\n   - `gdb attach 进程ID`，适用于已启动的程序。\n\n   - 当用gdb attach上目标进程后，进程会暂停下来，此时可以使用continue命令让程序继续运行或者加上相应的断点再继续运行程序。\n\n   - 当想结束调试，而且想让程序继续运行，可以输入detach命令让程序与GDB调试器分离。\n\n3. 调试core文件\n\n   - 打开产生core文件的开关：在/etc/profile里加上**ulimit -c unlimited**这一行\n   - 自定义core文件的名称和目录：`echo \"/corefile/core-%e-%p-%t\" > /proc/sys/kernel/core_pattern`\n   - 调试core文件的命令：`gdb core filename` 启动调试，`bt` 打印崩溃时的堆栈信息\n\n## GDB常用调试命令\n\n| 命令名称    | 命令缩写 | 命令说明                                               |\n| ----------- | -------- | ------------------------------------------------------ ",
+    "cleaned_preview": "# GDB调试\n\n## 调试信息\n\n编译debug版本的程序需要加上如下选项：\n\n```sehll\n-g: 加上调试信息\n-O0: 关闭编译器优化选项\n```\n\n编译release版本的程序需要加上如下选项：\n\n```shell\n-O2: 编译器优化级别选2\n-DNDEBUG: assert()不起作用\n```\n\n也可以用`strip` 命令去除程序的调试信息。\n\n## 启动GDB调试\n\n1. 直接调试目标程序：`gdb filename` , filename是可执行文件的名字\n\n2. 附加进程\n\n   - `gdb attach 进程ID`，适用于已启动的程序。\n\n   - 当用gdb attach上目标进程后，进程会暂停下来，此时可以使用continue命令让程序继续运行或者加上相应的断点再继续运行程序。\n\n   - 当想结束调试，而且想让程序继续运行，可以输入detach命令让程序与GDB调试器分离。\n\n3. 调试core文件\n\n   - 打开产生core文件的开关：在/etc/profile里加上**ulimit -c unlimited**这一行\n   - 自定义core文件的名称和目录：`echo \"/corefile/core-%e-%p-%t\" > /proc/sys/kernel/core_pattern`\n   - 调试core文件的命令：`gdb core filename` 启动调试，`bt` 打印崩溃时的堆栈信息\n\n## GDB常用调试命令\n\n表格列: 命令名称 | 命令缩写 | 命令说明\n表格行: 命令名称=run；命令缩写=r；命令说明=运行一个程序\n表格行: 命令名称=continue；命令缩写=c；命令说明=让暂停的程序继续运行\n表格行: 命令名称=next；命令缩写=n；命令说明=运行到下一行\n表格行: 命令名称=step；命令缩写=s",
+    "chunks": [
+      {
+        "chunk_id": "ab598dd19830cf32e7020b68f3f873f392655068",
+        "start_line": 1,
+        "end_line": 1,
+        "preview": "# GDB调试"
+      },
+      {
+        "chunk_id": "e7d8027a109d4ae6b9d6997ebeff179c7d77e815",
+        "start_line": 3,
+        "end_line": 19,
+        "preview": "## 调试信息\n\n编译debug版本的程序需要加上如下选项：\n\n```sehll\n-g: 加上调试信息\n-O0: 关闭编译器优化选项\n```\n\n编译release版本的程序需要加上如下选项：\n\n```shell\n-O2: 编译器优化级别选2\n-DNDEBUG: assert()不起作用\n```\n\n也可以用`strip` 命令去除程序的调试信息。"
+      },
+      {
+        "chunk_id": "d101164e75758f54d8cb3eeefc427b56b0e5e775",
+        "start_line": 21,
+        "end_line": 37,
+        "preview": "## 启动GDB调试\n\n1. 直接调试目标程序：`gdb filename` , filename是可执行文件的名字\n\n2. 附加进程\n\n- `gdb attach 进程ID`，适用于已启动的程序。\n\n- 当用gdb attach上目标进程后，进程会暂停下来，此时可以使用continue命令让程序继续运行或者加上相应的断点再继续运行程序。\n\n- 当想结束调试，而且想让程序继续运行，可以输入detach命令让程序与GDB调试器分离。\n\n3. 调试core文件\n\n- 打开产生core文件的开关：在/etc/profile里加上**ulimit -c unlimited**这一行\n   - 自定义core文件的名称和目录：`echo \"/corefile/core-%e-%p-%t\" > /proc/sys/kernel/core_pattern`\n   - 调试core文件的命令：`gdb core filename` 启动调试，`bt` 打印崩溃时的堆栈信息"
+      }
+    ]
+  },
+  {
+    "file_path": "E:/notes/snmp/1.0 snmp安装.md",
+    "relative_path": "1.0 snmp安装.md",
+    "cleaning": {
+      "enabled": true,
+      "bom_removed": false,
+      "front_matter_extracted": false,
+      "front_matter_line_count": 0,
+      "whitespace_normalized": false,
+      "toc_markers_removed": 1,
+      "low_value_placeholders_removed": 0,
+      "tables_normalized": 0,
+      "normalized_table_rows": 0,
+      "source_rule_dropped_lines": 0,
+      "source_rule_dropped_sections": 0
+    },
+    "raw_preview": "# snmp安装\n\n[TOC]\n\n## 操作环境\n\n环境：Ubuntu 18.04.3 LTS\n\n## 从源中安装\n\n参考博客：[Ubuntu上snmp安装、配置、启动及远程测试完整过程](https://blog.csdn.net/weixin_34364135/article/details/85073447?utm_source=distribute.pc_relevant.none-task)\n\n## 从源码安装\n\n待续。",
+    "cleaned_preview": "# snmp安装\n\n\n## 操作环境\n\n环境：Ubuntu 18.04.3 LTS\n\n## 从源中安装\n\n参考博客：[Ubuntu上snmp安装、配置、启动及远程测试完整过程](https://blog.csdn.net/weixin_34364135/article/details/85073447?utm_source=distribute.pc_relevant.none-task)\n\n## 从源码安装\n\n待续。",
+    "chunks": [
+      {
+        "chunk_id": "fde7d54d56d1e385f703b5ee4761e08195b4998a",
+        "start_line": 1,
+        "end_line": 1,
+        "preview": "# snmp安装"
+      },
+      {
+        "chunk_id": "0d4cb885543c889ecb8a3e942f031f30ad024f47",
+        "start_line": 4,
+        "end_line": 6,
+        "preview": "## 操作环境\n\n环境：Ubuntu 18.04.3 LTS"
+      },
+      {
+        "chunk_id": "2f2a9f1a179b93813f70236a04eb1411dbccc954",
+        "start_line": 8,
+        "end_line": 10,
+        "preview": "## 从源中安装\n\n参考博客：[Ubuntu上snmp安装、配置、启动及远程测试完整过程](https://blog.csdn.net/weixin_34364135/article/details/85073447?utm_source=distribute.pc_relevant.none-task)"
+      }
+    ]
+  },
+  {
+    "file_path": "E:/notes/第三方软件/brpc/作者/戈君.md",
+    "relative_path": "戈君.md",
+    "cleaning": {
+      "enabled": true,
+      "bom_removed": false,
+      "front_matter_extracted": false,
+      "front_matter_line_count": 0,
+      "whitespace_normalized": false,
+      "toc_markers_removed": 0,
+      "low_value_placeholders_removed": 0,
+      "tables_normalized": 0,
+      "normalized_table_rows": 0,
+      "source_rule_dropped_lines": 0,
+      "source_rule_dropped_sections": 0
+    },
+    "raw_preview": "我是brpc作者之一。本想在刊出InfoQ的报道后再把类似的内容贴到知乎，里面会谈到brpc研发的前因后果，但考虑到知乎上关注这个问题大都是战斗在一线的工程师朋友，我决定说点不一样的。\n\n\n\nRPC是个老概念，五花八门的实现非常多。在14年我刚转到基础架构部时，其实是不想做RPC框架的。我的想法可能和很多工程师一样：之前做了那么多系统，现在就让我来搞个编程框架？而且这能做出什么花头？但事实很快证明我错了，**编程上的事真的需要实践，否则看问题就很浅**。像搞深度学习，vgg rcnn gan嘴上可以说得不停，但只要你没在真正严肃的项目中调过参数，你就是门外汉。\n\n\n\nRPC的深度在于现代的互联网公司中几乎所有服务都是使用RPC的，大部分工程师和它打交道。如果你能看到其中的痛点，提高了效率，那么整个公司的开发效率都会有明显的提升。大家都是从学生时代过来的，心里清楚一个东西在正确的条件下正确运行很容易，但要在所有情况下能正确运行就非常困难。前两天我修了个问题：brpc在fedora 26下一个weak function莫名其妙地没有被tcmalloc中的对应版本覆盖，导致heap profiler启用不了，ubuntu，centos下都是好的。这种问题往往和系统或ld有关，要精确定位很麻烦，最后我找到了一个workaround。但这个事情耗了我几个小时，因为需要在很多系统上验证没有regression。RPC里大量此类东西，虽然麻烦但能提高用户体验。那个问题其实和brpc对tcmalloc的支持方式有关，brpc默认不链接tcmalloc，但用户在程序中链接tcmalloc后，我们希望cpu和heap profiler要自动开启（这两个功能依赖tcmalloc的API），同时用户不用重编brpc。所以我们得在brpc中动态判定是否链接了tcmalloc，这就没那么容易了。对我们",
+    "cleaned_preview": "我是brpc作者之一。本想在刊出InfoQ的报道后再把类似的内容贴到知乎，里面会谈到brpc研发的前因后果，但考虑到知乎上关注这个问题大都是战斗在一线的工程师朋友，我决定说点不一样的。\n\n\n\nRPC是个老概念，五花八门的实现非常多。在14年我刚转到基础架构部时，其实是不想做RPC框架的。我的想法可能和很多工程师一样：之前做了那么多系统，现在就让我来搞个编程框架？而且这能做出什么花头？但事实很快证明我错了，**编程上的事真的需要实践，否则看问题就很浅**。像搞深度学习，vgg rcnn gan嘴上可以说得不停，但只要你没在真正严肃的项目中调过参数，你就是门外汉。\n\n\n\nRPC的深度在于现代的互联网公司中几乎所有服务都是使用RPC的，大部分工程师和它打交道。如果你能看到其中的痛点，提高了效率，那么整个公司的开发效率都会有明显的提升。大家都是从学生时代过来的，心里清楚一个东西在正确的条件下正确运行很容易，但要在所有情况下能正确运行就非常困难。前两天我修了个问题：brpc在fedora 26下一个weak function莫名其妙地没有被tcmalloc中的对应版本覆盖，导致heap profiler启用不了，ubuntu，centos下都是好的。这种问题往往和系统或ld有关，要精确定位很麻烦，最后我找到了一个workaround。但这个事情耗了我几个小时，因为需要在很多系统上验证没有regression。RPC里大量此类东西，虽然麻烦但能提高用户体验。那个问题其实和brpc对tcmalloc的支持方式有关，brpc默认不链接tcmalloc，但用户在程序中链接tcmalloc后，我们希望cpu和heap profiler要自动开启（这两个功能依赖tcmalloc的API），同时用户不用重编brpc。所以我们得在brpc中动态判定是否链接了tcmalloc，这就没那么容易了。对我们",
+    "chunks": [
+      {
+        "chunk_id": "6c048258e90d97a86c2f4a339ed11c63e2743520",
+        "start_line": 1,
+        "end_line": 5,
+        "preview": "我是brpc作者之一。本想在刊出InfoQ的报道后再把类似的内容贴到知乎，里面会谈到brpc研发的前因后果，但考虑到知乎上关注这个问题大都是战斗在一线的工程师朋友，我决定说点不一样的。\n\nRPC是个老概念，五花八门的实现非常多。在14年我刚转到基础架构部时，其实是不想做RPC框架的。我的想法可能和很多工程师一样：之前做了那么多系统，现在就让我来搞个编程框架？而且这能做出什么花头？但事实很快证明我错了，**编程上的事真的需要实践，否则看问题就很浅**。像搞深度学习，vgg rcnn gan嘴上可以说得不停，但只要你没在真正严肃的项目中调过参数，你就是门外汉。"
+      },
+      {
+        "chunk_id": "0832aaeac69d0974571e979fb0630b7147e8846d",
+        "start_line": 9,
+        "end_line": 9,
+        "preview": "RPC的深度在于现代的互联网公司中几乎所有服务都是使用RPC的，大部分工程师和它打交道。如果你能看到其中的痛点，提高了效率，那么整个公司的开发效率都会有明显的提升。大家都是从学生时代过来的，心里清楚一个东西在正确的条件下正确运行很容易，但要在所有情况下能正确运行就非常困难。前两天我修了个问题：brpc在fedora 26下一个weak function莫名其妙地没有被tcmalloc中的对应版本覆盖，导致heap profiler启用不了，ubuntu，centos下都是好的。这种问题往往和系统或ld有关，要精确定位很麻烦，最后我找到了一个workaround。但这个事情耗了我几个小时，因为需要在很多系统上验证没有regression。RPC里大量此类东西，虽然麻烦但能提高用户体验。那个问题其实和brpc对tcmalloc的支持方式有关，brpc默认不链接tcmalloc，但用户在程序中链接tcmalloc后，我们希望cpu和heap profiler要自动开启（这两个功能依赖tcmalloc的API），同时用户不用重编brpc。所以我们得在brpc中动态判定是否链接了tcmalloc，这就没那么容易了。对我们很麻烦，但**用户的体验更好了，甚至用户会觉得理所当然**。"
+      },
+      {
+        "chunk_id": "5017d3f5de45b4150548f21ab9befe329f82560e",
+        "start_line": 13,
+        "end_line": 17,
+        "preview": "**知识是需要大量实践的**，你也许可以在正确的条件下用dlsym有效地覆盖一个glibc中的函数，但你可能不知道dlsym在有多版本符号存在时可能无效，或dlsym和一些库合用时（比如用于展开栈的libunwind）会死锁，或dlsym对静态链接是无效的除非编译加了-rdynamic。你也许可以基于一些上下文切换库三下五除二搞出个libcoroutine，但你可能不知道的是JNI会检查stack layout而不能使用自定义栈，或程序运行在valgrind中需要注册栈地址才不会报错，或一个栈跑到另一个LWP上展开时会触发gcc4以上版本的thread-local误优化。这些知识，成千上万条这种知识，通过实践才会深深地刻画在脑中，构成一个工程师真正的竞争力。\n\n我一直坚信所有的用户体验都是端到端的，只有站在用户的角度，把整个流程以既高效又不失扩展性的方式走通，才是最好的选择。**良好的文档正是这种理念的体现：给新用户铺好路能快速上手，让老用户知其所以然更上一层楼**。这种想法也体现在代码中的方方面面：每个选项都有合理的默认值，用户不设也能用；在注释中提示best practice，避免用户走弯路；用户界面、日志内容不啰嗦，让用户一眼看清楚问题的全貌。不做并不意味着我们没能力做，而是早已被事实证明可能出现非常subtle的bug而被淘汰掉的选择。知道的越多，你就越会有一种责任感，需要帮助用户修一条好路，避免陷到你已经踩过的成百上千个坑中。"
+      }
+    ]
+  }
+]

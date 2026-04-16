@@ -1,23 +1,0 @@
-INFO:     Started server process [55840]
-INFO:     Waiting for application startup.
-INFO:     Application startup complete.
-INFO:     Uvicorn running on http://127.0.0.1:49152 (Press CTRL+C to quit)
-Building prefix dict from the default dictionary ...
-Loading model from cache C:\Users\YanQi\AppData\Local\Temp\jieba.cache
-Loading model cost 0.397 seconds.
-Prefix dict has been built successfully.
-E:\github\mykms\.venv\Lib\site-packages\huggingface_hub\file_download.py:143: UserWarning: `huggingface_hub` cache-system uses symlinks by default to efficiently store duplicated files but your machine does not support them in E:\github\mykms\data\hf-cache\hub\models--BAAI--bge-m3. Caching files will still work but in a degraded version that might require more space on your disk. This warning can be disabled by setting the `HF_HUB_DISABLE_SYMLINKS_WARNING` environment variable. For more details, see https://huggingface.co/docs/huggingface_hub/how-to-cache#limitations.
-To support symlinks on Windows, you either need to activate Developer Mode or to run Python as an administrator. In order to activate developer mode, see this article: https://docs.microsoft.com/en-us/windows/apps/get-started/enable-your-device-for-development
-  warnings.warn(message)
-Fetching 30 files:   0%|          | 0/30 [00:00<?, ?it/s]Fetching 30 files:   3%|¨†         | 1/30 [00:00<00:08,  3.44it/s]Fetching 30 files:  13%|¨€¨†        | 4/30 [00:01<00:07,  3.59it/s]Fetching 30 files:  60%|¨€¨€¨€¨€¨€¨€    | 18/30 [00:02<00:01,  7.97it/s]Fetching 30 files:  63%|¨€¨€¨€¨€¨€¨€¨†   | 19/30 [01:36<01:23,  7.60s/it]Fetching 30 files:  80%|¨€¨€¨€¨€¨€¨€¨€¨€  | 24/30 [04:55<01:55, 19.23s/it]Fetching 30 files: 100%|¨€¨€¨€¨€¨€¨€¨€¨€¨€¨€| 30/30 [04:55<00:00,  9.86s/it]
-pre tokenize:   0%|          | 0/11 [00:00<?, ?it/s]pre tokenize: 100%|¨€¨€¨€¨€¨€¨€¨€¨€¨€¨€| 11/11 [00:00<00:00, 197.80it/s]
-You're using a XLMRobertaTokenizerFast tokenizer. Please note that with a fast tokenizer, using the `__call__` method is faster than using a method to encode the text followed by a call to the `pad` method to get a padded encoding.
-Inference Embeddings:   0%|          | 0/11 [00:00<?, ?it/s]Inference Embeddings:   9%|¨         | 1/11 [00:02<00:25,  2.57s/it]Inference Embeddings:  18%|¨€¨‚        | 2/11 [00:03<00:16,  1.80s/it]Inference Embeddings:  27%|¨€¨€¨ƒ       | 3/11 [00:04<00:09,  1.24s/it]Inference Embeddings:  36%|¨€¨€¨€¨ƒ      | 4/11 [00:04<00:06,  1.16it/s]Inference Embeddings:  45%|¨€¨€¨€¨€¨„     | 5/11 [00:04<00:03,  1.56it/s]Inference Embeddings:  55%|¨€¨€¨€¨€¨€¨…    | 6/11 [00:05<00:02,  2.05it/s]Inference Embeddings:  64%|¨€¨€¨€¨€¨€¨€¨†   | 7/11 [00:05<00:01,  2.63it/s]Inference Embeddings:  73%|¨€¨€¨€¨€¨€¨€¨€¨†  | 8/11 [00:05<00:00,  3.32it/s]Inference Embeddings:  91%|¨€¨€¨€¨€¨€¨€¨€¨€¨€ | 10/11 [00:05<00:00,  5.14it/s]Inference Embeddings: 100%|¨€¨€¨€¨€¨€¨€¨€¨€¨€¨€| 11/11 [00:05<00:00,  1.96it/s]
-Fetching 30 files:   0%|          | 0/30 [00:00<?, ?it/s]Fetching 30 files: 100%|¨€¨€¨€¨€¨€¨€¨€¨€¨€¨€| 30/30 [00:00<?, ?it/s]
-Fetching 30 files:   0%|          | 0/30 [00:00<?, ?it/s]Fetching 30 files: 100%|¨€¨€¨€¨€¨€¨€¨€¨€¨€¨€| 30/30 [00:00<00:00, 59606.40it/s]
-You're using a XLMRobertaTokenizerFast tokenizer. Please note that with a fast tokenizer, using the `__call__` method is faster than using a method to encode the text followed by a call to the `pad` method to get a padded encoding.
-You're using a XLMRobertaTokenizerFast tokenizer. Please note that with a fast tokenizer, using the `__call__` method is faster than using a method to encode the text followed by a call to the `pad` method to get a padded encoding.
-E:\github\mykms\.venv\Lib\site-packages\huggingface_hub\file_download.py:143: UserWarning: `huggingface_hub` cache-system uses symlinks by default to efficiently store duplicated files but your machine does not support them in E:\github\mykms\data\hf-cache\hub\models--BAAI--bge-reranker-v2-m3. Caching files will still work but in a degraded version that might require more space on your disk. This warning can be disabled by setting the `HF_HUB_DISABLE_SYMLINKS_WARNING` environment variable. For more details, see https://huggingface.co/docs/huggingface_hub/how-to-cache#limitations.
-To support symlinks on Windows, you either need to activate Developer Mode or to run Python as an administrator. In order to activate developer mode, see this article: https://docs.microsoft.com/en-us/windows/apps/get-started/enable-your-device-for-development
-  warnings.warn(message)
-You're using a XLMRobertaTokenizerFast tokenizer. Please note that with a fast tokenizer, using the `__call__` method is faster than using a method to encode the text followed by a call to the `pad` method to get a padded encoding.

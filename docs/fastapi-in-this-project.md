@@ -56,7 +56,7 @@ FastAPI 入口在 [app/main.py](/E:/github/mykms/app/main.py:43)。
 
 例如：
 
-- [README.md](/E:/github/mykms/README.md:22) 里用 `uvicorn app.main:app` 启动服务
+ - [README.md](/E:/github/mykms/README.md:22) 里用 `uvicorn app.main:create_app --factory` 启动服务
 - [app/adapters/codex/kms.md](/E:/github/mykms/app/adapters/codex/kms.md:3) 里要求通过 `curl` 调 `/search`、`/ask`、`/verify`
 
 这意味着 FastAPI 的一个核心价值是把知识库能力变成稳定的本地服务协议，让脚本、适配器、工具都按同一套接口访问。

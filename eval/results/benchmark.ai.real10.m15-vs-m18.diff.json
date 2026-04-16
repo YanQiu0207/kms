@@ -1,0 +1,183 @@
+{
+  "benchmark": {
+    "overall": {
+      "recall_at_k": {
+        "baseline": 1.0,
+        "candidate": 1.0,
+        "delta": 0.0
+      },
+      "mrr": {
+        "baseline": 1.0,
+        "candidate": 0.9375,
+        "delta": -0.0625
+      },
+      "abstain_accuracy": {
+        "baseline": 1.0,
+        "candidate": 1.0,
+        "delta": 0.0
+      },
+      "abstain_precision": {
+        "baseline": 1.0,
+        "candidate": 1.0,
+        "delta": 0.0
+      },
+      "abstain_recall": {
+        "baseline": 1.0,
+        "candidate": 1.0,
+        "delta": 0.0
+      },
+      "false_abstain_rate": {
+        "baseline": 0.0,
+        "candidate": 0.0,
+        "delta": 0.0
+      },
+      "false_answer_rate": {
+        "baseline": 0.0,
+        "candidate": 0.0,
+        "delta": 0.0
+      },
+      "evidence_hit_rate": {
+        "baseline": 1.0,
+        "candidate": 0.875,
+        "delta": -0.125
+      },
+      "evidence_source_recall": {
+        "baseline": 0.9375,
+        "candidate": 0.875,
+        "delta": -0.0625
+      },
+      "source_count_satisfaction_rate": {
+        "baseline": null,
+        "candidate": null,
+        "delta": null
+      },
+      "expected_term_coverage": {
+        "baseline": null,
+        "candidate": null,
+        "delta": null
+      },
+      "avg_search_latency_ms": {
+        "baseline": 1643.29,
+        "candidate": 2031.04,
+        "delta": 387.75
+      },
+      "avg_ask_latency_ms": {
+        "baseline": 3.44,
+        "candidate": 1391.39,
+        "delta": 1387.95
+      }
+    },
+    "by_type": {
+      "lookup": {
+        "recall_at_k": {
+          "baseline": 1.0,
+          "candidate": 1.0,
+          "delta": 0.0
+        },
+        "mrr": {
+          "baseline": 1.0,
+          "candidate": 0.9375,
+          "delta": -0.0625
+        },
+        "abstain_accuracy": {
+          "baseline": 1.0,
+          "candidate": 1.0,
+          "delta": 0.0
+        },
+        "abstain_precision": {
+          "baseline": 1.0,
+          "candidate": 1.0,
+          "delta": 0.0
+        },
+        "abstain_recall": {
+          "baseline": 1.0,
+          "candidate": 1.0,
+          "delta": 0.0
+        },
+        "false_abstain_rate": {
+          "baseline": 0.0,
+          "candidate": 0.0,
+          "delta": 0.0
+        },
+        "false_answer_rate": {
+          "baseline": 0.0,
+          "candidate": 0.0,
+          "delta": 0.0
+        },
+        "evidence_hit_rate": {
+          "baseline": 1.0,
+          "candidate": 0.875,
+          "delta": -0.125
+        },
+        "evidence_source_recall": {
+          "baseline": 0.9375,
+          "candidate": 0.875,
+          "delta": -0.0625
+        },
+        "source_count_satisfaction_rate": {
+          "baseline": null,
+          "candidate": null,
+          "delta": null
+        },
+        "expected_term_coverage": {
+          "baseline": null,
+          "candidate": null,
+          "delta": null
+        },
+        "avg_search_latency_ms": {
+          "baseline": 1643.29,
+          "candidate": 2031.04,
+          "delta": 387.75
+        },
+        "avg_ask_latency_ms": {
+          "baseline": 3.44,
+          "candidate": 1391.39,
+          "delta": 1387.95
+        }
+      }
+    },
+    "by_tag": {},
+    "case_changes": [
+      {
+        "id": "ai10-001",
+        "question": "上下文处理包括什么？",
+        "case_type": "lookup",
+        "tags": [],
+        "changes": {
+          "source_count": {
+            "baseline": 6,
+            "candidate": 5
+          }
+        }
+      },
+      {
+        "id": "ai10-008",
+        "question": "Claude Code 里 subagent 的基础概念是什么？",
+        "case_type": "lookup",
+        "tags": [],
+        "changes": {
+          "rank": {
+            "baseline": 1,
+            "candidate": 2
+          },
+          "matched_source_count": {
+            "baseline": 1,
+            "candidate": 0
+          },
+          "evidence_hit": {
+            "baseline": true,
+            "candidate": false
+          },
+          "top_file_path": {
+            "baseline": "E:/work/blog/ai/claude-code/2-subagent-base.md",
+            "candidate": "E:/work/blog/ai/claude-code/guide.md"
+          },
+          "top_location": {
+            "baseline": "2-subagent-base.md:133-137",
+            "candidate": "guide.md:67-69"
+          }
+        }
+      }
+    ]
+  }
+}

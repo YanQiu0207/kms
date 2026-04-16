@@ -1,0 +1,46 @@
+{
+  "entries": [
+    {
+      "name": "ai.real10",
+      "benchmark_path": "eval/benchmark.ai.real10.jsonl",
+      "config_path": "config.yaml"
+    },
+    {
+      "name": "distributed.real10",
+      "benchmark_path": "eval/benchmark.distributed.real10.jsonl",
+      "config_path": "config.yaml"
+    },
+    {
+      "name": "game.real10",
+      "benchmark_path": "eval/benchmark.game.real10.jsonl",
+      "config_path": "config.yaml"
+    },
+    {
+      "name": "cleaning.real10",
+      "benchmark_path": "eval/benchmark.cleaning.real10.jsonl",
+      "config_path": "config.yaml"
+    },
+    {
+      "name": "ranking.real10",
+      "benchmark_path": "eval/benchmark.ranking.real10.jsonl",
+      "config_path": "config.yaml"
+    },
+    {
+      "name": "notes-frontmatter.real10",
+      "benchmark_path": "eval/benchmark.notes-frontmatter.real10.jsonl",
+      "config_path": "config.notes-frontmatter.yaml"
+    },
+    {
+      "name": "query-routing.real10",
+      "benchmark_path": "eval/benchmark.query-routing.real10.jsonl",
+      "config_path": "config.yaml",
+      "gate": false,
+      "notes": "当前仍保留 ai/subagent 场景的 rank=2 残留，先作为观察项，不阻塞主质量门。"
+    },
+    {
+      "name": "guardrail.real10",
+      "benchmark_path": "eval/benchmark.guardrail.real10.jsonl",
+      "config_path": "config.yaml"
+    }
+  ]
+}

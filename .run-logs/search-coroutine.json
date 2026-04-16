@@ -1,9 +1,0 @@
-{
-  "queries": [
-    "协程",
-    "coroutine",
-    "async await 协程",
-    "协程 线程 区别"
-  ],
-  "rerank_top_k": 10
-}

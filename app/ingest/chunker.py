@@ -3,6 +3,7 @@
 from __future__ import annotations
 
 import hashlib
+from pathlib import PurePath
 import re
 from dataclasses import dataclass
 from typing import Sequence
@@ -147,6 +148,7 @@ def build_chunk_id(
     *,
     document_id: str,
     title_path: Sequence[str],
+    section_index: int,
     chunk_index: int,
     text: str,
 ) -> str:
@@ -157,11 +159,40 @@ def build_chunk_id(
         [
             document_id,
             " / ".join(title_path),
+            str(section_index),
             str(chunk_index),
             content_sha1,
         ]
     )
     return hashlib.sha1(payload.encode("utf-8")).hexdigest()
+
+
+def build_contextual_chunk_text(chunk: MarkdownChunk) -> str:
+    """Build an embedding-only text with lightweight document context."""
+
+    body = _normalize_text(chunk.text)
+    if not body:
+        return ""
+
+    metadata = chunk.metadata if isinstance(chunk.metadata, dict) else {}
+    relative_path = str(metadata.get("relative_path") or "").strip()
+    file_label = relative_path or PurePath(chunk.file_path).name or chunk.file_path.strip()
+    front_matter_title = str(metadata.get("front_matter_title") or "").strip()
+    title_path = " / ".join(title.strip() for title in chunk.title_path if title.strip())
+
+    header_lines: list[str] = []
+    if front_matter_title:
+        header_lines.append(f"文档标题: {front_matter_title}")
+    elif file_label:
+        header_lines.append(f"文档标题: {PurePath(file_label).stem}")
+    if file_label:
+        header_lines.append(f"文档路径: {file_label}")
+    if title_path:
+        header_lines.append(f"章节路径: {title_path}")
+
+    if not header_lines:
+        return body
+    return "\n".join([*header_lines, "", body])
 
 
 @dataclass(slots=True)
@@ -202,6 +233,7 @@ class MarkdownChunker:
                     chunk_id=build_chunk_id(
                         document_id=section.document_id,
                         title_path=section.title_path,
+                        section_index=section.section_index,
                         chunk_index=chunk_index,
                         text=text,
                     ),
@@ -217,6 +249,7 @@ class MarkdownChunker:
                     token_count=_estimate_token_count(text),
                     chunker_version=self.chunker_version,
                     embedding_model=self.embedding_model,
+                    metadata={},
                 )
             )
             chunk_index += 1
@@ -232,6 +265,7 @@ class MarkdownChunker:
                             chunk_id=build_chunk_id(
                                 document_id=section.document_id,
                                 title_path=section.title_path,
+                                section_index=section.section_index,
                                 chunk_index=chunk_index,
                                 text=piece,
                             ),
@@ -247,6 +281,7 @@ class MarkdownChunker:
                             token_count=_estimate_token_count(piece),
                             chunker_version=self.chunker_version,
                             embedding_model=self.embedding_model,
+                            metadata={},
                         )
                     )
                     chunk_index += 1

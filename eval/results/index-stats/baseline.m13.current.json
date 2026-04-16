@@ -1,0 +1,188 @@
+{
+  "sqlite_path": "data\\meta.db",
+  "document_count": 590,
+  "chunk_count": 5831,
+  "chunk_length_chars": {
+    "count": 5831,
+    "min": 1,
+    "max": 800,
+    "avg": 167.5635,
+    "median": 77.0
+  },
+  "chunk_token_count": {
+    "count": 5831,
+    "min": 0,
+    "max": 639,
+    "avg": 87.9329,
+    "median": 45.0
+  },
+  "chunks_per_document": {
+    "count": 575,
+    "min": 1,
+    "max": 1687,
+    "avg": 10.1409,
+    "median": 5.0
+  },
+  "exact_duplicate_groups": 196,
+  "exact_duplicate_chunk_count": 550,
+  "exact_duplicate_chunk_ratio": 0.0943,
+  "top_repeated_snippets": [
+    {
+      "normalized_preview": "Server",
+      "occurrences": 78,
+      "sample_chunk_ids": [
+        "16444edf941b64f8e6ef6c553497eb14b57a9f25",
+        "932e210dcd88b8054d26c049725be5c8f95aef5d",
+        "4bd781cd4ef35a67af2766fa7b855a3b72fee559"
+      ],
+      "sample_file_paths": [
+        "E:/notes/TLS协议详解/4.0 handshake协议.md",
+        "E:/notes/TLS协议详解/4.0 handshake协议.md",
+        "E:/notes/TLS协议详解/4.0 handshake协议.md"
+      ]
+    },
+    {
+      "normalized_preview": "Client Server",
+      "occurrences": 22,
+      "sample_chunk_ids": [
+        "509f6e382eafc352f58bfaa54b3ea9ecc4600487",
+        "7f77908bac6e2dbfebeb7345db9fa5bb5c10c9bf",
+        "77e8c9626585018afe8c1bd5f224cf19478d83fc"
+      ],
+      "sample_file_paths": [
+        "E:/notes/TLS协议详解/4.0 handshake协议.md",
+        "E:/notes/TLS协议详解/4.0 handshake协议.md",
+        "E:/notes/TLS协议详解/4.0 handshake协议.md"
+      ]
+    },
+    {
+      "normalized_preview": "([一文彻底搞懂Raft算法，看这篇就够了！！！",
+      "occurrences": 16,
+      "sample_chunk_ids": [
+        "d785de2dbb93f73c56241874d2cee74cb73f254a",
+        "6f9694fa0b6dc99c373fca955bbc1f2cdbf5ba04",
+        "d7c17a81355cb062349f3c1b804bb563ede5f03c"
+      ],
+      "sample_file_paths": [
+        "E:/work/blog/分布式基础/共识/raft_learning_plan.md",
+        "E:/work/blog/分布式基础/共识/raft_learning_plan.md",
+        "E:/work/blog/分布式基础/共识/raft_learning_plan.md"
+      ]
+    },
+    {
+      "normalized_preview": "-",
+      "occurrences": 16,
+      "sample_chunk_ids": [
+        "fe7dc5bb8364bb5bcf223c4ea4d0cadd8ae7cebf",
+        "65286f566658f93f32524f930023cf712408680f",
+        "1b40d0bb680c3e4825e0074a4adcb1e2ffcd45ba"
+      ],
+      "sample_file_paths": [
+        "E:/work/blog/分布式基础/共识/raft_learning_plan.md",
+        "E:/work/blog/分布式基础/共识/raft_learning_plan.md",
+        "E:/work/blog/分布式基础/共识/raft_learning_plan.md"
+      ]
+    },
+    {
+      "normalized_preview": "- 码老思 -",
+      "occurrences": 16,
+      "sample_chunk_ids": [
+        "634fd25d6665b5b66ebe80a2ee21ec243bdf8e75",
+        "7e1a462920a1f965ab4016d1a82da33a21978193",
+        "b0df301bcba0248f646669669110f4ca1bce7d2e"
+      ],
+      "sample_file_paths": [
+        "E:/work/blog/分布式基础/共识/raft_learning_plan.md",
+        "E:/work/blog/分布式基础/共识/raft_learning_plan.md",
+        "E:/work/blog/分布式基础/共识/raft_learning_plan.md"
+      ]
+    },
+    {
+      "normalized_preview": "码老思 -",
+      "occurrences": 16,
+      "sample_chunk_ids": [
+        "274681f1869485feba0e0e971da308c2453b6ee5",
+        "c411e5bf769115e8ed85a483404f0f83ee9f7a13",
+        "a5476535b8d9e34a85d14b9bf84bf780d9632dd1"
+      ],
+      "sample_file_paths": [
+        "E:/work/blog/分布式基础/共识/raft_learning_plan.md",
+        "E:/work/blog/分布式基础/共识/raft_learning_plan.md",
+        "E:/work/blog/分布式基础/共识/raft_learning_plan.md"
+      ]
+    },
+    {
+      "normalized_preview": "mem_is_committed; // `true` if the whole segment is eagerly committed",
+      "occurrences": 13,
+      "sample_chunk_ids": [
+        "d11f015d2eb38593d335a29090a6fbbc1bd15929",
+        "3030cccedf22e9d805c96285762d0ba35ea9b14f",
+        "c47e4e2b706a57d5e353020a9a3919c12fef78b2"
+      ],
+      "sample_file_paths": [
+        "E:/notes/mimalloc/整体结构.md",
+        "E:/notes/mimalloc/整体结构.md",
+        "E:/notes/mimalloc/整体结构.md"
+      ]
+    },
+    {
+      "normalized_preview": "## 扩展",
+      "occurrences": 8,
+      "sample_chunk_ids": [
+        "c8a74cdaa13264d29d83d25aed113598f730cf14",
+        "3cea281695b3e17be056443a88e1988d2fa44eb2",
+        "ecfb268f4f72e148dc2596052a05e296eccedb69"
+      ],
+      "sample_file_paths": [
+        "E:/work/blog/应用架构/ddd.md",
+        "E:/notes/设计模式/12.0 装饰者模式.md",
+        "E:/notes/设计模式/13.0 策略模式.md"
+      ]
+    },
+    {
+      "normalized_preview": "Raft算法，看这篇就够了！！！",
+      "occurrences": 8,
+      "sample_chunk_ids": [
+        "e9db1ca096c9abb4c317107c3f9004c8e5d61bef",
+        "b83ed3bb0745a24b66b6eda2499a577450c96b19",
+        "411a0edba7a329792c35a301e9f183005ad375ae"
+      ],
+      "sample_file_paths": [
+        "E:/work/blog/分布式基础/共识/raft_learning_plan.md",
+        "E:/work/blog/分布式基础/共识/raft_learning_plan.md",
+        "E:/work/blog/分布式基础/共识/raft_learning_plan.md"
+      ]
+    },
+    {
+      "normalized_preview": "[一文彻底搞懂Raft算法，看这篇就够了！！！",
+      "occurrences": 8,
+      "sample_chunk_ids": [
+        "3275b3104baaa222be99e1ee835d74414ad33b9a",
+        "21dc82fb1ab42980d693d9661ec886150830eb5f",
+        "53ec027d6fb6d645b269a007f350c1f604d42ff4"
+      ],
+      "sample_file_paths": [
+        "E:/work/blog/分布式基础/共识/raft_learning_plan.md",
+        "E:/work/blog/分布式基础/共识/raft_learning_plan.md",
+        "E:/work/blog/分布式基础/共识/raft_learning_plan.md"
+      ]
+    }
+  ],
+  "by_source": [
+    {
+      "source_id": "4d47b33ec28f",
+      "document_count": 4,
+      "chunk_count": 31
+    },
+    {
+      "source_id": "d3a6b6c9f8b1",
+      "document_count": 107,
+      "chunk_count": 2704
+    },
+    {
+      "source_id": "d639f54124bb",
+      "document_count": 479,
+      "chunk_count": 3096
+    }
+  ]
+}

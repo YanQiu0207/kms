@@ -1,0 +1,91 @@
+{
+  "document_count": 590,
+  "chunk_count": 5356,
+  "front_matter_docs": 0,
+  "front_matter_ratio": 0.0,
+  "category_docs": 0,
+  "category_ratio": 0.0,
+  "tag_docs": 0,
+  "tag_ratio": 0.0,
+  "alias_docs": 0,
+  "alias_ratio": 0.0,
+  "by_source_id": [
+    {
+      "name": "4d47b33ec28f",
+      "document_count": 4,
+      "chunk_count": 0
+    },
+    {
+      "name": "d3a6b6c9f8b1",
+      "document_count": 107,
+      "chunk_count": 0
+    },
+    {
+      "name": "d639f54124bb",
+      "document_count": 479,
+      "chunk_count": 0
+    }
+  ],
+  "by_top_level_path": [
+    {
+      "name": "c++常见问题",
+      "document_count": 54,
+      "chunk_count": 346
+    },
+    {
+      "name": "数据结构与算法",
+      "document_count": 37,
+      "chunk_count": 212
+    },
+    {
+      "name": "分布式基础",
+      "document_count": 36,
+      "chunk_count": 1629
+    },
+    {
+      "name": "线程同步",
+      "document_count": 34,
+      "chunk_count": 272
+    },
+    {
+      "name": "第三方软件",
+      "document_count": 27,
+      "chunk_count": 125
+    },
+    {
+      "name": "设计模式",
+      "document_count": 25,
+      "chunk_count": 138
+    },
+    {
+      "name": "网络编程",
+      "document_count": 24,
+      "chunk_count": 110
+    },
+    {
+      "name": "链接、装载和库",
+      "document_count": 20,
+      "chunk_count": 86
+    },
+    {
+      "name": "网络协议",
+      "document_count": 18,
+      "chunk_count": 101
+    },
+    {
+      "name": "unp",
+      "document_count": 16,
+      "chunk_count": 156
+    },
+    {
+      "name": "apue",
+      "document_count": 15,
+      "chunk_count": 144
+    },
+    {
+      "name": "ai",
+      "document_count": 14,
+      "chunk_count": 144
+    }
+  ]
+}

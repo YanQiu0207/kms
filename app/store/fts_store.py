@@ -3,9 +3,10 @@ from __future__ import annotations
 import hashlib
 import re
 import sqlite3
-from pathlib import Path
+from pathlib import Path, PurePath
 from typing import Sequence
 
+from app.metadata_utils import FTS_METADATA_EXTRA_SCALAR_FIELDS, metadata_text_values
 from app.vendors import cut_tokens
 
 from .contracts import StoreError, StoredChunk
@@ -70,6 +71,14 @@ def tokenize_title_path(title_path: Sequence[str]) -> str:
     return tokenize_fts(" / ".join(segment for segment in title_path if segment.strip()))
 
 
+def tokenize_metadata_text(file_path: str, metadata: dict[str, object]) -> str:
+    values = list(metadata_text_values(metadata, extra_scalar_fields=FTS_METADATA_EXTRA_SCALAR_FIELDS))
+    file_name = PurePath(file_path).stem if file_path else ""
+    if file_name:
+        values.append(file_name)
+    return tokenize_fts(" ".join(values))
+
+
 def _stable_rowid(chunk_id: str) -> int:
     digest = hashlib.sha1(chunk_id.encode("utf-8")).digest()
     return int.from_bytes(digest[:8], "big", signed=False) & 0x7FFF_FFFF_FFFF_FFFF
@@ -104,7 +113,11 @@ class FTS5Writer:
 
     def initialize(self) -> None:
         try:
+            existing_columns = self._list_columns()
+            expected_columns = ("chunk_id", "document_id", "file_path", "title_path", "content", "metadata_text")
             with self._connection:
+                if existing_columns and existing_columns != expected_columns:
+                    self._connection.execute(f"DROP TABLE IF EXISTS {self._table_name}")
                 self._connection.execute(
                     f"""
                     CREATE VIRTUAL TABLE IF NOT EXISTS {self._table_name}
@@ -114,12 +127,22 @@ class FTS5Writer:
                         file_path UNINDEXED,
                         title_path,
                         content,
+                        metadata_text,
                         tokenize = 'unicode61 remove_diacritics 2'
                     )
                     """
                 )
         except sqlite3.Error as exc:
             raise StoreError("failed to initialize fts5 writer") from exc
+
+    def _list_columns(self) -> tuple[str, ...]:
+        try:
+            rows = self._connection.execute(f"PRAGMA table_info({self._table_name})").fetchall()
+        except sqlite3.Error:
+            return ()
+        if not rows:
+            return ()
+        return tuple(str(row[1]) for row in rows if len(row) > 1)
 
     def upsert_chunks(self, records: Sequence[StoredChunk]) -> None:
         if not records:
@@ -142,8 +165,9 @@ class FTS5Writer:
                             document_id,
                             file_path,
                             title_path,
-                            content
-                        ) VALUES (?, ?, ?, ?, ?, ?)
+                            content,
+                            metadata_text
+                        ) VALUES (?, ?, ?, ?, ?, ?, ?)
                         """,
                         (
                             rowid,
@@ -152,6 +176,7 @@ class FTS5Writer:
                             record.file_path,
                             tokenize_title_path(record.title_path),
                             tokenize_fts(record.content),
+                            tokenize_metadata_text(record.file_path, record.metadata),
                         ),
                     )
         except sqlite3.Error as exc:

@@ -6,6 +6,8 @@ from dataclasses import asdict, dataclass, field
 from pathlib import Path
 from time import perf_counter
 from typing import Sequence
+from urllib.error import HTTPError, URLError
+from urllib.request import Request, urlopen
 
 from app.config import AppConfig, load_config
 from app.services import IndexingService, QueryService
@@ -47,6 +49,7 @@ class BenchmarkCase:
     queries: tuple[str, ...]
     expected_chunk_ids: tuple[str, ...] = ()
     expected_file_paths: tuple[str, ...] = ()
+    linked_issue_ids: tuple[str, ...] = ()
     should_abstain: bool = False
     case_type: str = "lookup"
     tags: tuple[str, ...] = ()
@@ -61,6 +64,7 @@ class BenchmarkCaseResult:
     question: str
     case_type: str
     tags: tuple[str, ...]
+    linked_issue_ids: tuple[str, ...]
     should_abstain: bool
     abstained: bool
     abstain_correct: bool
@@ -157,6 +161,36 @@ class BenchmarkSummary:
         return payload
 
 
+class BenchmarkHttpClient:
+    def __init__(self, base_url: str) -> None:
+        self.base_url = base_url.rstrip("/")
+
+    def _post_json(self, path: str, payload: dict[str, object]) -> dict[str, object]:
+        request = Request(
+            f"{self.base_url}{path}",
+            data=json.dumps(payload, ensure_ascii=False).encode("utf-8"),
+            headers={"Content-Type": "application/json"},
+            method="POST",
+        )
+        try:
+            with urlopen(request, timeout=300) as response:
+                return json.loads(response.read().decode("utf-8"))
+        except HTTPError as exc:  # pragma: no cover - exercised via integration
+            body = exc.read().decode("utf-8", errors="ignore")
+            raise RuntimeError(f"http benchmark request failed: {path} -> {exc.code}: {body}") from exc
+        except URLError as exc:  # pragma: no cover - exercised via integration
+            raise RuntimeError(f"http benchmark request failed: {path} -> {exc}") from exc
+
+    def index(self, mode: str) -> dict[str, object]:
+        return self._post_json("/index", {"mode": mode})
+
+    def search(self, queries: Sequence[str]) -> dict[str, object]:
+        return self._post_json("/search", {"queries": list(queries)})
+
+    def ask(self, question: str, queries: Sequence[str]) -> dict[str, object]:
+        return self._post_json("/ask", {"question": question, "queries": list(queries)})
+
+
 def load_benchmark_cases(path: str | Path) -> list[BenchmarkCase]:
     cases: list[BenchmarkCase] = []
     for line in Path(path).read_text(encoding="utf-8").splitlines():
@@ -173,6 +207,7 @@ def load_benchmark_cases(path: str | Path) -> list[BenchmarkCase]:
                 queries=_coerce_strings(raw.get("queries")) or (str(raw["question"]).strip(),),
                 expected_chunk_ids=_coerce_strings(raw.get("expected_chunk_ids")),
                 expected_file_paths=tuple(_normalize_path(path) for path in _coerce_strings(raw.get("expected_file_paths"))),
+                linked_issue_ids=_coerce_strings(raw.get("linked_issue_ids")),
                 should_abstain=bool(raw.get("should_abstain", False)),
                 case_type=case_type,
                 tags=_coerce_strings(raw.get("tags")),
@@ -312,32 +347,49 @@ def run_benchmark(
     *,
     config: AppConfig | None = None,
     reindex_mode: str | None = None,
+    base_url: str | None = None,
 ) -> BenchmarkSummary:
-    settings = config or load_config()
+    client = BenchmarkHttpClient(base_url) if base_url else None
+    settings = None if client is not None else (config or load_config())
     if reindex_mode:
-        IndexingService(settings).index(reindex_mode)
+        if client is not None:
+            client.index(reindex_mode)
+        else:
+            IndexingService(settings).index(reindex_mode)
 
-    service = QueryService(settings)
+    service = None if client is not None else QueryService(settings)
     try:
         cases = load_benchmark_cases(benchmark_path)
         case_results: list[BenchmarkCaseResult] = []
 
         for case in cases:
             start = perf_counter()
-            search_result = service.search(case.queries)
+            if client is not None:
+                payload = client.search(case.queries)
+            else:
+                payload = service.search(case.queries).to_payload()
             search_latency_ms = (perf_counter() - start) * 1000.0
 
             start = perf_counter()
-            ask_result = service.ask(case.question, queries=case.queries)
+            if client is not None:
+                ask_payload = client.ask(case.question, case.queries)
+                ask_abstained = bool(ask_payload.get("abstained", False))
+                ask_confidence = float(ask_payload.get("confidence", 0.0) or 0.0)
+                ask_abstain_reason = ask_payload.get("abstain_reason")
+                ask_sources = tuple(ask_payload.get("sources") or ())
+            else:
+                ask_result = service.ask(case.question, queries=case.queries)
+                ask_abstained = ask_result.abstained
+                ask_confidence = float(getattr(ask_result, "confidence", 0.0) or 0.0)
+                ask_abstain_reason = getattr(ask_result, "abstain_reason", None)
+                ask_sources = tuple(ask_result.sources)
             ask_latency_ms = (perf_counter() - start) * 1000.0
 
-            payload = search_result.to_payload()
             results = payload["results"]
             rank = _match_rank(case, results)
             search_hit = rank is not None
             mrr = 0.0 if rank is None else 1.0 / rank
 
-            ask_sources = tuple(ask_result.sources)
             matched_source_keys = _matched_source_keys(case, ask_sources)
             expected_source_keys = _expected_source_keys(case)
             expected_source_count = len(expected_source_keys)
@@ -350,7 +402,7 @@ def run_benchmark(
             expected_terms_total, matched_terms_count, expected_term_coverage = _expected_term_stats(case, ask_sources)
             source_count = len(ask_sources)
             source_count_ok = source_count >= case.min_expected_sources if case.min_expected_sources > 0 else None
-            abstain_correct = ask_result.abstained is case.should_abstain
+            abstain_correct = ask_abstained is case.should_abstain
 
             top = results[0] if results else {}
             case_results.append(
@@ -359,8 +411,9 @@ def run_benchmark(
                     question=case.question,
                     case_type=case.case_type,
                     tags=case.tags,
+                    linked_issue_ids=case.linked_issue_ids,
                     should_abstain=case.should_abstain,
-                    abstained=ask_result.abstained,
+                    abstained=ask_abstained,
                     abstain_correct=abstain_correct,
                     search_latency_ms=round(search_latency_ms, 2),
                     ask_latency_ms=round(ask_latency_ms, 2),
@@ -372,8 +425,8 @@ def run_benchmark(
                     top_chunk_id=str(top.get("chunk_id")) if top else None,
                     top_file_path=_normalize_path(top.get("file_path")) if top else None,
                     top_location=str(top.get("location")) if top else None,
-                    confidence=round(float(getattr(ask_result, "confidence", 0.0) or 0.0), 4),
-                    abstain_reason=getattr(ask_result, "abstain_reason", None),
+                    confidence=round(ask_confidence, 4),
+                    abstain_reason=str(ask_abstain_reason) if ask_abstain_reason is not None else None,
                     expected_source_count=expected_source_count,
                     matched_source_count=matched_source_count,
                     evidence_hit=evidence_hit,
@@ -411,4 +464,5 @@ def run_benchmark(
             by_tag=by_tag,
         )
     finally:
-        service.close()
+        if service is not None:
+            service.close()

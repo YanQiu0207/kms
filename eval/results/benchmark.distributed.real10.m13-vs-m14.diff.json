@@ -1,0 +1,155 @@
+{
+  "benchmark": {
+    "overall": {
+      "recall_at_k": {
+        "baseline": 1.0,
+        "candidate": 1.0,
+        "delta": 0.0
+      },
+      "mrr": {
+        "baseline": 0.9167,
+        "candidate": 0.9167,
+        "delta": 0.0
+      },
+      "abstain_accuracy": {
+        "baseline": 0.8,
+        "candidate": 0.8,
+        "delta": 0.0
+      },
+      "abstain_precision": {
+        "baseline": 0.5,
+        "candidate": 0.5,
+        "delta": 0.0
+      },
+      "abstain_recall": {
+        "baseline": 0.5,
+        "candidate": 0.5,
+        "delta": 0.0
+      },
+      "false_abstain_rate": {
+        "baseline": 0.125,
+        "candidate": 0.125,
+        "delta": 0.0
+      },
+      "false_answer_rate": {
+        "baseline": 0.5,
+        "candidate": 0.5,
+        "delta": 0.0
+      },
+      "evidence_hit_rate": {
+        "baseline": 0.875,
+        "candidate": 0.875,
+        "delta": 0.0
+      },
+      "evidence_source_recall": {
+        "baseline": 0.875,
+        "candidate": 0.875,
+        "delta": 0.0
+      },
+      "source_count_satisfaction_rate": {
+        "baseline": null,
+        "candidate": null,
+        "delta": null
+      },
+      "expected_term_coverage": {
+        "baseline": null,
+        "candidate": null,
+        "delta": null
+      },
+      "avg_search_latency_ms": {
+        "baseline": 1792.38,
+        "candidate": 1688.17,
+        "delta": -104.21
+      },
+      "avg_ask_latency_ms": {
+        "baseline": 3.68,
+        "candidate": 3.85,
+        "delta": 0.17
+      }
+    },
+    "by_type": {
+      "lookup": {
+        "recall_at_k": {
+          "baseline": 1.0,
+          "candidate": 1.0,
+          "delta": 0.0
+        },
+        "mrr": {
+          "baseline": 0.9167,
+          "candidate": 0.9167,
+          "delta": 0.0
+        },
+        "abstain_accuracy": {
+          "baseline": 0.8,
+          "candidate": 0.8,
+          "delta": 0.0
+        },
+        "abstain_precision": {
+          "baseline": 0.5,
+          "candidate": 0.5,
+          "delta": 0.0
+        },
+        "abstain_recall": {
+          "baseline": 0.5,
+          "candidate": 0.5,
+          "delta": 0.0
+        },
+        "false_abstain_rate": {
+          "baseline": 0.125,
+          "candidate": 0.125,
+          "delta": 0.0
+        },
+        "false_answer_rate": {
+          "baseline": 0.5,
+          "candidate": 0.5,
+          "delta": 0.0
+        },
+        "evidence_hit_rate": {
+          "baseline": 0.875,
+          "candidate": 0.875,
+          "delta": 0.0
+        },
+        "evidence_source_recall": {
+          "baseline": 0.875,
+          "candidate": 0.875,
+          "delta": 0.0
+        },
+        "source_count_satisfaction_rate": {
+          "baseline": null,
+          "candidate": null,
+          "delta": null
+        },
+        "expected_term_coverage": {
+          "baseline": null,
+          "candidate": null,
+          "delta": null
+        },
+        "avg_search_latency_ms": {
+          "baseline": 1792.38,
+          "candidate": 1688.17,
+          "delta": -104.21
+        },
+        "avg_ask_latency_ms": {
+          "baseline": 3.68,
+          "candidate": 3.85,
+          "delta": 0.17
+        }
+      }
+    },
+    "by_tag": {},
+    "case_changes": [
+      {
+        "id": "dist10-004",
+        "question": "逻辑时钟解决了什么问题？",
+        "case_type": "lookup",
+        "tags": [],
+        "changes": {
+          "source_count": {
+            "baseline": 5,
+            "candidate": 6
+          }
+        }
+      }
+    ]
+  }
+}

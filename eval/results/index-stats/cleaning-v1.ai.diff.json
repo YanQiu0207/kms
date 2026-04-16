@@ -1,0 +1,273 @@
+{
+  "benchmark": {
+    "overall": {
+      "recall_at_k": {
+        "baseline": 1.0,
+        "candidate": 1.0,
+        "delta": 0.0
+      },
+      "mrr": {
+        "baseline": 1.0,
+        "candidate": 1.0,
+        "delta": 0.0
+      },
+      "abstain_accuracy": {
+        "baseline": 1.0,
+        "candidate": 1.0,
+        "delta": 0.0
+      },
+      "abstain_precision": {
+        "baseline": 1.0,
+        "candidate": 1.0,
+        "delta": 0.0
+      },
+      "abstain_recall": {
+        "baseline": 1.0,
+        "candidate": 1.0,
+        "delta": 0.0
+      },
+      "false_abstain_rate": {
+        "baseline": 0.0,
+        "candidate": 0.0,
+        "delta": 0.0
+      },
+      "false_answer_rate": {
+        "baseline": 0.0,
+        "candidate": 0.0,
+        "delta": 0.0
+      },
+      "evidence_hit_rate": {
+        "baseline": 1.0,
+        "candidate": 1.0,
+        "delta": 0.0
+      },
+      "evidence_source_recall": {
+        "baseline": 0.9375,
+        "candidate": 0.9375,
+        "delta": 0.0
+      },
+      "source_count_satisfaction_rate": {
+        "baseline": null,
+        "candidate": null,
+        "delta": null
+      },
+      "expected_term_coverage": {
+        "baseline": null,
+        "candidate": null,
+        "delta": null
+      },
+      "avg_search_latency_ms": {
+        "baseline": 1642.72,
+        "candidate": 1038.91,
+        "delta": -603.81
+      },
+      "avg_ask_latency_ms": {
+        "baseline": 2.78,
+        "candidate": 3.01,
+        "delta": 0.23
+      }
+    },
+    "by_type": {
+      "lookup": {
+        "recall_at_k": {
+          "baseline": 1.0,
+          "candidate": 1.0,
+          "delta": 0.0
+        },
+        "mrr": {
+          "baseline": 1.0,
+          "candidate": 1.0,
+          "delta": 0.0
+        },
+        "abstain_accuracy": {
+          "baseline": 1.0,
+          "candidate": 1.0,
+          "delta": 0.0
+        },
+        "abstain_precision": {
+          "baseline": 1.0,
+          "candidate": 1.0,
+          "delta": 0.0
+        },
+        "abstain_recall": {
+          "baseline": 1.0,
+          "candidate": 1.0,
+          "delta": 0.0
+        },
+        "false_abstain_rate": {
+          "baseline": 0.0,
+          "candidate": 0.0,
+          "delta": 0.0
+        },
+        "false_answer_rate": {
+          "baseline": 0.0,
+          "candidate": 0.0,
+          "delta": 0.0
+        },
+        "evidence_hit_rate": {
+          "baseline": 1.0,
+          "candidate": 1.0,
+          "delta": 0.0
+        },
+        "evidence_source_recall": {
+          "baseline": 0.9375,
+          "candidate": 0.9375,
+          "delta": 0.0
+        },
+        "source_count_satisfaction_rate": {
+          "baseline": null,
+          "candidate": null,
+          "delta": null
+        },
+        "expected_term_coverage": {
+          "baseline": null,
+          "candidate": null,
+          "delta": null
+        },
+        "avg_search_latency_ms": {
+          "baseline": 1642.72,
+          "candidate": 1038.91,
+          "delta": -603.81
+        },
+        "avg_ask_latency_ms": {
+          "baseline": 2.78,
+          "candidate": 3.01,
+          "delta": 0.23
+        }
+      }
+    },
+    "by_tag": {},
+    "case_changes": []
+  },
+  "index_stats": {
+    "document_count": {
+      "baseline": 590,
+      "candidate": 590,
+      "delta": 0.0
+    },
+    "chunk_count": {
+      "baseline": 5831,
+      "candidate": 5831,
+      "delta": 0.0
+    },
+    "exact_duplicate_groups": {
+      "baseline": 196,
+      "candidate": 196,
+      "delta": 0.0
+    },
+    "exact_duplicate_chunk_count": {
+      "baseline": 550,
+      "candidate": 550,
+      "delta": 0.0
+    },
+    "exact_duplicate_chunk_ratio": {
+      "baseline": 0.0943,
+      "candidate": 0.0943,
+      "delta": 0.0
+    },
+    "chunk_length_chars": {
+      "avg": {
+        "baseline": 167.5635,
+        "candidate": 167.5635,
+        "delta": 0.0
+      },
+      "median": {
+        "baseline": 77.0,
+        "candidate": 77.0,
+        "delta": 0.0
+      },
+      "min": {
+        "baseline": 1.0,
+        "candidate": 1.0,
+        "delta": 0.0
+      },
+      "max": {
+        "baseline": 800.0,
+        "candidate": 800.0,
+        "delta": 0.0
+      }
+    },
+    "chunk_token_count": {
+      "avg": {
+        "baseline": 87.9329,
+        "candidate": 87.9329,
+        "delta": 0.0
+      },
+      "median": {
+        "baseline": 45.0,
+        "candidate": 45.0,
+        "delta": 0.0
+      },
+      "min": {
+        "baseline": 0.0,
+        "candidate": 0.0,
+        "delta": 0.0
+      },
+      "max": {
+        "baseline": 639.0,
+        "candidate": 639.0,
+        "delta": 0.0
+      }
+    },
+    "chunks_per_document": {
+      "avg": {
+        "baseline": 10.1409,
+        "candidate": 10.1409,
+        "delta": 0.0
+      },
+      "median": {
+        "baseline": 5.0,
+        "candidate": 5.0,
+        "delta": 0.0
+      },
+      "min": {
+        "baseline": 1.0,
+        "candidate": 1.0,
+        "delta": 0.0
+      },
+      "max": {
+        "baseline": 1687.0,
+        "candidate": 1687.0,
+        "delta": 0.0
+      }
+    },
+    "by_source": {
+      "4d47b33ec28f": {
+        "document_count": {
+          "baseline": 4,
+          "candidate": 4,
+          "delta": 0.0
+        },
+        "chunk_count": {
+          "baseline": 31,
+          "candidate": 31,
+          "delta": 0.0
+        }
+      },
+      "d3a6b6c9f8b1": {
+        "document_count": {
+          "baseline": 107,
+          "candidate": 107,
+          "delta": 0.0
+        },
+        "chunk_count": {
+          "baseline": 2704,
+          "candidate": 2704,
+          "delta": 0.0
+        }
+      },
+      "d639f54124bb": {
+        "document_count": {
+          "baseline": 479,
+          "candidate": 479,
+          "delta": 0.0
+        },
+        "chunk_count": {
+          "baseline": 3096,
+          "candidate": 3096,
+          "delta": 0.0
+        }
+      }
+    }
+  }
+}
