@@ -7,7 +7,7 @@ from app.config import AppConfig, RetrievalConfig
 from app.retrieve import HybridRetrievalService, RetrievedChunk
 from app.retrieve.lexical import _build_fts_query, LexicalRetriever
 from app.retrieve.semantic import SemanticRetriever
-from app.retrieve.rerank import FlagEmbeddingReranker
+from app.retrieve.rerank import DebugReranker, FlagEmbeddingReranker
 from app.services.embeddings import EmbeddingService
 from app.store import FTS5Writer, SQLiteMetadataStore, StoredChunk, StoredDocument
 
@@ -857,6 +857,154 @@ def test_search_and_rerank_prefers_subject_root_document_for_definition_queries(
     assert [chunk.chunk_id for chunk in result.results] == ["subject-root", "guide-section"]
     assert result.results[0].metadata["definition_subject_affinity"] == 3
     assert result.results[1].metadata["definition_subject_affinity"] == 1
+
+
+def test_rerank_multi_merges_all_queries_in_single_call():
+    """rerank_multi 可用时，多 query 走 1 次 batch 调用，不走 rerank()。"""
+
+    @dataclass
+    class _MultiRecordingReranker:
+        rerank_calls: list = None
+        rerank_multi_calls: list = None
+
+        def __post_init__(self):
+            if self.rerank_calls is None:
+                self.rerank_calls = []
+            if self.rerank_multi_calls is None:
+                self.rerank_multi_calls = []
+
+        def rerank(self, query, candidates, top_k=None):
+            self.rerank_calls.append(query)
+            ranked = sorted(candidates, key=lambda c: (-float(c.score or 0.0), c.chunk_id or c.document_id))
+            return tuple(ranked[:top_k] if top_k else ranked)
+
+        def rerank_multi(self, query_candidates):
+            self.rerank_multi_calls.append([q for q, _ in query_candidates])
+            return tuple(
+                (query, sorted(candidates, key=lambda c: (-float(c.score or 0.0), c.chunk_id or c.document_id)))
+                for query, candidates in query_candidates
+            )
+
+        def close(self):
+            return None
+
+    candidates = [
+        RetrievedChunk(document_id="doc-1", chunk_id="c1", content="alpha", score=0.8),
+        RetrievedChunk(document_id="doc-2", chunk_id="c2", content="beta", score=0.7),
+    ]
+    reranker = _MultiRecordingReranker()
+    service = HybridRetrievalService(
+        config=AppConfig(retrieval=RetrievalConfig(recall_top_k=5, rerank_top_k=2, rrf_k=60, min_output_score=0.0)),
+        lexical_retriever=_StaticRetriever(candidates),
+        semantic_retriever=_StaticRetriever(candidates),
+        reranker=reranker,
+    )
+
+    service.search_and_rerank(["q1", "q2"], recall_top_k=5, rerank_top_k=2)
+
+    assert reranker.rerank_multi_calls == [["q1", "q2"]], "rerank_multi should be called once with both queries"
+    assert reranker.rerank_calls == [], "rerank() should not be called when rerank_multi is available"
+
+
+def test_rerank_multi_falls_back_when_unavailable():
+    """rerank_multi 不可用时，退回到对每个 query 串行调用 rerank()。"""
+    candidates = [
+        RetrievedChunk(document_id="doc-1", chunk_id="c1", content="alpha", score=0.8),
+    ]
+    reranker = _RecordingReranker()
+    service = HybridRetrievalService(
+        config=AppConfig(retrieval=RetrievalConfig(recall_top_k=5, rerank_top_k=2, rrf_k=60, min_output_score=0.0)),
+        lexical_retriever=_StaticRetriever(candidates),
+        semantic_retriever=_StaticRetriever(candidates),
+        reranker=reranker,
+    )
+
+    service.search_and_rerank(["q1", "q2"], recall_top_k=5, rerank_top_k=2)
+
+    assert reranker.queries == ["q1", "q2"], "rerank() should be called once per query in fallback path"
+
+
+def test_flag_reranker_rerank_multi_uses_merged_batch_size():
+    """rerank_multi 应以 batch_size × query_count 调用模型，使所有 pair 尽量在 1 次 forward pass 内完成。
+
+    使用 4 candidates × 3 queries = 12 total pairs > batch_size×N = 4×3 = 12，
+    验证 effective_batch_size = min(base × query_count, total_pairs)。
+    """
+    # 5 candidates × 3 queries = 15 total pairs > min(4*3, 15) = 12
+    candidates = [
+        RetrievedChunk(document_id=f"doc-{i}", chunk_id=f"c{i}", content=f"text-{i}", score=0.1)
+        for i in range(5)
+    ]
+    recorded: list[dict] = []
+
+    def _compute_score(pairs, batch_size=None):
+        recorded.append({"pair_count": len(pairs), "batch_size": batch_size})
+        return [0.5] * len(pairs)
+
+    reranker = FlagEmbeddingReranker("mock-reranker", batch_size=4)
+    reranker._model = SimpleNamespace(compute_score=_compute_score)
+
+    reranker.rerank_multi([("q1", candidates), ("q2", candidates), ("q3", candidates)])
+
+    expected_batch_size = min(4 * 3, 5 * 3)  # min(12, 15) = 12
+    assert len(recorded) == 1, "compute_score should be called exactly once"
+    assert recorded[0]["pair_count"] == 15, "all 3×5 pairs in one call"
+    assert recorded[0]["batch_size"] == expected_batch_size, f"batch_size should be {expected_batch_size}"
+
+
+def test_flag_reranker_rerank_multi_matches_sequential():
+    """rerank_multi 结果与逐 query 串行调用 rerank() 的结果完全一致。"""
+    candidates = [
+        RetrievedChunk(document_id="doc-1", chunk_id="c1", content="alpha", score=0.1),
+        RetrievedChunk(document_id="doc-2", chunk_id="c2", content="beta", score=0.1),
+        RetrievedChunk(document_id="doc-3", chunk_id="c3", content="gamma", score=0.1),
+    ]
+
+    def _deterministic_score(pairs, batch_size=None):
+        # 仅根据 passage 内容打分，与 query 无关，确保批量与串行结果可比
+        score_map = {"alpha": 0.9, "beta": 0.5, "gamma": 0.7}
+        return [score_map.get(passage.strip(), 0.3) for _, passage in pairs]
+
+    # 串行：逐 query 调用
+    reranker_seq = FlagEmbeddingReranker("mock-reranker", batch_size=4)
+    reranker_seq._model = SimpleNamespace(compute_score=_deterministic_score)
+    seq_q1 = tuple(reranker_seq.rerank("q1", candidates, top_k=None))
+    seq_q2 = tuple(reranker_seq.rerank("q2", candidates, top_k=None))
+
+    # 批量：rerank_multi
+    reranker_batch = FlagEmbeddingReranker("mock-reranker", batch_size=4)
+    reranker_batch._model = SimpleNamespace(compute_score=_deterministic_score)
+    batch_results = {q: r for q, r in reranker_batch.rerank_multi([("q1", candidates), ("q2", candidates)])}
+
+    for seq, query in [(seq_q1, "q1"), (seq_q2, "q2")]:
+        batch = batch_results[query]
+        assert len(seq) == len(batch)
+        for s_chunk, b_chunk in zip(seq, batch):
+            assert s_chunk.chunk_id == b_chunk.chunk_id, f"order mismatch for {query}"
+            assert abs(float(s_chunk.score or 0.0) - float(b_chunk.score or 0.0)) < 1e-9, f"score mismatch for {query}/{s_chunk.chunk_id}"
+
+
+def test_debug_reranker_rerank_multi_matches_sequential():
+    """DebugReranker.rerank_multi 结果与逐 query 串行 rerank() 完全一致。"""
+    candidates = [
+        RetrievedChunk(document_id="doc-1", chunk_id="c1", content="alpha beta gamma", score=0.8,
+                       metadata={"rrf_score": 0.08}),
+        RetrievedChunk(document_id="doc-2", chunk_id="c2", content="delta epsilon", score=0.6,
+                       metadata={"rrf_score": 0.05}),
+    ]
+    reranker = DebugReranker()
+
+    seq_q1 = tuple(reranker.rerank("alpha query", candidates, top_k=None))
+    seq_q2 = tuple(reranker.rerank("delta query", candidates, top_k=None))
+
+    batch_results = {q: r for q, r in reranker.rerank_multi([("alpha query", candidates), ("delta query", candidates)])}
+
+    for seq, query in [(seq_q1, "alpha query"), (seq_q2, "delta query")]:
+        batch = batch_results[query]
+        assert len(seq) == len(batch)
+        for s_chunk, b_chunk in zip(seq, batch):
+            assert s_chunk.chunk_id == b_chunk.chunk_id, f"order mismatch for query='{query}'"
+            assert abs(float(s_chunk.score or 0.0) - float(b_chunk.score or 0.0)) < 1e-9, f"score mismatch for query='{query}'"
 
 
 def test_search_and_rerank_prefers_exact_subject_root_title_over_broader_topic_doc():

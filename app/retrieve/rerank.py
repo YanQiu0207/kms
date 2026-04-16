@@ -26,6 +26,12 @@ class RerankerProtocol(Protocol):
     ) -> Sequence[RetrievedChunk]:
         raise NotImplementedError
 
+    def rerank_multi(
+        self,
+        query_candidates: Sequence[tuple[str, Sequence[RetrievedChunk]]],
+    ) -> Sequence[tuple[str, Sequence[RetrievedChunk]]]:
+        raise NotImplementedError
+
     def close(self) -> None:
         raise NotImplementedError
 
@@ -82,6 +88,15 @@ class DebugReranker:
         if top_k is not None:
             return tuple(ranked[: max(0, int(top_k))])
         return tuple(ranked)
+
+    def rerank_multi(
+        self,
+        query_candidates: Sequence[tuple[str, Sequence[RetrievedChunk]]],
+    ) -> Sequence[tuple[str, Sequence[RetrievedChunk]]]:
+        return tuple(
+            (query, self.rerank(query, candidates, top_k=None))
+            for query, candidates in query_candidates
+        )
 
     def close(self) -> None:
         return None
@@ -144,6 +159,56 @@ class FlagEmbeddingReranker:
                     raise RetrievalError(f"failed to load reranker model: {self.model_name}") from exc
                 return self._model
 
+    def _invoke_score(self, model: object, pairs: list[list[str]], batch_size: int) -> list[float]:
+        """调用模型的评分函数，返回与 pairs 等长的 float 列表。"""
+        score_functions = ("compute_score", "score", "predict")
+        scores: list[float] | None = None
+        last_error: Exception | None = None
+
+        for name in score_functions:
+            method = getattr(model, name, None)
+            if not callable(method):
+                continue
+            try:
+                try:
+                    raw = method(pairs, batch_size=batch_size)
+                except TypeError:
+                    raw = method(pairs)
+            except Exception as exc:  # pragma: no cover - depends on optional dependency
+                last_error = exc
+                continue
+            scores = _coerce_scores(raw, len(pairs))
+            if scores:
+                break
+
+        if scores is None:
+            raise RetrievalError("reranker model did not expose a usable scoring API") from last_error
+
+        expected = len(pairs)
+        if len(scores) < expected:
+            pad_value = scores[-1] if scores else 0.0
+            scores.extend([pad_value] * (expected - len(scores)))
+        elif len(scores) > expected:
+            scores = scores[:expected]
+
+        return scores
+
+    def _build_ranked(
+        self,
+        candidates: Sequence[RetrievedChunk],
+        scores: list[float],
+    ) -> tuple[RetrievedChunk, ...]:
+        """根据 scores 为 candidates 附加 rerank metadata 并按分排序。"""
+        ranked: list[RetrievedChunk] = []
+        for index, (candidate, score) in enumerate(zip(candidates, scores, strict=False), start=1):
+            metadata = dict(candidate.metadata)
+            metadata["rerank_rank"] = index
+            metadata["rerank_raw_score"] = float(score)
+            metadata["rerank_score"] = _normalize_score(float(score))
+            ranked.append(replace(candidate, score=float(metadata["rerank_score"]), metadata=metadata))
+        ranked.sort(key=lambda item: (-float(item.score or 0.0), item.chunk_id or item.document_id))
+        return tuple(ranked)
+
     def rerank(
         self,
         query: str,
@@ -154,9 +219,6 @@ class FlagEmbeddingReranker:
             return ()
 
         pairs = [[query, candidate.content] for candidate in candidates]
-        score_functions = ("compute_score", "score", "predict")
-        scores: list[float] | None = None
-        last_error: Exception | None = None
 
         with timed_operation(
             LOGGER,
@@ -168,43 +230,66 @@ class FlagEmbeddingReranker:
         ):
             with self._lock:
                 model = self._ensure_model()
-                for name in score_functions:
-                    method = getattr(model, name, None)
-                    if not callable(method):
-                        continue
-                    try:
-                        try:
-                            raw = method(pairs, batch_size=self.batch_size)
-                        except TypeError:
-                            raw = method(pairs)
-                    except Exception as exc:  # pragma: no cover - depends on optional dependency
-                        last_error = exc
-                        continue
-                    scores = _coerce_scores(raw, len(candidates))
-                    if scores:
-                        break
+                scores = self._invoke_score(model, pairs, self.batch_size)
 
-        if scores is None:
-            raise RetrievalError("reranker model did not expose a usable scoring API") from last_error
-
-        if len(scores) < len(candidates):
-            pad_value = scores[-1] if scores else 0.0
-            scores.extend([pad_value] * (len(candidates) - len(scores)))
-        elif len(scores) > len(candidates):
-            scores = scores[: len(candidates)]
-
-        ranked: list[RetrievedChunk] = []
-        for index, (candidate, score) in enumerate(zip(candidates, scores, strict=False), start=1):
-            metadata = dict(candidate.metadata)
-            metadata["rerank_rank"] = index
-            metadata["rerank_raw_score"] = float(score)
-            metadata["rerank_score"] = _normalize_score(float(score))
-            ranked.append(replace(candidate, score=float(metadata["rerank_score"]), metadata=metadata))
-
-        ranked.sort(key=lambda item: (-float(item.score or 0.0), item.chunk_id or item.document_id))
+        ranked = self._build_ranked(candidates, scores)
         if top_k is not None:
             return tuple(ranked[: max(0, int(top_k))])
-        return tuple(ranked)
+        return ranked
+
+    def rerank_multi(
+        self,
+        query_candidates: Sequence[tuple[str, Sequence[RetrievedChunk]]],
+    ) -> Sequence[tuple[str, Sequence[RetrievedChunk]]]:
+        """将多个 query 的 rerank 合并为单次模型调用，减少 GPU roundtrip。
+
+        Args:
+            query_candidates: 每个元素是 (query, candidates) 的序列，共享同一批候选集。
+
+        Returns:
+            与输入顺序一致的 (query, ranked_candidates) 序列。
+        """
+        if not query_candidates:
+            return ()
+
+        # 构建 flat pairs，记录每段的 candidate 数量
+        all_pairs: list[list[str]] = []
+        segment_sizes: list[int] = []
+        for query, candidates in query_candidates:
+            segment = [[query, candidate.content] for candidate in candidates]
+            all_pairs.extend(segment)
+            segment_sizes.append(len(segment))
+
+        if not all_pairs:
+            return tuple((query, ()) for query, _ in query_candidates)
+
+        # batch_size 放大为 base × query_count，使所有 pair 尽量在 1 次 forward pass 内完成
+        effective_batch_size = min(
+            self.batch_size * len(query_candidates),
+            len(all_pairs),
+        )
+
+        with timed_operation(
+            LOGGER,
+            "reranker.score",
+            model_name=self.model_name,
+            pair_count=len(all_pairs),
+            query_count=len(query_candidates),
+            batch_size=effective_batch_size,
+        ):
+            with self._lock:
+                model = self._ensure_model()
+                scores = self._invoke_score(model, all_pairs, effective_batch_size)
+
+        # 按 segment_sizes 切分 scores，为每个 query 构建排序结果
+        results: list[tuple[str, tuple[RetrievedChunk, ...]]] = []
+        offset = 0
+        for (query, candidates), seg_size in zip(query_candidates, segment_sizes, strict=False):
+            seg_scores = scores[offset : offset + seg_size]
+            offset += seg_size
+            ranked = self._build_ranked(candidates, seg_scores)
+            results.append((query, ranked))
+        return tuple(results)
 
     def close(self) -> None:
         with self._lock:

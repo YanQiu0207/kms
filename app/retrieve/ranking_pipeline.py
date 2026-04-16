@@ -476,6 +476,24 @@ def _unique_queries(queries: Sequence[str]) -> tuple[str, ...]:
     return tuple(unique_queries)
 
 
+def _merge_multi_query_results(
+    multi_results: Sequence[tuple[str, Sequence[RetrievedChunk]]],
+) -> dict[str, RetrievedChunk]:
+    """将多个 query 的 rerank 结果合并：同一 chunk 取最高分。"""
+    best_by_chunk_id: dict[str, RetrievedChunk] = {}
+    for query, reranked in multi_results:
+        for rank, chunk in enumerate(reranked, start=1):
+            chunk_id = chunk.chunk_id or chunk.document_id
+            metadata = normalize_metadata(chunk.metadata)
+            metadata["rerank_query"] = query
+            metadata["rerank_query_rank"] = rank
+            reranked_chunk = replace(chunk, metadata=metadata)
+            current = best_by_chunk_id.get(chunk_id)
+            if current is None or float(reranked_chunk.score or 0.0) > float(current.score or 0.0):
+                best_by_chunk_id[chunk_id] = reranked_chunk
+    return best_by_chunk_id
+
+
 def _rerank_candidates(
     reranker: RerankerProtocol,
     queries: Sequence[str],
@@ -493,18 +511,17 @@ def _rerank_candidates(
     if len(unique_queries) == 1:
         return tuple(reranker.rerank(unique_queries[0], candidates, top_k=top_k))
 
-    best_by_chunk_id: dict[str, RetrievedChunk] = {}
-    for query in unique_queries:
-        reranked = reranker.rerank(query, candidates, top_k=None)
-        for rank, chunk in enumerate(reranked, start=1):
-            chunk_id = chunk.chunk_id or chunk.document_id
-            metadata = normalize_metadata(chunk.metadata)
-            metadata["rerank_query"] = query
-            metadata["rerank_query_rank"] = rank
-            reranked_chunk = replace(chunk, metadata=metadata)
-            current = best_by_chunk_id.get(chunk_id)
-            if current is None or float(reranked_chunk.score or 0.0) > float(current.score or 0.0):
-                best_by_chunk_id[chunk_id] = reranked_chunk
+    # 多 query：优先走 batch 路径（1 次模型调用），否则 fallback 串行
+    if callable(getattr(reranker, "rerank_multi", None)):
+        query_candidates = [(q, candidates) for q in unique_queries]
+        multi_results = reranker.rerank_multi(query_candidates)
+        best_by_chunk_id = _merge_multi_query_results(multi_results)
+    else:
+        all_per_query = []
+        for query in unique_queries:
+            reranked = reranker.rerank(query, candidates, top_k=None)
+            all_per_query.append((query, reranked))
+        best_by_chunk_id = _merge_multi_query_results(all_per_query)
 
     merged = sorted(
         best_by_chunk_id.values(),

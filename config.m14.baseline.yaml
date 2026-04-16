@@ -1,0 +1,60 @@
+server:
+  host: 127.0.0.1
+  port: 49153
+  warmup_on_startup: true
+
+sources:
+  - path: E:\work\blog
+    excludes: []
+  - path: E:\notes
+    excludes: []
+  - path: E:\work\privy-blog
+    excludes: []
+
+data:
+  sqlite: ./data/meta.m14-baseline.db
+  chroma: ./data/chroma.m14-baseline
+  hf_cache: ./data/hf-cache
+
+models:
+  embedding: BAAI/bge-m3
+  reranker: BAAI/bge-reranker-v2-m3
+  device: cuda
+  dtype: float16
+  embedding_batch_size: 8
+  reranker_batch_size: 32
+
+chunker:
+  version: v1
+  chunk_size: 800
+  chunk_overlap: 100
+
+cleaning:
+  enabled: true
+  extract_front_matter: true
+  drop_front_matter_from_content: true
+  normalize_whitespace: true
+  drop_toc_markers: false
+  drop_low_value_placeholders: false
+  normalize_markdown_tables: false
+  dedupe_exact_chunks: true
+  source_rules: []
+
+retrieval:
+  recall_top_k: 20
+  rerank_top_k: 6
+  rerank_candidate_limit: 24
+  rrf_k: 60
+  min_output_score: 0.1
+
+abstain:
+  top1_min: 0.20
+  top3_avg_min: 0.30
+  min_hits: 2
+  min_total_chars: 150
+  min_query_term_count: 2
+  min_query_term_coverage: 0.60
+
+verify:
+  min_ngram_len: 8
+  coverage_threshold: 0.5

@@ -1,5 +1,36 @@
 # Progress
 
+## 2026-04-16 P1 Reranker 多查询批合并性能优化
+
+- 问题诊断：
+  - 日志实测：3 queries × 24 candidates 场景下，`_rerank_candidates()` 串行调用 3 次 `reranker.rerank()`
+  - 每次调用 ~370ms（GPU forward pass + lock + tokenize），总计 ~1,100ms，占请求耗时 73%
+- 实施：
+  - 从 `FlagEmbeddingReranker.rerank()` 提炼 `_invoke_score` + `_build_ranked` 两个辅助方法
+  - 新增 `FlagEmbeddingReranker.rerank_multi()`：构建 flat pairs → 单次 GPU forward pass → 按 segment_sizes 切分 → 分 query 构建排序结果
+  - 新增 `DebugReranker.rerank_multi()`：委托到 `rerank()` 逐条处理
+  - `RerankerProtocol` 新增 `rerank_multi` 签名
+  - `_rerank_candidates()` 多 query 分支：`hasattr` 检测优先走 batch；无 `rerank_multi` 时 fallback 串行逻辑不变
+  - 新增 `_merge_multi_query_results()` 辅助函数，消除 batch / fallback 两条路径的合并重复
+- 新增测试（5 个）：
+  - `test_rerank_multi_merges_all_queries_in_single_call`
+  - `test_rerank_multi_falls_back_when_unavailable`
+  - `test_flag_reranker_rerank_multi_uses_merged_batch_size`
+  - `test_flag_reranker_rerank_multi_matches_sequential`
+  - `test_debug_reranker_rerank_multi_matches_sequential`
+- 过程问题：
+  - fallback 循环 `best_by_chunk_id` 变量被覆盖 → 改为先收集 `all_per_query` 再统一 merge
+  - batch_size 测试参数设计导致 clamp 生效使乘数效果不可验证 → 调整为 batch_size=4、5c×3q=15 pairs
+- 验证结果：
+  - 全量回归：`133 passed`
+  - HTTP benchmark suite（M19，`--base-url http://127.0.0.1:49153`）：
+    - ai: 2,779ms → 925ms（-67%）
+    - distributed: 10,611ms → 4,247ms（-60%）
+    - game / cleaning / ranking：质量 passed=False → True（附带修复）
+    - 零质量回退，`passed_gated_entries=6/7`
+  - 权威结果：`eval/results/benchmark-suite.m19.current.json`
+- 文档：`docs/p1-reranker-batch-merge-stage-summary.md`
+
 ## 2026-04-16 A3 检索闭环、自适应融合与别名自动提取
 
 - 会话续跑：

@@ -25,6 +25,7 @@
 | A1 | Retrieval/config/startup architecture hardening | Approved | Passed | 已完成 metadata/stopword 抽取、可组合 ranking pipeline、配置语义校验与启动 factory 化；`pytest` 117 通过，suite gated 7/7 通过 |
 | A2 | Retrieval context uplift | Approved | Passed | 已完成 parent context expansion 与 contextual embedding；Review A/B 无 accepted finding；全量 `pytest` 121 通过，suite gated 7/7 通过 |
 | A3 | Retrieval closure, adaptive fusion, and alias automation | Approved | Passed | 已完成 M19 failure closure、query-type adaptive fusion 与 front matter alias 自动提取；全量 `pytest` 128 通过，suite gated 7/7 通过 |
+| P1 | Reranker multi-query batch merge | Approved | Passed | 新增 `rerank_multi` 将 N 次串行 GPU 调用合并为 1 次；133 passed；HTTP suite: ai -67%、distributed -60%；质量无回退 |
 
 ## Exit Criteria
 
@@ -113,3 +114,14 @@
   - 已完成 front matter alias 自动提取与 QueryService 动态 alias 缓存
   - 全量 `pytest` 已达到 `128 passed`
   - `benchmark-suite.m18.json` 已达到 `passed_entries=8/8`、`passed_gated_entries=7/7`
+- P1 已通过：
+  - 新增 `FlagEmbeddingReranker.rerank_multi()`，将多 query 串行 rerank 合并为单次 GPU forward pass
+  - 新增 `DebugReranker.rerank_multi()` 与 `RerankerProtocol.rerank_multi` 签名
+  - 新增 `_merge_multi_query_results()` 辅助函数，消除 batch / fallback 两条路径的合并重复
+  - `_rerank_candidates()` 多 query 分支通过 `hasattr` duck typing 优先走 batch 路径，无 `rerank_multi` 时自动 fallback 串行
+  - 全量 `pytest` 已达到 `133 passed`（含 5 个新增测试）
+  - HTTP benchmark suite（M19）：
+    - ai -67%、distributed -60% 延迟下降
+    - game / cleaning / ranking 质量从 False → True（附带修复）
+    - 零质量回退，`passed_gated_entries=6/7`（notes-frontmatter 为 pre-existing HTTP 配置问题）
+  - 权威结果文件：`eval/results/benchmark-suite.m19.current.json`
