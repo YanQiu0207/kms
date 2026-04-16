@@ -23,6 +23,12 @@
 - 覆盖 Recall@K、MRR、拒答准确率 / 精确率 / 召回率、误拒率、误答率
 - 支持按 `case_type` / `tags` 分组统计，量化每轮迭代效果
 
+**本地可观测性前端**
+
+- `obs-local` 子项目：聚合请求日志、错误与各阶段耗时，通过 SSE 实时推送到前端页面
+- 支持 `zh / en / bilingual` 三种展示语言，可在页面右上角切换
+- 独立部署，不侵入主服务；一键脚本同时拉起后端与前端
+
 **扎实的工程基座**
 
 - 完整防腐层（`app/vendors/`），Chroma / FlagEmbedding / jieba 均可无痛替换
@@ -71,6 +77,24 @@ python scripts/stop_kms.py
 | `POST /verify` | 引用来源校验 |
 
 完整接口说明：[app/adapters/reference/api.md](app/adapters/reference/api.md)
+
+## 可观测性
+
+`obs-local` 是随主服务一同提供的本地日志观测子项目，独立部署，不侵入主服务运行时。
+
+**功能**：聚合 kms-api 产生的 JSON Line 结构化日志，实时展示请求链路、各阶段耗时（embedding / rerank / search）、错误率，通过 SSE 推送到前端页面，无需刷新。
+
+**启动**：
+
+```bash
+python scripts/start_obs_local.py
+# 后端：http://127.0.0.1:49154
+# 前端：http://127.0.0.1:4174
+```
+
+脚本会同时拉起后端与前端，并等待两者健康检查通过后返回。前端页面右上角可切换 `中文 / English / 双语` 三种展示语言。
+
+详细说明：[obs-local/README.md](obs-local/README.md)
 
 ## 文档导读
 
